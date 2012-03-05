@@ -1,4 +1,4 @@
-define("damInside", ["tools/Sprites", "tools/DrawSprites", "damInside/drawing"], function(Sprite, DrawSprites, draw) {
+define("damInside", ["extern/canvas.Sprites/canvas.Sprites", "extern/canvas.DrawSprites/canvas.DrawSprites", "damInside/drawing"], function(Sprite, DrawSprites, draw) {
     return function(){
         var part = 0;
         var rot = 0;

@@ -1,0 +1,3 @@
+[submodule "extern/canvas.Sprites"]
+	path = extern/canvas.Sprites
+	url = git@github.com:quinnbaetz/canvas.Sprites.git
