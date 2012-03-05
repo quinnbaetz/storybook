@@ -1,0 +1,147 @@
+var windmills = new Array({"x":820,"y":70, "scale":.12, "rot": 0, "speed": .1},
+							{"x":760,"y":110, "scale":.18, "rot": .3, "speed": .05},
+							{"x":850,"y":50, "scale":.3, "rot": .5, "speed": .07}
+  							);
+
+var clouds = [{x:-120, y:Math.random()*70, scale:Math.random()+.5}];
+var makeCloud = true;
+var time = 0;
+var transMap = true;
+var firstMap = true;
+var transPos;
+
+
+function drawMap(){
+	drawTitleBG(WIDTH, HEIGHT);
+	 
+	if(firstMap){
+		transPos = HEIGHT;
+		firstMap = false;	
+	}
+	 ctx.save();
+	 if(transMap){
+	    ctx.translate(0, transPos-=8); 
+		if(transPos<=0){
+			transMap = false;	
+		}
+	 }
+	 
+	 time++;
+	 
+	
+	 
+	 var toDelete = -1;
+	 for(var i in clouds){
+		 clouds[i].x+=2; 
+		 ctx.save();
+		 ctx.scale(clouds[i].scale,clouds[i].scale);
+	 	 drawCloud(clouds[i].x, clouds[i].y);
+		 ctx.restore();
+		 if((clouds[i].x-140)*clouds[i].scale >= WIDTH){
+			toDelete = i; 
+		 }
+	 }
+	 if(toDelete !== -1){
+	 	clouds.splice(toDelete, 1);
+	 }
+	 if(Math.random()<.005){
+		var scale = Math.random()+.5;
+		clouds.push({x:-120*scale, y:Math.random()*70, scale:scale}); 
+	 }
+	 
+	 
+	  ctx.drawImage(imgs["map"], 0, 0);
+	
+	  var smokeY = 440;
+	  drawCoalSmoke(findCoalSmokeX(830, time%101), smokeY, time%101);
+	  drawCoalSmoke(findCoalSmokeX(872.5, (time+33)%101), smokeY, (time+33)%101);
+	  drawCoalSmoke(findCoalSmokeX(915, (time+66)%101), smokeY, (time+66)%101);
+      
+	  smokeY = 440;
+	  drawNuclearSmoke(findCoalSmokeX(80, time%101), smokeY, time%101);
+	  drawNuclearSmoke(findCoalSmokeX(225, (time+50)%101), smokeY, (time+50)%101);
+	  
+	  
+	  //ctx.drawImage(imgs["smokeNuclear"], 70, 478);
+		
+	
+	  //windmills
+	  var w = 195;
+	  var h = 230;
+	  for(var i in windmills){
+		  windmills[i].rot +=  windmills[i].speed;
+		  
+		  windmill(windmills[i].x, windmills[i].y, windmills[i].scale);
+		  ctx.save();
+			  ctx.translate(windmills[i].x+w*windmills[i].scale, windmills[i].y+h*windmills[i].scale);
+			  ctx.rotate(windmills[i].rot);
+			  ctx.translate(-(windmills[i].x+w*windmills[i].scale), -(windmills[i].y+h*windmills[i].scale));
+			  blades(windmills[i].x, windmills[i].y, windmills[i].scale);
+		  //ctx.restore();
+	  }
+	    
+	 
+	  //ctx.fillStyle   = '#00f'; // blue
+	  //ctx.strokeStyle = '#f00'; // red
+	  //ctx.fillRect(400, 10, 20+volume, 40); 
+	  //ctx.fillRect(420,270, 300, 250);
+	  //dam(-100, 250, 1);
+	  
+	  
+	  //ctx.drawImage(imgs["nuclear"], 0, 700);
+	  ctx.restore();
+}
+
+function drawCoalSmoke(x, y, dist){
+	ctx.save();
+	ctx.globalAlpha = 1 - dist/100;
+	ctx.drawImage(imgs["smokeCoal"], x, y-dist);  
+	ctx.restore();
+}
+
+
+function drawNuclearSmoke(x, y, dist){
+	ctx.save();
+	ctx.globalAlpha = 1 - dist/100;
+	ctx.drawImage(imgs["smokeNuclear"], x, y-dist);  
+	ctx.restore();
+}
+
+function findCoalSmokeX(x, dist){
+	return x+((dist)/100)*((dist)/100)*150;
+}
+
+function drawCloud(x, y){
+   ctx.fillStyle = "#FFFFFF";
+   var w = 70;
+   var h = 50;
+   drawEllipse(ctx, x+h*3/4, y, w, h);
+   drawEllipse(ctx, x, y+h/2, w, h);
+   drawEllipse(ctx, x+h, y+h/2, w, h);
+}
+
+function mapMousePressed (x, y){
+	if(transMap){
+		return;
+	}
+	if(varersect(375, 285, 375, 275, x, y) /*|| varersect(0, 250, 250, 200, x, y)*/){
+		scene="house";	
+		return;
+	}
+	if(varersect(700, 50, 300, 300, x, y)){
+		scene="wind";	
+	}
+	if(varersect(0, 0, 375, 280, x, y)){
+		scene="damTop";	
+	}
+	
+	if(varersect(770, 465, 350, 320, x, y)){
+		scene="coal";	
+	}
+	if(varersect(0, 478, 450, 352, x, y)){
+		scene="nuclear";	
+	}
+	
+	return;	
+	
+}
