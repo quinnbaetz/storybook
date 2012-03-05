@@ -50,7 +50,7 @@
 			var BUFFERING = false;
 			//refreshes every 50 milliseconds
 			var FRAMERATE = 50;
-			var DEBUG = false;
+			var DEBUG = true;
 			
 			var ctx;
 			var WIDTH = 1024;
@@ -60,7 +60,7 @@
 			var imgs = [];
 			var scene;
 			if(DEBUG){
-				scene = "house";
+				scene = "damInside";
 			}else{
 				scene = "title";	
 			}
@@ -69,7 +69,7 @@
 			var redBuffer;
 			var blackBuffer;
 			var bigBuffer;
-			var title,wind;
+			var title,wind,damInside;  //used to store amd modulees
 		</script>
         
         
@@ -87,7 +87,7 @@
         <script src='coal/drawing.js' type='text/javascript'></script>
         
         <script src='damTop/damTop.js' type='text/javascript'></script>
-        <script src='damInside/damInside.js' type='text/javascript'></script>
+        <!--<script src='damInside/damInside.js' type='text/javascript'></script>-->
         
         <script src='nuclear/nuclear.js' type='text/javascript'></script>
         
@@ -144,6 +144,7 @@ function init() {
 	}
 	title = require('title');
 	wind = require('wind');
+	damInside = require('damInside')();
 	draw(BUFFERING);
 	
 }
@@ -232,10 +233,10 @@ function draw(buffer) {
 	 return;
   }
      if(scene === "damInside"){
+       damInside.draw();
 	// ctx.save();
 	 //ctx.translate(WIDTH, 0);
 	 //ctx.rotate(90*Math.PI/180);
-	  drawDamInside();
 	  setTimeout(draw, FRAMERATE); 
 	 //ctx.restore();
  	 endDraw();
@@ -296,7 +297,7 @@ function mouseReleased(touchX, touchY) {
 		return;	
 	}
 	 if(scene === "damInside"){
-		damInsideRelease();
+	   damInside.mouseReleased(x, y);
 		return; 
 	 }
 }
@@ -344,7 +345,7 @@ function mousePressed(touchX, touchY) {
 	}
 	
 	 if(scene === "damInside"){
-		damInsidePressed(x,y); 
+     damInside.mousePressed(x, y);
 	 }
 }
 
@@ -444,7 +445,6 @@ function drawEllipse(ctx, x, y, w, h) {
 								"damInsideBg" =>  $damInsideImageLoc."bgDam.png",
 								"damInside" =>  $damInsideImageLoc."dam.png",
 								"damInsideGate" =>  $damInsideImageLoc."gate.png",
-								"damInsideWaterfall" =>  $damInsideImageLoc."waterfall.png",
 								"damInsideWater" =>  $damInsideImageLoc."watertop.png",
 								"damSprite" =>  $damInsideImageLoc."damSprite.png",
 								"damInsideText" =>  $damInsideImageLoc."dam2Text.png",
