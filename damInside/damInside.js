@@ -50,7 +50,7 @@ define("damInside", ["extern/canvas.Sprites/canvas.Sprites", "extern/canvas.Draw
         		ctx.fillStyle = "#00A651";
         		
         		ctx.scale(WIDTH, 380);
-        	 	ctx.drawImage(imgs["bgBlue"], 0, 0);
+        		imgs["bgBlue"].draw();
         	 	ctx.restore();
         	 
         		//ctx.drawImage(imgs["damInside"], 0, 0);

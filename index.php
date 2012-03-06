@@ -70,6 +70,7 @@
 			var blackBuffer;
 			var bigBuffer;
 			var title,wind,damInside;  //used to store amd modulees
+			var CImage;
 		</script>
         
         
@@ -107,6 +108,7 @@ function setAcceleration(x, y, z){
 	acceleration = {x:x,y:y,z:z};	
 }
 function init() {
+  CImage = require('canvas.Image');
   console.log("init");
   applet = document.getElementById('2d');
   appletX = parseInt(applet.offsetLeft);
@@ -114,14 +116,20 @@ function init() {
 
   initHouse();
   
-  var images = document.getElementsByTagName('img');
-  for(var i in images){
-	 imgs[images[i].id] = images[i]    
-  }
-  
   ctx = document.getElementById('2d').getContext('2d');
   ctx.lineWidth = 10;
   ctx.lineCap = "round";
+  
+  var images = document.getElementsByTagName('img');
+  for(var i in images){
+    imgs[images[i].id] = new CImage(images[i], {ctx: ctx, }); 
+    if(images[i].x){
+      imgs[images[i].id].x = images[i].x;
+    }
+    if(images[i].y){
+      imgs[images[i].id].x = images[i].y;
+    }
+  }
   
     var buffer;
 	if(BUFFERING){
@@ -165,7 +173,9 @@ function drawTitleBG(width, height){
 
 function endDraw(){
 	if(scene !== "map" && scene !== "title"){
-		ctx.drawImage(imgs["backToMap"], 0, 0);
+		imgs["backToMap"].draw();
+		
+		ctx.drawImage(imgs['help'], 5, HEIGHT-imgs['help'].naturalHeight-15);
 	}
 	if(DEBUG){
 		/*ctx.fillStyle = "#000000";
@@ -318,6 +328,8 @@ function mousePressed(touchX, touchY) {
 		resetCrank();
 		return;	
 	}
+	if(x<imgs['help'])
+	
 	
 	
 	if(scene === "house"){
@@ -410,54 +422,59 @@ function drawEllipse(ctx, x, y, w, h) {
 		 $damInsideImageLoc = "damInside/images/";
 		 $coalImageLoc = "coal/images/";
 		 $nuclearImageLoc = "nuclear/images/";
-		 $images = array("title" => $titleImageLoc."title.png", 
-		 					   "craft" => $titleImageLoc."craft.png", 
-							   "prop" => $titleImageLoc."propellor.png",
-		 					   "container" => $houseImageLoc."case.png", 
-		 					   "crank"=> $houseImageLoc."crank.png", 
-							   "tGear"=> $houseImageLoc."topGear.png", 
-							   "bGear"=> $houseImageLoc."bottomGear.png", 
-							   "black"=> $houseImageLoc."blackClip.png", 
-							   "red"=> $houseImageLoc."redClip.png", 
-							   "sensor"=> $houseImageLoc."sensor.png", 
-							   "glowDot"=> $houseImageLoc."glowDot.png",
-							   "bg" => $houseImageLoc."table.png",
-							   "voltMeter" => $houseImageLoc."voltMeter.png",
-							   "map" => $mapImageLoc."map-horizontal_construction.png",
-		 					   "house" => $mapImageLoc."house.png",
-							   "nuclear" => $mapImageLoc."nuclear.png",
-							   "dam" => $mapImageLoc."dam.png",
-							   "bgBlue" => $mapImageLoc."bgBlue.png",
-							   "smokeCoal" => $mapImageLoc."smokeCoal.png",
-							   "smokeNuclear" => $mapImageLoc."smokeNuclear.png",
-							   "gears" => $crankImageLoc."gears.png",
-							   "gears2" => $crankImageLoc."gears2.png",
-							   "tableInside" => $crankImageLoc."tableInside.png",
-							   "gearsWind" => $windImageLoc."gears.png",
-							   "gears2Wind" => $windImageLoc."gears2.png",
-							   "gearsWindAnim" => $windImageLoc."gearsAnim.png",	
-							   "bgWind" => $windImageLoc."bgWind.png",
-							    "windPost" => $windImageLoc."wind.png",
-							    "windMagnet" => $windImageLoc."windMagnet.png",
-							    "backToMap" => "images/mapIcon.png",
-								"damTop" =>  $damTopImageLoc."dam.png",
-								"damTopText" =>  $damTopImageLoc."damText.png",
-								"damInsideBg" =>  $damInsideImageLoc."bgDam.png",
-								"damInside" =>  $damInsideImageLoc."dam.png",
-								"damInsideGate" =>  $damInsideImageLoc."gate.png",
-								"damInsideWater" =>  $damInsideImageLoc."watertop.png",
-								"damSprite" =>  $damInsideImageLoc."damSprite.png",
-								"damInsideText" =>  $damInsideImageLoc."dam2Text.png",
-								"generator" => $coalImageLoc."generator.png",
-								"coalWater" => $coalImageLoc."water.png",
-								"bubbles" => $coalImageLoc."bubbles.png",
-								"coalPlant" => $coalImageLoc."building.png",
-								"nuclearBg" =>  $nuclearImageLoc."bg.png"
+		 $images = array("title" => array("src" => $titleImageLoc."title.png"), 
+		 					   "craft" => array("src" => $titleImageLoc."craft.png"),
+							   "prop" => array("src" => $titleImageLoc."propellor.png"),
+		 					   "container" => array("src" => $houseImageLoc."case.png"),
+		 					   "crank"=> array("src" => $houseImageLoc."crank.png"),
+							   "tGear"=> array("src" => $houseImageLoc."topGear.png"), 
+							   "bGear"=> array("src" => $houseImageLoc."bottomGear.png"), 
+							   "black"=> array("src" => $houseImageLoc."blackClip.png"),
+							   "red"=> array("src" => $houseImageLoc."redClip.png"),
+							   "sensor"=> array("src" => $houseImageLoc."sensor.png"), 
+							   "glowDot"=> array("src" => $houseImageLoc."glowDot.png"),
+							   "bg" => array("src" => $houseImageLoc."table.png"),
+							   "voltMeter" => array("src" => $houseImageLoc."voltMeter.png"),
+							   "map" => array("src" => $mapImageLoc."map-horizontal_construction.png"),
+		 					   "house" => array("src" => $mapImageLoc."house.png"),
+							   "nuclear" => array("src" => $mapImageLoc."nuclear.png"),
+							   "dam" => array("src" => $mapImageLoc."dam.png"),
+							   "bgBlue" => array("src" => $mapImageLoc."bgBlue.png"),
+							   "smokeCoal" => array("src" => $mapImageLoc."smokeCoal.png"),
+							   "smokeNuclear" => array("src" => $mapImageLoc."smokeNuclear.png"),
+							   "gears" => array("src" => $crankImageLoc."gears.png"),
+							   "gears2" => array("src" => $crankImageLoc."gears2.png"),
+							   "tableInside" => array("src" => $crankImageLoc."tableInside.png"),
+							   "gearsWind" => array("src" => $windImageLoc."gears.png"),
+							   "gears2Wind" => array("src" => $windImageLoc."gears2.png"),
+							   "gearsWindAnim" => array("src" => $windImageLoc."gearsAnim.png"),
+							   "bgWind" => array("src" => $windImageLoc."bgWind.png"),
+							    "windPost" => array("src" => $windImageLoc."wind.png"),
+							    "windMagnet" => array("src" => $windImageLoc."windMagnet.png"),
+							    "backToMap" => array("src" => "images/mapIcon.png"),
+							    "help"     => array("src" => "images/helpIcon.png"),
+								"damTop" =>  array("src" => $damTopImageLoc."dam.png"),
+								"damTopText" =>  array("src" => $damTopImageLoc."damText.png"),
+								"damInsideBg" =>  array("src" => $damInsideImageLoc."bgDam.png"),
+								"damInside" =>  array("src" => $damInsideImageLoc."dam.png"),
+								"damInsideGate" =>  array("src" => $damInsideImageLoc."gate.png"),
+								"damInsideWater" =>  array("src" => $damInsideImageLoc."watertop.png"),
+								"damSprite" =>  array("src" => $damInsideImageLoc."damSprite.png"),
+								"damInsideText" =>  array("src" => $damInsideImageLoc."dam2Text.png"),
+								"generator" => array("src" => $coalImageLoc."generator.png"),
+								"coalWater" => array("src" => $coalImageLoc."water.png"),
+								"bubbles" => array("src" => $coalImageLoc."bubbles.png"),
+								"coalPlant" => array("src" => $coalImageLoc."building.png"),
+								"nuclearBg" => array("src" => $nuclearImageLoc."bg.png")
 								);
 							   
 			foreach($images as $id => $image){
 		?>
-         	<img alt="Layer 3" id="<?=$id?>" style="display: none" src="<?=$image?>" />
+         	<img alt="Layer 3" id="<?=$id?>" style="display: none" 
+            <?php foreach($image as $prop => $val){ ?>
+                <?=$prop?>='<?=$val?>' 
+            <?php } ?>
+          />
         <?php } ?>
     </body> 
 </html>
