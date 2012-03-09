@@ -60,7 +60,7 @@
 			var imgs = [];
 			var scene;
 			if(DEBUG){
-				scene = "damInside";
+				scene = "map";
 			}else{
 				scene = "title";	
 			}
@@ -69,28 +69,28 @@
 			var redBuffer;
 			var blackBuffer;
 			var bigBuffer;
-			var title,wind,damInside;  //used to store amd modulees
+			var title,wind,damInside, nuclear, map, damTop, coal, house;  //used to store amd modulees
 			var CImage;
 		</script>
         
         
         <script src='drawings.js' type="text/javascript"></script>
         
-		<script src='map/map.js' type='text/javascript'></script>
+		<!--<script src='map/map.js' type='text/javascript'></script>-->
         
-		<script src='house/house.js' type='text/javascript'></script>
-        <script src='house/drawing.js' type='text/javascript'></script>
+		    <!--<script src='house/house.js' type='text/javascript'></script>
+        <script src='house/drawing.js' type='text/javascript'></script>-->
         
         <script src='crank/crank.js' type='text/javascript'></script>
         <script src='crank/drawing.js' type='text/javascript'></script>
         
-        <script src='coal/coal.js' type='text/javascript'></script>
-        <script src='coal/drawing.js' type='text/javascript'></script>
+        <!--<script src='coal/coal.js' type='text/javascript'></script>
+        <script src='coal/drawing.js' type='text/javascript'></script>-->
         
-        <script src='damTop/damTop.js' type='text/javascript'></script>
+        <!--<script src='damTop/damTop.js' type='text/javascript'></script>-->
         <!--<script src='damInside/damInside.js' type='text/javascript'></script>-->
         
-        <script src='nuclear/nuclear.js' type='text/javascript'></script>
+        <!--<script src='nuclear/nuclear.js' type='text/javascript'></script>-->
         
 		<script data-main="main" src="require.js"></script>
         
@@ -113,8 +113,6 @@ function init() {
   applet = document.getElementById('2d');
   appletX = parseInt(applet.offsetLeft);
   appletY = parseInt(applet.offsetTop);	
-
-  initHouse();
   
   ctx = document.getElementById('2d').getContext('2d');
   ctx.lineWidth = 10;
@@ -122,14 +120,34 @@ function init() {
   
   var images = document.getElementsByTagName('img');
   for(var i in images){
-    imgs[images[i].id] = new CImage(images[i], {ctx: ctx, }); 
-    if(images[i].x){
+    imgs[images[i].id] = new CImage(images[i], {ctx: ctx}); 
+    for(var prop in images[i].attributes){
+      imgs[images[i].id][images[i].attributes[prop].name] = images[i].attributes[prop].value;
+      if(images[i].attributes[prop].name === 'y'){
+        imgs[images[i].id].origY = images[i].attributes[prop].value;
+      } 
+    }
+    /*if(images[i].attributes.x){
       imgs[images[i].id].x = images[i].x;
     }
     if(images[i].y){
-      imgs[images[i].id].x = images[i].y;
+      console.log(i);
+      imgs[images[i].id].y = images[i].y;sdfg=
+    }asdfsaf
+    if(images[i].width){
+      imgs[images[i].id].width = images[i].width;
     }
+    if(images[i].height){
+      imgs[images[i].id].height = images[i].height;
+    }
+    if(images[i].scale){
+      imgs[images[i].id].scale = images[i].y;
+    }*/
   }
+  console.log(imgs['help'].img.naturalHeight);
+  console.log(imgs['help'].y)
+  imgs['help'].y = HEIGHT-imgs['help'].img.naturalHeight-15;
+  console.log(imgs['help'].y)
   
     var buffer;
 	if(BUFFERING){
@@ -151,8 +169,13 @@ function init() {
 		bigBuffer = buffer.getContext('2d');
 	}
 	title = require('title');
-	wind = require('wind');
+	wind = require('wind')();
 	damInside = require('damInside')();
+	nuclear = require('nuclear')();
+	map = require('map')();
+	damTop = require('damTop')(ctx);
+	coal = require('coal')();
+	house = require('house')();
 	draw(BUFFERING);
 	
 }
@@ -174,8 +197,7 @@ function drawTitleBG(width, height){
 function endDraw(){
 	if(scene !== "map" && scene !== "title"){
 		imgs["backToMap"].draw();
-		
-		ctx.drawImage(imgs['help'], 5, HEIGHT-imgs['help'].naturalHeight-15);
+		imgs['help'].draw();
 	}
 	if(DEBUG){
 		/*ctx.fillStyle = "#000000";
@@ -199,7 +221,7 @@ function draw(buffer) {
   }
   
   if(scene === "map"){
-	 drawMap(buffer);
+	 map.draw(buffer);
 	 setTimeout(draw, FRAMERATE);  
 	 endDraw();
   	 return;
@@ -209,8 +231,9 @@ function draw(buffer) {
 	  // ctx.save();
 	 //ctx.translate(WIDTH, 0);
 	 //ctx.rotate(90*Math.PI/180);
-	 calcPos();
-	 drawHouse();
+	 //should probably put calcPos in draw
+	 house.calcPos();
+	 house.draw();
 	 //ctx.restore();
  	  setTimeout(draw, FRAMERATE); 
 	  endDraw();
@@ -223,7 +246,7 @@ function draw(buffer) {
 	// ctx.save();
 	 //ctx.translate(WIDTH, 0);
 	 //ctx.rotate(90*Math.PI/180);
-	  drawCoal();
+	  coal.draw();
 	  setTimeout(draw, FRAMERATE); 
 	 //ctx.restore();
  	 endDraw();
@@ -235,7 +258,7 @@ function draw(buffer) {
 	// ctx.save();
 	 //ctx.translate(WIDTH, 0);
 	 //ctx.rotate(90*Math.PI/180);
-	  drawDamTop();
+	  damTop.draw(ctx);
 	  setTimeout(draw, FRAMERATE); 
 	 //ctx.restore();
  	 endDraw();
@@ -279,7 +302,7 @@ function draw(buffer) {
 	// ctx.save();
 	 //ctx.translate(WIDTH, 0);
 	 //ctx.rotate(90*Math.PI/180);
-	 drawNuclear();
+	 nuclear.draw();
 	 setTimeout(draw, FRAMERATE); 
 	 //ctx.restore();
  	 endDraw();
@@ -299,7 +322,7 @@ function mouseReleased(touchX, touchY) {
 	
 	DRAGGING = false;
 	if(scene === "house"){
-		houseMouseRelease(x, y);
+		house.mouseReleased(x, y);
 		return;	
 	}
 	if(scene === "crank"){
@@ -335,11 +358,11 @@ function mousePressed(touchX, touchY) {
 	if(scene === "house"){
 		//x+=WIDTH;
 		//houseMousePressed(y, -x+WIDTH);
-		houseMousePressed(x,y);
+		house.mousePressed(x,y);
 		return;	
 	}
 	if(scene === "map"){
-		mapMousePressed(x, y);
+		scene = map.mousePressed(x, y);
 		return;	
 	}
 	
@@ -348,12 +371,12 @@ function mousePressed(touchX, touchY) {
 	}
 	
 	if(scene === "damTop"){
-		damTopMousePressed(x, y);	
+		damTop.mousePressed(x, y);	
 	}
 	
 	
 	if(scene === "coal"){
-		coalMousePressed(x, y);	
+		coal.mousePressed(x, y);	
 	}
 	
 	 if(scene === "damInside"){
@@ -447,23 +470,23 @@ function drawEllipse(ctx, x, y, w, h) {
 							   "tableInside" => array("src" => $crankImageLoc."tableInside.png"),
 							   "gearsWind" => array("src" => $windImageLoc."gears.png"),
 							   "gears2Wind" => array("src" => $windImageLoc."gears2.png"),
-							   "gearsWindAnim" => array("src" => $windImageLoc."gearsAnim.png"),
+							   "gearsWindAnim" => array("src" => $windImageLoc."gearsAnim.png", "x" => 538, "y" => 300),
 							   "bgWind" => array("src" => $windImageLoc."bgWind.png"),
-							    "windPost" => array("src" => $windImageLoc."wind.png"),
-							    "windMagnet" => array("src" => $windImageLoc."windMagnet.png"),
+							    "windPost" => array("src" => $windImageLoc."wind.png", "x" => 3, "y" => 270),
+							    "windMagnet" => array("src" => $windImageLoc."windMagnet.png", "x"=>690, "y"=>498),
 							    "backToMap" => array("src" => "images/mapIcon.png"),
-							    "help"     => array("src" => "images/helpIcon.png"),
+							    "help"     => array("src" => "images/helpIcon.png", "x"=>5),
 								"damTop" =>  array("src" => $damTopImageLoc."dam.png"),
-								"damTopText" =>  array("src" => $damTopImageLoc."damText.png"),
-								"damInsideBg" =>  array("src" => $damInsideImageLoc."bgDam.png"),
-								"damInside" =>  array("src" => $damInsideImageLoc."dam.png"),
-								"damInsideGate" =>  array("src" => $damInsideImageLoc."gate.png"),
-								"damInsideWater" =>  array("src" => $damInsideImageLoc."watertop.png"),
-								"damSprite" =>  array("src" => $damInsideImageLoc."damSprite.png"),
-								"damInsideText" =>  array("src" => $damInsideImageLoc."dam2Text.png"),
-								"generator" => array("src" => $coalImageLoc."generator.png"),
+								"damTopText" =>  array("src" => $damTopImageLoc."damText.png", "x" => 110, "y" => 24),
+								"damInsideBg" =>  array("src" => $damInsideImageLoc."bgDam.png", "y" => 100),
+								"damInside" =>  array("src" => $damInsideImageLoc."dam.png", "x" => 0, "y"=>146),
+								"damInsideGate" =>  array("src" => $damInsideImageLoc."gate.png", "x"=>60, "y"=>408, "width"=>35, "height"=>94, "scale"=>1.6),
+								"damInsideWater" =>  array("src" => $damInsideImageLoc."watertop.png", "width"=>71, "height"=>33, "scale"=>1.8),
+								"damSprite" =>  array("src" => $damInsideImageLoc."damSprite.png", "x"=> 494, "y" => 435, "scale" => 1.85),
+								"damInsideText" =>  array("src" => $damInsideImageLoc."dam2Text.png", "x"=>200, "y"=>5),
+								"generator" => array("src" => $coalImageLoc."generator.png", "x"=>520, "y"=>453),
 								"coalWater" => array("src" => $coalImageLoc."water.png"),
-								"bubbles" => array("src" => $coalImageLoc."bubbles.png"),
+								"bubbles" => array("src" => $coalImageLoc."bubbles.png", "x"=>286, "y"=>279),
 								"coalPlant" => array("src" => $coalImageLoc."building.png"),
 								"nuclearBg" => array("src" => $nuclearImageLoc."bg.png")
 								);

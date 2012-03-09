@@ -1,4 +1,4 @@
-require(['domReady', 'extern/canvas.Image/canvas.Image', "title/title", "wind/wind", "damInside/damInside"], function(domReady, Img) {
+require(['domReady', 'extern/canvas.Image/canvas.Image', "title/title", "wind/wind", "damInside/damInside", "nuclear/nuclear", "map/map", "damTop/damTop", "coal/coal", "house/house"], function(domReady, Img) {
 	domReady(function () {
 	    console.log(Img);
     	console.log("ready");

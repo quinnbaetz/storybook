@@ -2,11 +2,6 @@ define("damInside", ["extern/canvas.Sprites/canvas.Sprites", "extern/canvas.Draw
     return function(){
         var part = 0;
         var rot = 0;
-        var gateX = 60;
-        var gateY = 408;
-        var gateWidth = 35;
-        var gateHeight = 94;
-        var gateScale = 1.6;
         var gateDrag = false;
         var gateStartY = 0;
         var waterlevel = 185; //400
@@ -15,22 +10,21 @@ define("damInside", ["extern/canvas.Sprites/canvas.Sprites", "extern/canvas.Draw
         var expectedWaterLevel = 185;
         var frame = 0;
         var alpha = 0;
-        var propellorSpite = new Sprite(imgs["damSprite"], 6, {x: 494, y:435, scale: 1.85, ctx: ctx});
+        var propellorSprite = new Sprite(imgs["damSprite"].img, 6, {x: imgs["damSprite"].x, y: imgs["damSprite"].y, scale: imgs["damSprite"].scale, ctx: ctx});
         //fix for bad sprite sheet
-        propellorSpite.addOption("segHeightToDraw", propellorSpite.getSegHeight()-2);
+        propellorSprite.addOption("segHeightToDraw", propellorSprite.getSegHeight()-2);
         
         var waterFallSprite = new DrawSprites(draw.waterFallSprites, {x: 729, y: 405, ctx: ctx, scale: 1.85});
         
         function drawDamInside(){
          	frame++;
         	ctx.save();
-        	      
         		  if(gateDrag){
         			var diff = dragY - gateStartY;
         			gateStartY = dragY;
-        			gateY += diff;
-        			gateY = Math.max(408-gateHeight*gateScale, Math.min(gateY, 408));
-        			expectedWaterLevel = (((408-gateY)/(gateHeight*gateScale))*(maxWater - minWater))+minWater;
+        			imgs["damInsideGate"].y += diff;
+        			imgs["damInsideGate"].y = Math.max(imgs["damInsideGate"].origY-imgs["damInsideGate"].getScaledHeight(), Math.min(imgs["damInsideGate"].y, imgs["damInsideGate"].origY));
+        			expectedWaterLevel = (((imgs["damInsideGate"].origY-imgs["damInsideGate"].y)/imgs["damInsideGate"].getScaledHeight())*(maxWater - minWater))+minWater;
         		  }
         		  if(waterlevel<expectedWaterLevel){
         			waterlevel++;  
@@ -54,7 +48,7 @@ define("damInside", ["extern/canvas.Sprites/canvas.Sprites", "extern/canvas.Draw
         	 	ctx.restore();
         	 
         		//ctx.drawImage(imgs["damInside"], 0, 0);
-        	   ctx.drawImage(imgs["damInsideBg"], 0, 100);
+        	 	imgs["damInsideBg"].draw();
         	   
         	   
         	   
@@ -63,16 +57,14 @@ define("damInside", ["extern/canvas.Sprites/canvas.Sprites", "extern/canvas.Draw
         	   ctx.fillRect(0,waterlevel,116,190);  
         	   xpos = 730;
         	   ypos = 600;
-        	   stretch = 1.8;
-        	   width = 71;
-        	   height = 33;
-        	   ctx.drawImage(imgs["damInsideWater"], 0, 0, width, height, 0, waterlevel-50, width*stretch, height*stretch);
-        	   
-        	   ctx.drawImage(imgs["damInside"], 0, 146);
+        	   imgs["damInsideWater"].y = waterlevel-50;
+        	   imgs["damInsideWater"].draw();
+               
+        	   imgs["damInside"].draw();
         	   
         	   
         	  //draw waterfall bottom
-        	  var rotSpeed = (408-gateY)/(gateHeight*gateScale);
+        	  var rotSpeed = (imgs["damInsideGate"].origY-imgs["damInsideGate"].y)/imgs["damInsideGate"].getScaledHeight();
         	  rot=(rot+(rotSpeed*Math.PI/(32)))%(Math.PI*2);
         	  
         	 
@@ -80,10 +72,10 @@ define("damInside", ["extern/canvas.Sprites/canvas.Sprites", "extern/canvas.Draw
         	  
         	  //draw motor
         	  if(frame%Math.ceil(2/(2*rotSpeed))===0){
-        	      propellorSpite.advance();
+        	      propellorSprite.advance();
         	      waterFallSprite.advance();
         	  }
-        	  propellorSpite.draw();
+        	  propellorSprite.draw();
         	  
         	  if(rotSpeed < .01){
                   alpha = Math.max(alpha-.03, 0);  
@@ -94,12 +86,12 @@ define("damInside", ["extern/canvas.Sprites/canvas.Sprites", "extern/canvas.Draw
               
         	  
         	  
-        	  ctx.drawImage(imgs["damInsideGate"], 0, 0, gateWidth, gateHeight, gateX, gateY, gateWidth*gateScale, gateHeight*gateScale)
+        	  imgs["damInsideGate"].draw();
         	  
         	  
         	  ctx.restore();
         	  
-        	  ctx.drawImage(imgs["damInsideText"], 200, 5)
+        	 imgs["damInsideText"].draw();
         			
         }
         
@@ -109,7 +101,7 @@ define("damInside", ["extern/canvas.Sprites/canvas.Sprites", "extern/canvas.Draw
         
         function damInsidePressed(x, y){
             console.log("here", x, y);
-        	if(varersect(gateX, gateY, gateWidth*gateScale, gateHeight*gateScale, x, y)){
+        	if(varersect(imgs["damInsideGate"].x, imgs["damInsideGate"].y, imgs["damInsideGate"].getScaledWidth(), imgs["damInsideGate"].getScaledHeight(), x, y)){
         		gateStartY = y;
         		gateDrag = true;
         		
