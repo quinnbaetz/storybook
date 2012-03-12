@@ -12,7 +12,7 @@ function drawCrank(){
 	}
 	first = false;
 	
-	ctx.drawImage(imgs["tableInside"], 0, 0);
+	imgs["tableInside"].draw();
 	crankBox(ctx, 250, 100);
 	 
 	
@@ -44,9 +44,9 @@ function drawCrank(){
 		//currY = handleY;
 	}
 	if(Math.floor(((handleY-40)/30)%2)===1){
-		ctx.drawImage(imgs["gears"], 308, 150);
+	    imgs["gears"].draw();
 	}else{
-		ctx.drawImage(imgs["gears2"], 308, 150);
+	    imgs["gears2"].draw();
 	}
 	
 	

@@ -7,38 +7,45 @@
 			var applet = false;
 			var appletX;
 			var appletY;
+			var offsetY;
 			function touchStart(evt){
+			  offsetY = document.body.scrollTop + document.documentElement.scrollTop;
 				e = evt.touches.item(0);
-				mousePressed(e.clientX - appletX, e.clientY - appletY); 
+				mousePressed(e.clientX - appletX, e.clientY - appletY+offsetY); 
 				e.preventDefault(); 
 				return false;
 			}
 			function touchMove(evt){
-				e = evt.touches.item(0);
-				mouseDragged(e.clientX - appletX, e.clientY - appletY); 
+				offsetY = document.body.scrollTop + document.documentElement.scrollTop;
+        e = evt.touches.item(0);
+				mouseDragged(e.clientX - appletX, e.clientY - appletY+offsetY); 
 				evt.preventDefault(); 
 				return false;
 			}
 			function touchEnd(evt){
-				e = evt.touches.item(0);
-				mouseReleased(e.clientX - appletX, e.clientY - appletY); 
+				offsetY = document.body.scrollTop + document.documentElement.scrollTop;
+        e = evt.touches.item(0);
+				mouseReleased(e.clientX - appletX, e.clientY - appletY+offsetY); 
 				evt.preventDefault();
 				return false;
 			}
 			
 			function mouseDown(e){
-				applet.onmousemove = mouseMove;
-				mousePressed(e.clientX - appletX, e.clientY - appletY); 
+				offsetY = document.body.scrollTop + document.documentElement.scrollTop;
+        applet.onmousemove = mouseMove;
+				mousePressed(e.clientX - appletX, e.clientY - appletY+offsetY); 
 				return false;
 			}
 			
 			function mouseUp(e){
-				applet.onmousemove = "";
-				mouseReleased(e.clientX - appletX, e.clientY - appletY); 
+				offsetY = document.body.scrollTop + document.documentElement.scrollTop;
+        applet.onmousemove = "";
+				mouseReleased(e.clientX - appletX, e.clientY - appletY+offsetY); 
 				return false;
 			}
 			function mouseMove(e){
-				mouseDragged(e.clientX - appletX, e.clientY - appletY); 
+				offsetY = document.body.scrollTop + document.documentElement.scrollTop;
+        mouseDragged(e.clientX - appletX, e.clientY - appletY+offsetY); 
 				return false;
 			}
 		
@@ -59,11 +66,6 @@
 			var acceleration = {};
 			var imgs = [];
 			var scene;
-			if(DEBUG){
-				scene = "map";
-			}else{
-				scene = "title";	
-			}
 			var DRAGGING = false;
 										
 			var redBuffer;
@@ -71,6 +73,7 @@
 			var bigBuffer;
 			var title,wind,damInside, nuclear, map, damTop, coal, house;  //used to store amd modulees
 			var CImage;
+		  var current;
 		</script>
         
         
@@ -126,6 +129,9 @@ function init() {
       if(images[i].attributes[prop].name === 'y'){
         imgs[images[i].id].origY = images[i].attributes[prop].value;
       } 
+      if(images[i].attributes[prop].name === 'x'){
+        imgs[images[i].id].origX = images[i].attributes[prop].value;
+      } 
     }
     /*if(images[i].attributes.x){
       imgs[images[i].id].x = images[i].x;
@@ -174,8 +180,16 @@ function init() {
 	nuclear = require('nuclear')();
 	map = require('map')();
 	damTop = require('damTop')(ctx);
-	coal = require('coal')();
+	coal = require('coal')(ctx);
 	house = require('house')();
+	if(DEBUG){
+      scene = "coal";
+      current = coal;
+    }else{
+      scene = "title";
+      current = title;  
+    }
+	
 	draw(BUFFERING);
 	
 }
@@ -321,6 +335,12 @@ function mouseReleased(touchX, touchY) {
 	}
 	
 	DRAGGING = false;
+	
+	if(typeof(current.mouseReleased) === "function"){
+	  current.mouseReleased();
+	}
+	
+	
 	if(scene === "house"){
 		house.mouseReleased(x, y);
 		return;	
@@ -340,6 +360,9 @@ function mousePressed(touchX, touchY) {
 	var x;
 	var y;
 	DRAGGING = true;
+	if(DEBUG){
+	  console.log(touchX, touchY);
+	}
 	if(touchX){
 		x = touchX;
 		y = touchY;	
@@ -348,14 +371,19 @@ function mousePressed(touchX, touchY) {
 	}
 	if(x<100&&y<100){
 		scene = "map";
+		current = map;
 		resetCrank();
 		return;	
 	}
-	if(x<imgs['help'])
-	
-	
+	if(x<imgs['help'].width&&y>imgs['help'].y){
+	   if(typeof(current.helpMsg) === "function"){
+	       current.helpMsg();
+	       return;
+	   }
+	}
 	
 	if(scene === "house"){
+	  
 		//x+=WIDTH;
 		//houseMousePressed(y, -x+WIDTH);
 		house.mousePressed(x,y);
@@ -363,6 +391,7 @@ function mousePressed(touchX, touchY) {
 	}
 	if(scene === "map"){
 		scene = map.mousePressed(x, y);
+		current = this[scene];
 		return;	
 	}
 	
@@ -436,6 +465,25 @@ function drawEllipse(ctx, x, y, w, h) {
 		<canvas onmousedown="return mouseDown(event);" onmouseup="return mouseUp(event);" id="2d" width="1018" height="763"></canvas> 
 		 <?php 
 		 
+		  //used for the house
+		  $crankPos = array("x" => -50, "y" => 50);
+        
+      
+      $cCrankX = crankPos.x+200+((370*.7)/2);
+      $cCrankY = crankPos.y+420;
+      $crankWidth = 171*.7; 
+      $crankHeight = 506*.7;
+      
+      $cTGearX = cCrankX;
+      $cTGearY = cCrankY;
+      $tGearWidth =263*.7; 
+      $tGearHeight =263*.7;
+      
+      $cBGearX = cCrankX;
+      $cBGearY = crankPos.y+565;
+      $bGearWidth =180*.7;
+      $bGearHeight = 180*.7;
+      
 		 $titleImageLoc = "title/images/";
 		 $houseImageLoc = "house/images/";
 		 $mapImageLoc = "map/images/";
@@ -445,28 +493,34 @@ function drawEllipse(ctx, x, y, w, h) {
 		 $damInsideImageLoc = "damInside/images/";
 		 $coalImageLoc = "coal/images/";
 		 $nuclearImageLoc = "nuclear/images/";
-		 $images = array("title" => array("src" => $titleImageLoc."title.png"), 
-		 					   "craft" => array("src" => $titleImageLoc."craft.png"),
+		 $images = array("title" => array("src" => $titleImageLoc."title.png", "x" => 200, "y"=>50), 
+		 					   "craft" => array("src" => $titleImageLoc."craft.png", "x" => 372, "y"=>137),
 							   "prop" => array("src" => $titleImageLoc."propellor.png"),
 		 					   "container" => array("src" => $houseImageLoc."case.png"),
-		 					   "crank"=> array("src" => $houseImageLoc."crank.png"),
-							   "tGear"=> array("src" => $houseImageLoc."topGear.png"), 
-							   "bGear"=> array("src" => $houseImageLoc."bottomGear.png"), 
-							   "black"=> array("src" => $houseImageLoc."blackClip.png"),
-							   "red"=> array("src" => $houseImageLoc."redClip.png"),
+		 					   "crank"=> array("src" => $houseImageLoc."crank.png", "x" => $cCrankX, "y" => $cCrankY, "width"=>$crankWidth, "height"=>$crankHeight),
+							   "tGear"=> array("src" => $houseImageLoc."topGear.png", "x" => $cTGearX, "y"=>$cTGearY, "width"=>$tGearWidth, "height"=>$tGearHeight), 
+							   "bGear"=> array("src" => $houseImageLoc."bottomGear.png", "x" => $cBGearX, "y"=>$cBGearY, "width"=>$bGearWidth, "height" =>$bGearHeight), 
+							   "black"=> array("src" => $houseImageLoc."blackClip.png", "x"=> 450, "y" => 600),
+							   "red"=> array("src" => $houseImageLoc."redClip.png", "x"=> 750, "y" => 600),
 							   "sensor"=> array("src" => $houseImageLoc."sensor.png"), 
 							   "glowDot"=> array("src" => $houseImageLoc."glowDot.png"),
 							   "bg" => array("src" => $houseImageLoc."table.png"),
-							   "voltMeter" => array("src" => $houseImageLoc."voltMeter.png"),
+							   "houseHelp1" => array("src" => $houseImageLoc."helpMsg1.png", "x"=>380, "y"=>600),
+                 "houseHelp2" => array("src" => $houseImageLoc."helpMsg2.png", "x"=>395.6, "y"=>176),
+                 "houseHelp3" => array("src" => $houseImageLoc."helpMsg3.png", "x"=>705.6, "y"=>300.8),
+                 "houseHelp4" => array("src" => $houseImageLoc."helpMsg4.png", "x"=>428.6, "y"=>44.8),
+      				   "voltMeter" => array("src" => $houseImageLoc."voltMeter.png"),
 							   "map" => array("src" => $mapImageLoc."map-horizontal_construction.png"),
-		 					   "house" => array("src" => $mapImageLoc."house.png"),
+		 					   "introMsg" => array("src" => $mapImageLoc."helpMsg.png"),
+                 "house" => array("src" => $mapImageLoc."house.png"),
 							   "nuclear" => array("src" => $mapImageLoc."nuclear.png"),
 							   "dam" => array("src" => $mapImageLoc."dam.png"),
 							   "bgBlue" => array("src" => $mapImageLoc."bgBlue.png"),
 							   "smokeCoal" => array("src" => $mapImageLoc."smokeCoal.png"),
 							   "smokeNuclear" => array("src" => $mapImageLoc."smokeNuclear.png"),
-							   "gears" => array("src" => $crankImageLoc."gears.png"),
-							   "gears2" => array("src" => $crankImageLoc."gears2.png"),
+							   //TODO: turn this into a sprite
+							   "gears" => array("src" => $crankImageLoc."gears.png", "x"=>308, "y"=>150),
+							   "gears2" => array("src" => $crankImageLoc."gears2.png",  "x"=>308, "y"=>150),
 							   "tableInside" => array("src" => $crankImageLoc."tableInside.png"),
 							   "gearsWind" => array("src" => $windImageLoc."gears.png"),
 							   "gears2Wind" => array("src" => $windImageLoc."gears2.png"),
@@ -485,8 +539,12 @@ function drawEllipse(ctx, x, y, w, h) {
 								"damSprite" =>  array("src" => $damInsideImageLoc."damSprite.png", "x"=> 494, "y" => 435, "scale" => 1.85),
 								"damInsideText" =>  array("src" => $damInsideImageLoc."dam2Text.png", "x"=>200, "y"=>5),
 								"generator" => array("src" => $coalImageLoc."generator.png", "x"=>520, "y"=>453),
-								"coalWater" => array("src" => $coalImageLoc."water.png"),
-								"bubbles" => array("src" => $coalImageLoc."bubbles.png", "x"=>286, "y"=>279),
+								"coalTapHelp" => array("src" => $coalImageLoc."coalHelp.png", "x"=>20, "y"=>393),
+                "coalDragHelp" => array("src" => $coalImageLoc."dragHelp.png", "x"=>305, "y"=>383),
+                "coalBeakHelp" => array("src" => $coalImageLoc."breakHelp.png", "x"=>420, "y"=>383),
+                "coalFireHelp" => array("src" => $coalImageLoc."fireHelp.png", "x"=>300, "y"=>583),
+                "coalWater" => array("src" => $coalImageLoc."water.png"),
+								"bubbles" => array("src" => $coalImageLoc."bubbles.png", "x"=>285, "y"=>279),
 								"coalPlant" => array("src" => $coalImageLoc."building.png"),
 								"nuclearBg" => array("src" => $nuclearImageLoc."bg.png")
 								);

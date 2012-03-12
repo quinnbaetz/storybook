@@ -43,6 +43,8 @@ define('house', ['house/drawing'], function(draw){
         var startX = 0;
         var startY = 0;
         
+        var helpPos = 1;
+        
         if(sensorType === "sensor"){
         	setSensorTypePos();
         }else{
@@ -85,13 +87,13 @@ define('house', ['house/drawing'], function(draw){
         
         function resetClips(){
         	redPos = {width: 206*.7, height:172 * .7, scale: 1, rot: 0};
-        	redPos.x = 600 - redPos.width/2;
-        	redPos.y = 300 - redPos.height/2;
+        	redPos.x = 450 - redPos.width/2;
+        	redPos.y = 550 - redPos.height/2;
         	redDone = false;
         	
         	blackPos = {width: 157 *.7, height:132*.7, scale: 1, rot: 0};
-        	blackPos.x = 600 - blackPos.width/2;
-        	blackPos.y = 600 - blackPos.height/2;
+        	blackPos.x = 800 - blackPos.width/2;
+        	blackPos.y = 550 - blackPos.height/2;
         	blackDone = false;
         }
         
@@ -163,8 +165,8 @@ define('house', ['house/drawing'], function(draw){
         function drawHouse(){
         	  
         	  imgs["bg"].draw();
-        	  largeGear();
-        	  smallGear();
+        	  largeGear(angle);
+        	  smallGear(angle);
         	  
         	  draw.sensorMeter(sensorPos);
         	  draw.voltMeter(voltMeterPos);
@@ -176,7 +178,7 @@ define('house', ['house/drawing'], function(draw){
         	  }
         	  if(blackDone && redDone){
         		  if(sensorType === "sensor"){
-        		  	draw.drawLights();
+        		  	drawLights();
         		  }else{
         			ctx.save();
         			ctx.fillStyle = "#00FF00";
@@ -189,7 +191,7 @@ define('house', ['house/drawing'], function(draw){
         	 
         	  container(crankPos.x, crankPos.y);
         	  
-        	  rawRedWire();
+        	  drawRedWire();
         	  ctx.stroke();
         	
         	 drawBlackWire();
@@ -205,10 +207,17 @@ define('house', ['house/drawing'], function(draw){
            crank();
            
            ctx.restore();
-        	red(redPos);
-        	black(blackPos);
+        	draw.red(redPos);
+        	draw.black(blackPos);
         	
         	  drawText();
+        	  
+        	  if(helpPos<5){
+        	      //evenutally we'll want to make this guy dance
+        	      imgs['houseHelp'+helpPos].draw();
+        	  }
+        	  
+        	  
               ctx.restore();
         }
         
@@ -225,13 +234,16 @@ define('house', ['house/drawing'], function(draw){
         }
         
         function houseMouseRelease(x, y){
-        	console.log("house mouse pressed", x, y, "must be greater than", 730, 480);
+            if(helpPos<5){
+                helpPos++;
+                return;
+            }
         	if(x>=730 && y>=590){
         		scene="crank";	
         		console.log("setting scene");
         		return;
         	}
-        	if(x>=730 && y<=300){
+        	if(x>=730 && y<=200){
         		switchSensorType();
         		return;
         	}
@@ -287,7 +299,10 @@ define('house', ['house/drawing'], function(draw){
         
         
         function houseMousePressed(x, y){
-        	
+        	if(helpPos<5){
+        	    //incremeted on release
+        	    return;
+        	}
         	startX = x;
         	startY = y;
         	
@@ -295,15 +310,18 @@ define('house', ['house/drawing'], function(draw){
         	redMove = false;
         	blackMove = false;
         	
-        	
+        	console.log(x, y, redPos.x, redPos.y, redPos.width, redPos.height);
         	if(!redDone && varersect(redPos.x, redPos.y, redPos.width, redPos.height, x, y)){
-        		redMove = true;	
+        		console.log("red move true");
+        	    redMove = true;	
         	}else{
         		if(!blackDone && varersect(blackPos.x, blackPos.y, blackPos.width, blackPos.height, x, y)){
-        			blackMove = true;	
+        		    console.log("black move true");
+        		    blackMove = true;	
         		}else{
         			if(dist(cCrankX, cCrankY, x, y)<(812*.7)/2){
         				lightPos = 0;
+        				console.log("cranking true");
         				cranking = true;
         			}
         		}

@@ -133,8 +133,6 @@ define(function(){
             ctx.restore();
         }
         
-        
-        
         function pipe(ctx, x, y, color) {
         
               // pipe/Path
@@ -165,77 +163,247 @@ define(function(){
               ctx.restore();
             }
         
-            function coal(ctx, x, y, color) {
-        
-              // coal/Path
-              ctx.save();
-        	  ctx.translate(x, y);
-              ctx.beginPath();
-              ctx.moveTo(356.5, 773.6);
-              ctx.lineTo(349.9, 766.2);
-              ctx.lineTo(353.4, 760.2);
-              ctx.lineTo(359.0, 760.2);
-              ctx.lineTo(359.0, 756.2);
-              ctx.lineTo(366.0, 750.2);
-              ctx.lineTo(371.0, 750.2);
-              ctx.lineTo(376.7, 745.1);
-              ctx.lineTo(382.7, 750.9);
-              ctx.lineTo(392.0, 749.5);
-              ctx.lineTo(396.0, 754.2);
-              ctx.lineTo(396.0, 759.2);
-              ctx.lineTo(404.0, 762.9);
-              ctx.lineTo(405.0, 768.7);
-              ctx.lineTo(399.2, 773.6);
-              ctx.lineTo(356.5, 773.6);
-              ctx.closePath();
-              ctx.fillStyle = "rgb("+(19+color)+", 19, 19)";
-              ctx.fill();
-        
-              // coal/Path
-              ctx.beginPath();
-              ctx.moveTo(362.3, 761.0);
-              ctx.lineTo(366.0, 761.2);
-              ctx.lineTo(367.2, 764.0);
-              ctx.lineTo(365.0, 762.0);
-              ctx.lineTo(362.3, 761.0);
-              ctx.closePath();
-              ctx.fillStyle = "rgb(167, 167, 167)";
-              ctx.fill();
-        
-              // coal/Path
-              ctx.beginPath();
-              ctx.moveTo(385.0, 755.0);
-              ctx.lineTo(386.5, 758.1);
-              ctx.lineTo(389.8, 758.8);
-              ctx.lineTo(386.1, 759.1);
-              ctx.lineTo(385.0, 755.0);
-              ctx.closePath();
-              ctx.fill();
-        
-              // coal/Path
-              ctx.beginPath();
-              ctx.moveTo(379.1, 768.3);
-              ctx.lineTo(381.0, 766.4);
-              ctx.lineTo(383.3, 766.8);
-              ctx.lineTo(381.0, 767.2);
-              ctx.lineTo(379.1, 768.3);
-              ctx.closePath();
-              ctx.fill();
-        
-              // coal/Path
-              ctx.beginPath();
-              ctx.moveTo(375.0, 752.7);
-              ctx.lineTo(377.5, 754.0);
-              ctx.lineTo(378.9, 752.7);
-              ctx.lineTo(377.0, 753.4);
-              ctx.lineTo(375.0, 752.7);
-              ctx.closePath();
-              ctx.fill();
-              ctx.restore();
+            function coal2(ctx, x, y, color){
+                // coalSprite/Layer 12/Path
+                ctx.save();
+                ctx.translate(x, y-42);
+                ctx.beginPath();
+                ctx.moveTo(278.3, 833.1);
+                ctx.lineTo(276.0, 823.7);
+                ctx.lineTo(282.9, 821.9);
+                ctx.lineTo(290.2, 825.6);
+                ctx.lineTo(289.5, 836.1);
+                ctx.lineTo(283.1, 839.2);
+                ctx.lineTo(278.3, 833.1);
+                ctx.closePath();
+                ctx.fillStyle = "rgb("+(19+color)+", 19, 19)";
+                ctx.fill();
+
+                // coalSprite/Layer 12/Path
+                ctx.beginPath();
+                ctx.moveTo(292.6, 821.2);
+                ctx.lineTo(285.3, 814.0);
+                ctx.lineTo(288.9, 810.2);
+                ctx.lineTo(294.2, 804.8);
+                ctx.lineTo(298.0, 807.4);
+                ctx.lineTo(308.0, 804.8);
+                ctx.lineTo(308.0, 809.2);
+                ctx.lineTo(311.0, 815.9);
+                ctx.lineTo(307.9, 821.2);
+                ctx.lineTo(300.4, 824.1);
+                ctx.lineTo(292.6, 821.2);
+                ctx.closePath();
+                ctx.fill();
+
+                // coalSprite/Layer 12/Path
+                ctx.beginPath();
+                ctx.moveTo(330.4, 821.6);
+                ctx.lineTo(343.0, 825.9);
+                ctx.lineTo(345.9, 831.9);
+                ctx.lineTo(344.4, 839.4);
+                ctx.lineTo(336.2, 840.1);
+                ctx.lineTo(327.0, 832.9);
+                ctx.lineTo(325.1, 827.5);
+                ctx.lineTo(330.4, 821.6);
+                ctx.closePath();
+                ctx.fill();
+
+                // coalSprite/Layer 12/Path
+                ctx.beginPath();
+                ctx.moveTo(302.8, 825.9);
+                ctx.lineTo(312.3, 825.2);
+                ctx.lineTo(318.8, 829.1);
+                ctx.lineTo(322.0, 835.8);
+                ctx.lineTo(315.7, 842.2);
+                ctx.lineTo(304.8, 842.7);
+                ctx.lineTo(299.0, 838.1);
+                ctx.lineTo(295.5, 832.7);
+                ctx.lineTo(300.6, 828.4);
+                ctx.lineTo(302.8, 825.9);
+                ctx.closePath();
+                ctx.fill();
+
+                // coalSprite/Layer 13
+                ctx.restore();
             }
+            function coal3(ctx, x, y, color){
+
+                // coalSprite/Layer 13/Path
+                ctx.save();
+                ctx.translate(x, y-85);
+                ctx.beginPath();
+                ctx.moveTo(281.5, 862.0);
+                ctx.lineTo(286.9, 857.4);
+                ctx.lineTo(292.2, 859.7);
+                ctx.lineTo(294.2, 865.1);
+                ctx.lineTo(291.1, 868.8);
+                ctx.lineTo(285.3, 867.3);
+                ctx.lineTo(281.5, 862.0);
+                ctx.closePath();
+                ctx.fillStyle = "rgb("+(1+color)+", 19, 19)";
+                ctx.fill();
+
+                // coalSprite/Layer 13/Path
+                ctx.beginPath();
+                ctx.moveTo(304.4, 856.7);
+                ctx.lineTo(309.5, 853.2);
+                ctx.lineTo(311.7, 856.7);
+                ctx.lineTo(311.0, 863.1);
+                ctx.lineTo(304.4, 864.0);
+                ctx.lineTo(300.8, 861.7);
+                ctx.lineTo(304.4, 856.7);
+                ctx.closePath();
+                ctx.fill();
+
+                // coalSprite/Layer 13/Path
+                ctx.beginPath();
+                ctx.moveTo(304.6, 869.0);
+                ctx.lineTo(315.0, 868.1);
+                ctx.lineTo(315.0, 875.2);
+                ctx.lineTo(306.2, 879.8);
+                ctx.lineTo(298.1, 876.7);
+                ctx.lineTo(304.6, 869.0);
+                ctx.closePath();
+                ctx.fill();
+
+                // coalSprite/Layer 13/Path
+                ctx.beginPath();
+                ctx.moveTo(281.5, 874.7);
+                ctx.lineTo(281.3, 874.8);
+                ctx.lineTo(274.7, 877.2);
+                ctx.lineTo(278.1, 879.8);
+                ctx.lineTo(284.3, 879.0);
+                ctx.lineTo(281.5, 874.7);
+                ctx.closePath();
+                ctx.fill();
+
+                // coalSprite/Layer 13/Path
+                ctx.beginPath();
+                ctx.moveTo(287.9, 883.9);
+                ctx.lineTo(279.5, 888.2);
+                ctx.lineTo(284.3, 890.2);
+                ctx.lineTo(288.0, 890.2);
+                ctx.lineTo(291.7, 887.1);
+                ctx.lineTo(287.9, 883.9);
+                ctx.closePath();
+                ctx.fill();
+
+                // coalSprite/Layer 13/Path
+                ctx.beginPath();
+                ctx.moveTo(322.0, 879.0);
+                ctx.lineTo(331.2, 881.5);
+                ctx.lineTo(330.4, 887.8);
+                ctx.lineTo(325.1, 891.7);
+                ctx.lineTo(322.0, 879.0);
+                ctx.closePath();
+                ctx.fill();
+
+                // coalSprite/Layer 13/Path
+                ctx.beginPath();
+                ctx.moveTo(311.0, 884.6);
+                ctx.lineTo(306.2, 887.1);
+                ctx.lineTo(308.6, 891.7);
+                ctx.lineTo(316.0, 893.4);
+                ctx.lineTo(318.6, 888.2);
+                ctx.lineTo(311.0, 884.6);
+                ctx.closePath();
+                ctx.fill();
+
+                // coalSprite/Layer 13/Path
+                ctx.beginPath();
+                ctx.moveTo(335.5, 863.1);
+                ctx.lineTo(330.0, 868.1);
+                ctx.lineTo(336.6, 872.7);
+                ctx.lineTo(344.4, 868.8);
+                ctx.lineTo(335.5, 863.1);
+                ctx.closePath();
+                ctx.fill();
+
+                // coalSprite/Layer 13/Path
+                ctx.beginPath();
+                ctx.moveTo(349.0, 872.1);
+                ctx.lineTo(356.0, 879.8);
+                ctx.lineTo(352.5, 887.1);
+                ctx.lineTo(342.4, 883.9);
+                ctx.lineTo(343.6, 877.3);
+                ctx.lineTo(349.2, 872.7);
+                ctx.fill();
+
+                // coalSprite/Layer 14
+                ctx.restore();
+            };
+            var coal1 = function(ctx, x, y, color){  
+
+                // coalSprite/Layer 14/Path
+                ctx.save();
+                ctx.translate(x, y);
+                ctx.beginPath();
+                ctx.moveTo(285.5, 795.6);
+                ctx.lineTo(278.9, 788.2);
+                ctx.lineTo(282.4, 782.2);
+                ctx.lineTo(288.0, 782.2);
+                ctx.lineTo(288.0, 778.2);
+                ctx.lineTo(295.0, 772.2);
+                ctx.lineTo(300.0, 772.2);
+                ctx.lineTo(305.7, 767.1);
+                ctx.lineTo(311.7, 772.9);
+                ctx.lineTo(321.0, 771.5);
+                ctx.lineTo(325.0, 776.2);
+                ctx.lineTo(325.0, 781.2);
+                ctx.lineTo(333.0, 784.9);
+                ctx.lineTo(334.0, 790.7);
+                ctx.lineTo(328.2, 795.6);
+                ctx.lineTo(285.5, 795.6);
+                ctx.closePath();
+                ctx.fillStyle = "rgb("+(19+color)+", 19, 19)";
+                ctx.fill();
+
+                // coalSprite/Layer 14/Path
+                ctx.beginPath();
+                ctx.moveTo(291.3, 783.0);
+                ctx.lineTo(295.0, 783.2);
+                ctx.lineTo(296.2, 786.0);
+                ctx.lineTo(294.0, 784.0);
+                ctx.lineTo(291.3, 783.0);
+                ctx.closePath();
+                ctx.fillStyle = "rgb(167, 167, 167)";
+                ctx.fill();
+
+                // coalSprite/Layer 14/Path
+                ctx.beginPath();
+                ctx.moveTo(314.0, 777.0);
+                ctx.lineTo(315.5, 780.1);
+                ctx.lineTo(318.8, 780.8);
+                ctx.lineTo(315.1, 781.1);
+                ctx.lineTo(314.0, 777.0);
+                ctx.closePath();
+                ctx.fill();
+
+                // coalSprite/Layer 14/Path
+                ctx.beginPath();
+                ctx.moveTo(308.1, 790.3);
+                ctx.lineTo(310.0, 788.4);
+                ctx.lineTo(312.3, 788.8);
+                ctx.lineTo(310.0, 789.2);
+                ctx.lineTo(308.1, 790.3);
+                ctx.closePath();
+                ctx.fill();
+
+                // coalSprite/Layer 14/Path
+                ctx.beginPath();
+                ctx.moveTo(304.0, 774.7);
+                ctx.lineTo(306.5, 776.0);
+                ctx.lineTo(307.9, 774.7);
+                ctx.lineTo(306.0, 775.4);
+                ctx.lineTo(304.0, 774.7);
+                ctx.closePath();
+                ctx.fill();
+                ctx.restore();
+            }
+            
             return {
                 fire: [fire0, fire1, fire2],
                 pipe: pipe,
-                coal: coal
+                coal: [coal1, coal2, coal3]
             }
 });

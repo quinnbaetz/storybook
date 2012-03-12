@@ -1,5 +1,7 @@
 define("map", function() {
     return function(){
+        
+            var introRead = false;
             var windmills = new Array({"x":820,"y":70, "scale":.12, "rot": 0, "speed": .1},
             							{"x":760,"y":110, "scale":.18, "rot": .3, "speed": .05},
             							{"x":850,"y":50, "scale":.3, "rot": .5, "speed": .07}
@@ -8,8 +10,8 @@ define("map", function() {
             var clouds = [{x:-120, y:Math.random()*70, scale:Math.random()+.5}];
             var makeCloud = true;
             var time = 0;
-            var transMap = true && !DEBUG; //if we want to do a transformation
-            var firstMap = true && !DEBUG; //if first time viewing the map
+            var transMap = true && DEBUG; //if we want to do a transformation
+            var firstMap = true && DEBUG; //if first time viewing the map
             var transPos;
             
             
@@ -83,14 +85,10 @@ define("map", function() {
             	  }
             	    
             	 
-            	  //ctx.fillStyle   = '#00f'; // blue
-            	  //ctx.strokeStyle = '#f00'; // red
-            	  //ctx.fillRect(400, 10, 20+volume, 40); 
-            	  //ctx.fillRect(420,270, 300, 250);
-            	  //dam(-100, 250, 1);
+            	  if(!introRead){
+            	      imgs['introMsg'].draw();
+            	  }
             	  
-            	  
-            	  //ctx.drawImage(imgs["nuclear"], 0, 700);
             	  ctx.restore();
             }
             
@@ -123,6 +121,10 @@ define("map", function() {
             var mapMousePressed = function(x, y){
             	if(transMap){
             		return "map";
+            	}
+            	if(!introRead){
+            	    introRead = true;
+            	    return "map";
             	}
             	if(varersect(375, 285, 375, 275, x, y) /*|| varersect(0, 250, 250, 200, x, y)*/){
             		return "house";	

@@ -50,19 +50,19 @@ define("title", ["title/drawing"], function(draw) {
 			ctx.translate(0, deltaY);
 			
 			drawLight(ctx, 0, 0, perc);
-			ctx.drawImage(imgs["craft"], 372, 137);
+			imgs["craft"].draw();
 			var parts = 17;
 			var part = Math.floor(frame/propSpeed)%parts;
 			
 			var propHeight = 1042;
 			var pieceHeight = propHeight/parts;
 			var propWidth = 214;
-			ctx.drawImage(imgs["prop"], 0, part*pieceHeight, propWidth, pieceHeight, 403, 650, propWidth, pieceHeight);
+			ctx.drawImage(imgs["prop"].img, 0, part*pieceHeight, propWidth, pieceHeight, 403, 650, propWidth, pieceHeight);
 			
 			titleButton(angle, deltaY);
 			
 		ctx.restore();
-		ctx.drawImage(imgs["title"], 200, 50);
+		imgs["title"].draw();
 		if(trans){
 			ctx.restore();
 		}

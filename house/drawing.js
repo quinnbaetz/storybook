@@ -13,7 +13,7 @@ define(function(){
     	drawLight(ctx, 0, 0, voltMeter.perc);
     	ctx.translate(-lightPos.x, -lightPos.y);
     	ctx.restore();
-    	ctx.drawImage(imgs["voltMeter"], voltMeter.x, voltMeter.y, voltMeter.width, voltMeter.height);
+    	ctx.drawImage(imgs["voltMeter"].img, voltMeter.x, voltMeter.y, voltMeter.width, voltMeter.height);
     	ctx.restore();
     }
     
@@ -23,7 +23,7 @@ define(function(){
     	 ctx.rotate(sensorPos.rot);
     	 ctx.scale(sensorPos.scale, sensorPos.scale);
     	 ctx.translate(-sensorPos.x, -sensorPos.y);
-    	 ctx.drawImage(imgs["sensor"], sensorPos.x, sensorPos.y, sensorPos.width, sensorPos.height);	
+    	 ctx.drawImage(imgs["sensor"].img, sensorPos.x, sensorPos.y, sensorPos.width, sensorPos.height);	
     	 ctx.restore();
     }
     
@@ -33,7 +33,7 @@ define(function(){
     	 ctx.rotate(redPos.rot);
     	 ctx.scale(redPos.scale, redPos.scale);
     	 ctx.translate(-redPos.x, -redPos.y);
-    	 ctx.drawImage(imgs["red"], redPos.x, redPos.y, redPos.width, redPos.height);	
+    	 ctx.drawImage(imgs["red"].img, redPos.x, redPos.y, redPos.width, redPos.height);	
     	 ctx.restore();
     }
     
@@ -43,7 +43,7 @@ define(function(){
     	 ctx.rotate(blackPos.rot);
     	 ctx.scale(blackPos.scale, blackPos.scale);
     	 ctx.translate(-blackPos.x, -blackPos.y);
-    	 ctx.drawImage(imgs["black"], blackPos.x, blackPos.y, blackPos.width, blackPos.height);	
+    	 ctx.drawImage(imgs["black"].img, blackPos.x, blackPos.y, blackPos.width, blackPos.height);	
     	 ctx.restore();
     }
     
@@ -53,7 +53,7 @@ define(function(){
     	 ctx.rotate(glowDot.rot);
     	 ctx.scale(glowDot.scale, glowDot.scale);
     	 ctx.translate(-glowDot.x, -glowDot.y);
-    	 ctx.drawImage(imgs["glowDot"], glowDot.x, glowDot.y, glowDot.width, glowDot.height);	
+    	 ctx.drawImage(imgs["glowDot"].img, glowDot.x, glowDot.y, glowDot.width, glowDot.height);	
     	 ctx.restore();
     }
     return {
