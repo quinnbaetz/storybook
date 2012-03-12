@@ -183,8 +183,8 @@ function init() {
 	coal = require('coal')(ctx);
 	house = require('house')();
 	if(DEBUG){
-      scene = "coal";
-      current = coal;
+      scene = "crank";
+      current = house;
     }else{
       scene = "title";
       current = title;  
@@ -469,20 +469,20 @@ function drawEllipse(ctx, x, y, w, h) {
 		  $crankPos = array("x" => -50, "y" => 50);
         
       
-      $cCrankX = crankPos.x+200+((370*.7)/2);
-      $cCrankY = crankPos.y+420;
+      $cCrankX = $crankPos.x+200+((370*.7)/2);
+      $cCrankY = $crankPos.y+420;
       $crankWidth = 171*.7; 
       $crankHeight = 506*.7;
       
-      $cTGearX = cCrankX;
-      $cTGearY = cCrankY;
-      $tGearWidth =263*.7; 
-      $tGearHeight =263*.7;
+      $cTGearX = $cCrankX-50;
+      $cTGearY = $cCrankY+30;
+      $tGearWidth =263*.6; 
+      $tGearHeight =263*.6;
       
-      $cBGearX = cCrankX;
-      $cBGearY = crankPos.y+565;
-      $bGearWidth =180*.7;
-      $bGearHeight = 180*.7;
+      $cBGearX = $cCrankX-50;
+      $cBGearY = $crankPos.y+600;
+      $bGearWidth =180;
+      $bGearHeight = 180;
       
 		 $titleImageLoc = "title/images/";
 		 $houseImageLoc = "house/images/";
@@ -498,7 +498,8 @@ function drawEllipse(ctx, x, y, w, h) {
 							   "prop" => array("src" => $titleImageLoc."propellor.png"),
 		 					   "container" => array("src" => $houseImageLoc."case.png"),
 		 					   "crank"=> array("src" => $houseImageLoc."crank.png", "x" => $cCrankX, "y" => $cCrankY, "width"=>$crankWidth, "height"=>$crankHeight),
-							   "tGear"=> array("src" => $houseImageLoc."topGear.png", "x" => $cTGearX, "y"=>$cTGearY, "width"=>$tGearWidth, "height"=>$tGearHeight), 
+							   "crankCrank"=> array("src" => $houseImageLoc."crank.png", "x" => 352, "y" => 0),
+                 "tGear"=> array("src" => $houseImageLoc."topGear.png", "x" => $cTGearX, "y"=>$cTGearY, "width"=>$tGearWidth, "height"=>$tGearHeight), 
 							   "bGear"=> array("src" => $houseImageLoc."bottomGear.png", "x" => $cBGearX, "y"=>$cBGearY, "width"=>$bGearWidth, "height" =>$bGearHeight), 
 							   "black"=> array("src" => $houseImageLoc."blackClip.png", "x"=> 450, "y" => 600),
 							   "red"=> array("src" => $houseImageLoc."redClip.png", "x"=> 750, "y" => 600),
@@ -521,6 +522,7 @@ function drawEllipse(ctx, x, y, w, h) {
 							   //TODO: turn this into a sprite
 							   "gears" => array("src" => $crankImageLoc."gears.png", "x"=>308, "y"=>150),
 							   "gears2" => array("src" => $crankImageLoc."gears2.png",  "x"=>308, "y"=>150),
+                 "crankInsides" => array("src" => $crankImageLoc."crankInsides.png",  "x"=>250, "y"=>50),
 							   "tableInside" => array("src" => $crankImageLoc."tableInside.png"),
 							   "gearsWind" => array("src" => $windImageLoc."gears.png"),
 							   "gears2Wind" => array("src" => $windImageLoc."gears2.png"),

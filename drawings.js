@@ -157,16 +157,19 @@
         function largeGear(angle) {
             var cTGearX = imgs['tGear'].x;
             var cTGearY = imgs['tGear'].y;
+            
             var tGearWidth = imgs['tGear'].width;
             var tGearHeight = imgs['tGear'].height;
-    	   ctx.save();
-    	  ctx.translate(cTGearX, cTGearY);
-    	  ctx.rotate(angle);
-    	  ctx.translate(cTGearX, cTGearY);  
+    	   
+            ctx.save();
+    	  
+            ctx.translate(cTGearX, cTGearY);
+            ctx.rotate(angle);
+            ctx.translate(-cTGearX, -cTGearY);
     	  
     	 
     	  if(true){
-    		  ctx.drawImage(imgs["tGear"].img, cTGearX-tGearWidth/2, cTGearY-tGearHeight/2, tGearWidth, tGearHeight);
+    	      ctx.drawImage(imgs["tGear"].img, cTGearX-tGearWidth/2, cTGearY-tGearHeight/2, tGearWidth, tGearHeight);
     	  }else{
     		 ctx.translate(205, 324);
     	  	 ctx.scale(1.3, 1.3);
@@ -330,7 +333,7 @@
     	  
     	  
     	  if(true){
-    		  ctx.drawImage(imgs["bGear"].img, cBGearX-bGearWidth/2, cBGearY-bGearHeight/2, bGearWidth, bGearHeight);
+    	      ctx.drawImage(imgs["bGear"].img, cBGearX-bGearWidth/2, cBGearY-bGearHeight/2, bGearWidth, bGearHeight);
     	  }else{
     		  ctx.translate(-250, 343);
     	  ctx.scale(1.3, 1.3);

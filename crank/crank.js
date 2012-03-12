@@ -6,6 +6,9 @@ var currY = 0;
 var currX = 0;
 var first = true;
 var goingDown = true;
+
+var crankPos = {x:-40, y:-170};
+var angle = 0;
 function drawCrank(){
 	if(!turning && !first){
 		return;
@@ -13,60 +16,39 @@ function drawCrank(){
 	first = false;
 	
 	imgs["tableInside"].draw();
-	crankBox(ctx, 250, 100);
-	 
+	imgs["crankInsides"].draw(); 
 	
+	ctx.save();
+	ctx.scale(1.35, 1.35);
+	container(crankPos.x, crankPos.y);
+	ctx.restore();
 	if(turning){
-		wires(ctx, 600, 430, true, distTurned%300/600);
+		wires(ctx, 238, -70, true, distTurned%300/600);
+		
 	}
-	wires(ctx, 600, 430);
+	wires(ctx, 238, -70);
 	
 	if(turning){
 		var delta = dist(currX, currY, dragX, dragY)/2;
 		currX = dragX;
 		currY = dragY;
-		if(goingDown){
-			handleY += delta;
-			if(handleY >= 510){
-				goingDown = false;
-				handleY = 510;	
-			}
-		}else{
-			handleY -= delta;
-			if(handleY <= 40){
-				goingDown = true;	
-				handleY = 40;
-			}
-		}
+		angle = (angle+.1)%360
 		//handleY = (handleY+40)%550
 		//handleY = Math.min(Math.max(40, dragY), 510);
 		distTurned += Math.abs(delta);
 		//currY = handleY;
 	}
-	if(Math.floor(((handleY-40)/30)%2)===1){
-	    imgs["gears"].draw();
-	}else{
-	    imgs["gears2"].draw();
-	}
-	
-	
+	var cCrankX = Math.floor(imgs['crankCrank'].x) + imgs['crankCrank'].width/2;
+	var cCrankY = imgs['crankCrank'].y + (imgs['crankCrank'].height)-70;
+	console.log(cCrankX, cCrankY);
 	ctx.save();
-	ctx.beginPath();
-	ctx.moveTo(140, handleY);
-	ctx.lineTo(210, handleY);
-	ctx.lineWidth = 50;
-	ctx.stroke();
-	
-	
-	
-	ctx.fillStyle = "rgb(236, 28, 36)";
-	if(handleY>255){
-		ctx.fillRect(210, 315-80, 40, handleY+120-330);
-	}else{
-		ctx.fillRect(210, handleY-25, 40, 315-10-handleY);
-	}
-	ctx.restore();
-	
+	ctx.scale(.85,.85);
+    ctx.translate(cCrankX, cCrankY);
+    ctx.rotate(angle);
+    ctx.translate(-cCrankX, -cCrankY);
+    //ctx.drawImage(crank, 200+((370*.7)/2)-((171*.7)/2), 130, 171*.7, 812*.7);
+    imgs['crankCrank'].draw();
+    ctx.restore();
 	
 	
 }

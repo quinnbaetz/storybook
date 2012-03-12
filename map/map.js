@@ -10,8 +10,8 @@ define("map", function() {
             var clouds = [{x:-120, y:Math.random()*70, scale:Math.random()+.5}];
             var makeCloud = true;
             var time = 0;
-            var transMap = true && DEBUG; //if we want to do a transformation
-            var firstMap = true && DEBUG; //if first time viewing the map
+            var transMap = true && !DEBUG; //if we want to do a transformation
+            var firstMap = true && !DEBUG; //if first time viewing the map
             var transPos;
             
             
