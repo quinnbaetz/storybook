@@ -34,7 +34,6 @@ function(draw, Sprite, DrawSprite) {
                 coalOpts.x = Math.min(coal.maxX,(Math.max(coal.minX, coal.origX + (dragX - dragStart.x))));
                 coalOpts.y = Math.min(coal.maxY,(Math.max(coal.minY, coal.origY + (dragY - dragStart.y))));
                 if(coalOpts.x > 190){
-                    console.log(coalOpts);
                     dragging = false;
                     helpPart = 2;
                 }
@@ -139,9 +138,7 @@ function(draw, Sprite, DrawSprite) {
                     }
                 break;
                 case 3:
-                    console.log("HERE TO CHECK", x, y);
                     if(fireTouch()){
-                        console.log("fire light");
                         showFire = true;
                         spinning = true;
                         helpPart = 4;

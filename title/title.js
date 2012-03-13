@@ -22,7 +22,6 @@ define("title", ["title/drawing"], function(draw) {
 	function drawTitle(){
 		draw.titleBG(WIDTH, HEIGHT);
 		if(trans){
-			console.log(transPos);
 			ctx.save();	
 			ctx.translate(0, transPos-=16);
 			if(transPos < -HEIGHT){

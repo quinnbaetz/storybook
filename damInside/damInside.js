@@ -100,8 +100,7 @@ define("damInside", ["extern/canvas.Sprites/canvas.Sprites", "extern/canvas.Draw
         }
         
         function damInsidePressed(x, y){
-            console.log("here", x, y);
-        	if(varersect(imgs["damInsideGate"].x, imgs["damInsideGate"].y, imgs["damInsideGate"].getScaledWidth(), imgs["damInsideGate"].getScaledHeight(), x, y)){
+            if(varersect(imgs["damInsideGate"].x, imgs["damInsideGate"].y, imgs["damInsideGate"].getScaledWidth(), imgs["damInsideGate"].getScaledHeight(), x, y)){
         		gateStartY = y;
         		gateDrag = true;
         		

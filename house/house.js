@@ -43,7 +43,7 @@ define('house', ['house/drawing'], function(draw){
         var startX = 0;
         var startY = 0;
         
-        var helpPos = 1;
+        var helpPos = 0;
         
         if(sensorType === "sensor"){
         	setSensorTypePos();
@@ -212,7 +212,7 @@ define('house', ['house/drawing'], function(draw){
         	
         	  drawText();
         	  
-        	  if(helpPos<5){
+        	  if(helpPos<5 && typeof(imgs['houseHelp'+helpPos]) === "object" && typeof(imgs['houseHelp'+helpPos].draw) === "function"){
         	      //evenutally we'll want to make this guy dance
         	      imgs['houseHelp'+helpPos].draw();
         	  }
@@ -234,13 +234,15 @@ define('house', ['house/drawing'], function(draw){
         }
         
         function houseMouseRelease(x, y){
+
+            console.log(x, y);
             if(helpPos<5){
                 helpPos++;
                 return;
             }
+
         	if(x>=730 && y>=590){
         		scene="crank";	
-        		console.log("setting scene");
         		return;
         	}
         	if(x>=730 && y<=200){
@@ -310,18 +312,14 @@ define('house', ['house/drawing'], function(draw){
         	redMove = false;
         	blackMove = false;
         	
-        	console.log(x, y, redPos.x, redPos.y, redPos.width, redPos.height);
         	if(!redDone && varersect(redPos.x, redPos.y, redPos.width, redPos.height, x, y)){
-        		console.log("red move true");
         	    redMove = true;	
         	}else{
         		if(!blackDone && varersect(blackPos.x, blackPos.y, blackPos.width, blackPos.height, x, y)){
-        		    console.log("black move true");
         		    blackMove = true;	
         		}else{
         			if(dist(cCrankX, cCrankY, x, y)<(812*.7)/2){
         				lightPos = 0;
-        				console.log("cranking true");
         				cranking = true;
         			}
         		}

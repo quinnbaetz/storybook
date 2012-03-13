@@ -57,7 +57,7 @@
 			var BUFFERING = false;
 			//refreshes every 50 milliseconds
 			var FRAMERATE = 50;
-			var DEBUG = true;
+			var DEBUG = false;
 			
 			var ctx;
 			var WIDTH = 1024;
@@ -337,7 +337,8 @@ function mouseReleased(touchX, touchY) {
 	DRAGGING = false;
 	
 	if(typeof(current.mouseReleased) === "function"){
-	  current.mouseReleased();
+	  current.mouseReleased(x, y);
+	  return;
 	}
 	
 	
