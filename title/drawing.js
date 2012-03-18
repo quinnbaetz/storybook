@@ -179,8 +179,137 @@ define(function(){
 		
 	}
 	
+    function titleSGear(ctx, x, y, angle) {
+
+        // titleSGear/Path
+        ctx.save();
+        
+        ctx.translate(x, y);
+        
+        var mx = 530;
+        var my = 532;
+        ctx.translate(mx, my);
+        ctx.rotate(angle);
+        ctx.translate(-mx, -my);
+        
+        ctx.beginPath();
+        ctx.moveTo(551.3, 528.6);
+        ctx.lineTo(547.8, 534.0);
+        ctx.lineTo(548.7, 540.5);
+        ctx.lineTo(542.8, 543.2);
+        ctx.lineTo(540.0, 549.1);
+        ctx.lineTo(533.6, 548.2);
+        ctx.lineTo(528.1, 551.7);
+        ctx.lineTo(523.2, 547.4);
+        ctx.lineTo(516.7, 547.4);
+        ctx.lineTo(514.9, 541.2);
+        ctx.lineTo(509.4, 537.6);
+        ctx.lineTo(511.2, 531.4);
+        ctx.lineTo(508.6, 525.5);
+        ctx.lineTo(513.5, 521.2);
+        ctx.lineTo(514.4, 514.8);
+        ctx.lineTo(520.8, 513.8);
+        ctx.lineTo(525.1, 508.9);
+        ctx.lineTo(531.0, 511.6);
+        ctx.lineTo(537.3, 509.8);
+        ctx.lineTo(540.8, 515.3);
+        ctx.lineTo(547.0, 517.1);
+        ctx.lineTo(547.0, 523.6);
+        ctx.lineTo(551.3, 528.6);
+        ctx.closePath();
+        ctx.fillStyle = "rgb(205, 200, 191)";
+        ctx.fill();
+
+        // titleSGear/Compound Path
+        ctx.beginPath();
+
+        // titleSGear/Compound Path/Path
+        ctx.moveTo(529.9, 517.1);
+        ctx.bezierCurveTo(522.6, 517.1, 516.7, 523.0, 516.7, 530.3);
+        ctx.bezierCurveTo(516.7, 537.6, 522.6, 543.5, 529.9, 543.5);
+        ctx.bezierCurveTo(537.2, 543.5, 543.1, 537.6, 543.1, 530.3);
+        ctx.bezierCurveTo(543.1, 523.0, 537.2, 517.1, 529.9, 517.1);
+        ctx.closePath();
+
+        // titleSGear/Compound Path/Path
+        ctx.moveTo(529.9, 538.7);
+        ctx.bezierCurveTo(525.3, 538.7, 521.5, 535.0, 521.5, 530.3);
+        ctx.bezierCurveTo(521.5, 525.6, 525.3, 521.9, 529.9, 521.9);
+        ctx.bezierCurveTo(534.6, 521.9, 538.4, 525.6, 538.4, 530.3);
+        ctx.bezierCurveTo(538.4, 535.0, 534.6, 538.7, 529.9, 538.7);
+        ctx.closePath();
+        ctx.fillStyle = "rgb(72, 213, 47)";
+        ctx.fill();
+        ctx.restore();
+      }
+
+      function titleBGear(ctx, x, y, angle) {
+
+        // titleBGear/Path
+        ctx.save();
+        ctx.translate(x, y);
+        
+        var mx = 505;
+        var my = 481;
+        ctx.translate(mx, my);
+        ctx.rotate(angle);
+        ctx.translate(-mx, -my);
+        
+        ctx.beginPath();
+        ctx.moveTo(540.9, 477.4);
+        ctx.lineTo(535.2, 486.3);
+        ctx.lineTo(536.7, 496.8);
+        ctx.lineTo(527.1, 501.2);
+        ctx.lineTo(522.7, 510.8);
+        ctx.lineTo(512.2, 509.3);
+        ctx.lineTo(503.3, 515.0);
+        ctx.lineTo(495.4, 508.0);
+        ctx.lineTo(484.8, 508.0);
+        ctx.lineTo(481.8, 497.9);
+        ctx.lineTo(472.9, 492.2);
+        ctx.lineTo(475.9, 482.0);
+        ctx.lineTo(471.6, 472.4);
+        ctx.lineTo(479.5, 465.5);
+        ctx.lineTo(481.1, 455.0);
+        ctx.lineTo(491.5, 453.5);
+        ctx.lineTo(498.4, 445.6);
+        ctx.lineTo(508.1, 449.9);
+        ctx.lineTo(518.2, 447.0);
+        ctx.lineTo(523.9, 455.9);
+        ctx.lineTo(534.0, 458.9);
+        ctx.lineTo(534.0, 469.4);
+        ctx.lineTo(540.9, 477.4);
+        ctx.closePath();
+        ctx.fillStyle = "rgb(205, 200, 191)";
+        ctx.fill();
+
+        // titleBGear/Compound Path
+        ctx.beginPath();
+
+        // titleBGear/Compound Path/Path
+        ctx.moveTo(506.2, 460.9);
+        ctx.bezierCurveTo(495.5, 460.9, 486.8, 469.6, 486.8, 480.3);
+        ctx.bezierCurveTo(486.8, 490.9, 495.5, 499.6, 506.2, 499.6);
+        ctx.bezierCurveTo(517.0, 499.6, 525.7, 490.9, 525.7, 480.3);
+        ctx.bezierCurveTo(525.7, 469.6, 517.0, 460.9, 506.2, 460.9);
+        ctx.closePath();
+
+        // titleBGear/Compound Path/Path
+        ctx.moveTo(506.2, 492.6);
+        ctx.bezierCurveTo(499.4, 492.6, 493.8, 487.1, 493.8, 480.3);
+        ctx.bezierCurveTo(493.8, 473.4, 499.4, 467.9, 506.2, 467.9);
+        ctx.bezierCurveTo(513.1, 467.9, 518.7, 473.4, 518.7, 480.3);
+        ctx.bezierCurveTo(518.7, 487.1, 513.1, 492.6, 506.2, 492.6);
+        ctx.closePath();
+        ctx.fillStyle = "rgb(72, 213, 47)";
+        ctx.fill();
+        ctx.restore();
+      }
+      
 	return {
 		titleBG: drawTitleBG,
+		bottomGear: titleSGear,
+		topGear: titleBGear,
 		cloud1: cloud1,
 		cloud2: cloud2,
 		cloud3: cloud3,

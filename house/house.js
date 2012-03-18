@@ -171,6 +171,11 @@ define('house', ['house/drawing'], function(draw){
         	  draw.sensorMeter(sensorPos);
         	  draw.voltMeter(voltMeterPos);
         	  
+        	  
+        	  
+        	  if(sensorType !== "sensor"){
+        	      draw.volt({x: 783, y: 325, angle: angle })
+        	  }
         	  if(DRAGGING){
         	  	voltMeterPos.perc=Math.max(0, voltMeterPos.perc-1);
         	  }else{
@@ -196,9 +201,13 @@ define('house', ['house/drawing'], function(draw){
         	
         	 drawBlackWire();
         	 ctx.stroke();
-        	
+        	 
+        	 if(cranking || redDone || blackDone){ 
+                 draw.red(redPos);
+                 draw.black(blackPos);
+             }
           
-        
+        	 
            ctx.save();
            ctx.translate(cCrankX, cCrankY);
            ctx.rotate(angle);
@@ -207,9 +216,16 @@ define('house', ['house/drawing'], function(draw){
            crank();
            
            ctx.restore();
-        	draw.red(redPos);
-        	draw.black(blackPos);
-        	
+           
+           if(!cranking){ 
+               if(!redDone){
+                   draw.red(redPos);
+               }
+               if(!blackDone){
+               draw.black(blackPos);
+               }
+           }
+        
         	  drawText();
         	  
         	  if(helpPos<5 && typeof(imgs['houseHelp'+helpPos]) === "object" && typeof(imgs['houseHelp'+helpPos].draw) === "function"){
@@ -234,8 +250,7 @@ define('house', ['house/drawing'], function(draw){
         }
         
         function houseMouseRelease(x, y){
-
-            console.log(x, y);
+            cranking = false; 
             if(helpPos<5){
                 helpPos++;
                 return;

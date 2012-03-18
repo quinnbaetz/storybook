@@ -56,7 +56,44 @@ define(function(){
     	 ctx.drawImage(imgs["glowDot"].img, glowDot.x, glowDot.y, glowDot.width, glowDot.height);	
     	 ctx.restore();
     }
+    function volt(voltPos) {
+        ctx.save();
+        ctx.translate(voltPos.x, voltPos.y);
+        
+        var dist = 119;
+        ctx.translate(100-dist, 100-dist);
+        ctx.rotate(voltPos.angle);
+        ctx.translate(-(100-dist), -(100-dist));
+        // volt/Path
+        ctx.beginPath();
+        ctx.moveTo(133.2, 90.8);
+        ctx.bezierCurveTo(133.2, 101.8, 124.3, 110.8, 113.2, 110.8);
+        ctx.bezierCurveTo(102.2, 110.8, 93.2, 101.8, 93.2, 90.8);
+        ctx.bezierCurveTo(93.2, 79.7, 102.2, 70.8, 113.2, 70.8);
+        ctx.bezierCurveTo(124.3, 70.8, 133.2, 79.7, 133.2, 90.8);
+        ctx.closePath();
+        ctx.fillStyle = "rgb(236, 213, 0)";
+        ctx.fill();
+
+        // volt/Group
+
+        // volt/Group/Path
+        ctx.beginPath();
+        ctx.moveTo(113.5, 76.5);
+        ctx.lineTo(113.5, 105.5);
+        ctx.lineWidth = 3.0;
+        ctx.stroke();
+
+        // volt/Group/Path
+        ctx.beginPath();
+        ctx.moveTo(128.0, 91.0);
+        ctx.lineTo(99.0, 91.0);
+        ctx.stroke();
+        ctx.restore();
+      }
+
     return {
+        volt: volt,
         voltMeter: voltMeter,
         sensorMeter: sensorMeter,
         red: red,

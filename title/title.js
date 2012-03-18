@@ -58,6 +58,9 @@ define("title", ["title/drawing"], function(draw) {
 			var propWidth = 214;
 			ctx.drawImage(imgs["prop"].img, 0, part*pieceHeight, propWidth, pieceHeight, 403, 650, propWidth, pieceHeight);
 			
+			draw.topGear(ctx, 0, 0, angle);
+			draw.bottomGear(ctx, 0, 0, angle*2);
+			
 			titleButton(angle, deltaY);
 			
 		ctx.restore();

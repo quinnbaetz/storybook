@@ -57,7 +57,7 @@
 			var BUFFERING = false;
 			//refreshes every 50 milliseconds
 			var FRAMERATE = 50;
-			var DEBUG = false;
+			var DEBUG = true;
 			
 			var ctx;
 			var WIDTH = 1024;
@@ -183,8 +183,8 @@ function init() {
 	coal = require('coal')(ctx);
 	house = require('house')();
 	if(DEBUG){
-      scene = "crank";
-      current = house;
+      scene = "title";
+      current = title;
     }else{
       scene = "title";
       current = title;  

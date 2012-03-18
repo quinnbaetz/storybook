@@ -47,6 +47,7 @@ function drawCrank(){
         gears2(230, -80, angle);
         gears1(230, -80, angle);
     	
+        
         //draw line
         ctx.save();
         ctx.beginPath();
