@@ -163,7 +163,7 @@ define('house', ['house/drawing'], function(draw){
         }
         
         function drawHouse(){
-        	  
+        	  calcPos();
         	  imgs["bg"].draw();
         	  largeGear(angle);
         	  smallGear(angle);

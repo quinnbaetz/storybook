@@ -1,22 +1,38 @@
-define("damInside", ["extern/canvas.Sprites/canvas.Sprites", "extern/canvas.DrawSprites/canvas.DrawSprites", "damInside/drawing"], function(Sprite, DrawSprites, draw) {
+define("damInside", ["extern/canvas.Sprites/canvas.Sprites", "extern/canvas.DrawSprites/canvas.DrawSprites", "damInside/drawing"], function(Sprite, DrawSprite, draw) {
     return function(){
-        var part = 0;
-        var rot = 0;
-        var gateDrag = false;
-        var gateStartY = 0;
-        var waterlevel = 185; //400
-        var minWater = 185;
-        var maxWater = 400;
-        var expectedWaterLevel = 185;
-        var frame = 0;
-        var alpha = 0;
+        var reset = _.bind(function(){
+            this.photoShow = false;
+            
+            this.part = 0;
+            this.rot = 0;
+            this.gateDrag = false;
+            this.gateStartY = 0;
+            this.waterlevel = 185; //400
+            this.minWater = 185;
+            this.maxWater = 400;
+            this.expectedWaterLevel = 185;
+            this.frame = 0;
+            this.alpha = 0;
+        
+        },this);
+        
+        reset();
+        
         var propellorSprite = new Sprite(imgs["damSprite"].img, 6, {x: imgs["damSprite"].x, y: imgs["damSprite"].y, scale: imgs["damSprite"].scale, ctx: ctx});
         //fix for bad sprite sheet
         propellorSprite.addOption("segHeightToDraw", propellorSprite.getSegHeight()-2);
         
-        var waterFallSprite = new DrawSprites(draw.waterFallSprites, {x: 729, y: 405, ctx: ctx, scale: 1.85});
+        var waterFallSprite = new DrawSprite(draw.waterFallSprites, {x: 729, y: 405, ctx: ctx, scale: 1.85});
+        
+        var photoSprites = new DrawSprite([_.bind(imgs["damTopPhotosRoad"].draw, imgs["damTopPhotosRoad"])], {ctx: ctx, x: 0, y:0, callback: function(fun){fun();}});
+        
         
         function drawDamInside(){
+            if(photoShow){
+                slideShow();
+                return;
+            }
+            
          	frame++;
         	ctx.save();
         		  if(gateDrag){
@@ -95,11 +111,25 @@ define("damInside", ["extern/canvas.Sprites/canvas.Sprites", "extern/canvas.Draw
         			
         }
         
+        var slideShow = function(){
+            photoSprites.draw();
+        }
+        var cameraMsg = function(){
+            photoShow = !photoShow;
+            if(photoShow){
+                reset();
+            }
+        }
+        
         function damInsideReleased(){
         	gateDrag = false;
         }
         
         function damInsidePressed(x, y){
+            if(photoShow){
+                photoSprites.advance();
+                return;
+            }
             if(varersect(imgs["damInsideGate"].x, imgs["damInsideGate"].y, imgs["damInsideGate"].getScaledWidth(), imgs["damInsideGate"].getScaledHeight(), x, y)){
         		gateStartY = y;
         		gateDrag = true;
@@ -109,7 +139,9 @@ define("damInside", ["extern/canvas.Sprites/canvas.Sprites", "extern/canvas.Draw
         return {
             draw: drawDamInside,
             mousePressed: damInsidePressed,
-            mouseReleased: damInsideReleased
+            mouseReleased: damInsideReleased,
+            cameraMsg: cameraMsg,
+            reset: reset
         }
     }
 });

@@ -8,50 +8,50 @@
 			var appletX;
 			var appletY;
 			var offsetY;
-			function touchStart(evt){
-			  offsetY = document.body.scrollTop + document.documentElement.scrollTop;
-				e = evt.touches.item(0);
-				mousePressed(e.clientX - appletX, e.clientY - appletY+offsetY); 
-				e.preventDefault(); 
-				return false;
-			}
-			function touchMove(evt){
-				offsetY = document.body.scrollTop + document.documentElement.scrollTop;
-        e = evt.touches.item(0);
-				mouseDragged(e.clientX - appletX, e.clientY - appletY+offsetY); 
-				evt.preventDefault(); 
-				return false;
-			}
-			function touchEnd(evt){
-				offsetY = document.body.scrollTop + document.documentElement.scrollTop;
-        e = evt.touches.item(0);
-				mouseReleased(e.clientX - appletX, e.clientY - appletY+offsetY); 
-				evt.preventDefault();
-				return false;
-			}
 			
-			function mouseDown(e){
-				offsetY = document.body.scrollTop + document.documentElement.scrollTop;
-        applet.onmousemove = mouseMove;
-				mousePressed(e.clientX - appletX, e.clientY - appletY+offsetY); 
-				return false;
-			}
-			
-			function mouseUp(e){
-				offsetY = document.body.scrollTop + document.documentElement.scrollTop;
-        applet.onmousemove = "";
-				mouseReleased(e.clientX - appletX, e.clientY - appletY+offsetY); 
-				return false;
-			}
-			function mouseMove(e){
-				offsetY = document.body.scrollTop + document.documentElement.scrollTop;
-        mouseDragged(e.clientX - appletX, e.clientY - appletY+offsetY); 
-				return false;
-			}
+			<?php
+			   
+			   $events = array("touchStart" => "mousePressed",
+			                   "touchMove" => "mouseDragged",
+                         "touchEnd" => "mouseReleased",
+                         "mouseDown" => "mousePressed",
+                         "mouseUp" => "mouseReleased",
+                         "mouseMove" => "mouseDragged");
+        
+                         
+          foreach ($events as $i => $val) {
+            ?>
+            function <?= $i ?>(e){
+              offsetY = document.body.scrollTop + document.documentElement.scrollTop;
+            <?php if($i[0] == 't'){ //if we are a touch event?>
+              e = evt.touches.item(0);
+              
+            <?php }//perhaps should be preventing default here ?>
+            <?php if($i == 'mouseDown'){ //if we are a touch event?>
+              applet.onmousemove = mouseMove;
+            <?php } ?>
+            <?php if($i == 'mouseUp'){ //if we are a touch event?>
+              applet.onmousemove = "";
+            <?php } ?>
+            
+              <?= $val?>(e.clientX - appletX, e.clientY - appletY+offsetY);
+              return false;
+            }
+            <?php
+            }
+          
+       ?>
+       
 		
 		</script>
 	</head> 
 	<body style="padding: 0px; margin: 0px;" ontouchstart="return touchStart(event);" ontouchend="return touchEnd(event);" ontouchmove="return touchMove(event);"> 
+		 <audio id="audio_1" preload loop>
+          <source src="audio/dam.ogg">
+          <source src="audio/dam.wav">
+          <source src="audio/dam.mp3">
+      </audio>
+
 		<script type="text/javascript">
 			//for now this is better if it's set to false :(
 			var BUFFERING = false;
@@ -150,10 +150,11 @@ function init() {
       imgs[images[i].id].scale = images[i].y;
     }*/
   }
-  console.log(imgs['help'].img.naturalHeight);
-  console.log(imgs['help'].y)
+  
   imgs['help'].y = HEIGHT-imgs['help'].img.naturalHeight-15;
-  console.log(imgs['help'].y)
+  
+  imgs['camera'].x = WIDTH-imgs['camera'].img.naturalWidth-15;
+  imgs['camera'].y = HEIGHT-imgs['camera'].img.naturalHeight-15;
   
     var buffer;
 	if(BUFFERING){
@@ -183,8 +184,8 @@ function init() {
 	coal = require('coal')(ctx);
 	house = require('house')();
 	if(DEBUG){
-      scene = "title";
-      current = title;
+      scene = "map";
+      current = map;
     }else{
       scene = "title";
       current = title;  
@@ -211,8 +212,14 @@ function drawTitleBG(width, height){
 function endDraw(){
 	if(scene !== "map" && scene !== "title"){
 		imgs["backToMap"].draw();
-		imgs['help'].draw();
+		
 	}
+	if(typeof(current.helpMsg) === "function"){
+	  imgs['help'].draw();
+	}
+	if(typeof(current.cameraMsg) === "function"){
+    imgs['camera'].draw();
+  }
 	if(DEBUG){
 		/*ctx.fillStyle = "#000000";
 		ctx.strokeStyle = "#000000"; 
@@ -224,105 +231,19 @@ function endDraw(){
 	}
 }
 function draw(buffer) {
-  if(typeof buffer == "undefined"){
-	  buffer = false;
-  }
-  if(scene === "title"){
-	 title.draw(buffer);
-	 setTimeout(draw, FRAMERATE);  
-	 endDraw();
-  	 return;
-  }
-  
-  if(scene === "map"){
-	 map.draw(buffer);
-	 setTimeout(draw, FRAMERATE);  
-	 endDraw();
-  	 return;
-  }
-  //ctx.clearRect(0, 0, WIDTH, HEIGHT);
-  if(scene === "house"){
-	  // ctx.save();
-	 //ctx.translate(WIDTH, 0);
-	 //ctx.rotate(90*Math.PI/180);
-	 //should probably put calcPos in draw
-	 house.calcPos();
-	 house.draw();
-	 //ctx.restore();
- 	  setTimeout(draw, FRAMERATE); 
-	  endDraw();
-	 
-
-	 return;
-  }
-   if(scene === "coal"){
-		
-	// ctx.save();
-	 //ctx.translate(WIDTH, 0);
-	 //ctx.rotate(90*Math.PI/180);
-	  coal.draw();
-	  setTimeout(draw, FRAMERATE); 
-	 //ctx.restore();
- 	 endDraw();
-
-	 return;
-  }
-  
-   if(scene === "damTop"){
-	// ctx.save();
-	 //ctx.translate(WIDTH, 0);
-	 //ctx.rotate(90*Math.PI/180);
-	  damTop.draw(ctx);
-	  setTimeout(draw, FRAMERATE); 
-	 //ctx.restore();
- 	 endDraw();
-
-	 return;
-  }
-     if(scene === "damInside"){
-       damInside.draw();
-	// ctx.save();
-	 //ctx.translate(WIDTH, 0);
-	 //ctx.rotate(90*Math.PI/180);
-	  setTimeout(draw, FRAMERATE); 
-	 //ctx.restore();
- 	 endDraw();
-
-	 return;
-  }
+  if(typeof(current.draw) === "function"){
     if(scene === "crank"){
-	// ctx.save();
-	 //ctx.translate(WIDTH, 0);
-	 //ctx.rotate(90*Math.PI/180);
-	 drawCrank();
-	  setTimeout(draw, FRAMERATE); 
-	 //ctx.restore();
- 	 endDraw();
+       drawCrank();
+    }else{
+      current.draw(ctx);
+    }
+    setTimeout(draw, FRAMERATE); 
+     //ctx.restore();
+     endDraw();
 
-	 return;
-  }
-  if(scene == "wind"){
-	// ctx.save();
-	 //ctx.translate(WIDTH, 0);
-	 //ctx.rotate(90*Math.PI/180);
-	 wind.draw();
-	  setTimeout(draw, FRAMERATE); 
-	 //ctx.restore();
- 	 endDraw();
-
-	 return;
-  }
-  if(scene == "nuclear"){
-	// ctx.save();
-	 //ctx.translate(WIDTH, 0);
-	 //ctx.rotate(90*Math.PI/180);
-	 nuclear.draw();
-	 setTimeout(draw, FRAMERATE); 
-	 //ctx.restore();
- 	 endDraw();
-
-	 return;
-  }
+     return;    
+    
+  } 
 }
 
 
@@ -336,12 +257,12 @@ function mouseReleased(touchX, touchY) {
 	
 	DRAGGING = false;
 	
-	if(typeof(current.mouseReleased) === "function"){
+	if(typeof(current) !== "undefined" && typeof(current.mouseReleased) === "function"){
 	  current.mouseReleased(x, y);
 	  return;
 	}
 	
-	
+	//console.log("ERROR: MOUSE PRESSED NOT FIRED PROPERLY");
 	if(scene === "house"){
 		house.mouseReleased(x, y);
 		return;	
@@ -356,12 +277,21 @@ function mouseReleased(touchX, touchY) {
 	 }
 }
 
+function switchScene(newScene){
+    if(typeof(current) !== "undefined" && typeof(current.reset) === "function"){
+       current.reset();
+    }
+    scene = newScene;
+    current = this[scene];
+  
+}
 
 function mousePressed(touchX, touchY) {
 	var x;
 	var y;
 	DRAGGING = true;
 	if(DEBUG){
+	  
 	  console.log(touchX, touchY);
 	}
 	if(touchX){
@@ -371,8 +301,8 @@ function mousePressed(touchX, touchY) {
 		dragY = touchY;	 
 	}
 	if(x<100&&y<100){
-		scene = "map";
-		current = map;
+	  switchScene("map");
+		document.getElementById('audio_1').pause()
 		resetCrank();
 		return;	
 	}
@@ -383,35 +313,25 @@ function mousePressed(touchX, touchY) {
 	   }
 	}
 	
-	if(scene === "house"){
-	  
-		//x+=WIDTH;
-		//houseMousePressed(y, -x+WIDTH);
-		house.mousePressed(x,y);
-		return;	
-	}
-	if(scene === "map"){
-		scene = map.mousePressed(x, y);
-		current = this[scene];
-		return;	
-	}
+	if(x>imgs['camera'].x&&y>imgs['camera'].y){
+     if(typeof(current.cameraMsg) === "function"){
+         current.cameraMsg();
+         return;
+     }
+  }
+  	
+	if(typeof(current) !== "undefined" && typeof(current.mousePressed) === "function"){
+	     var ret = current.mousePressed(x, y);
+       if(scene === "map"){
+          switchScene(ret);
+       }
+       return;
+  }
+	
 	
 	if(scene === "crank"){
 		crankMousePressed(x, y);	
 	}
-	
-	if(scene === "damTop"){
-		damTop.mousePressed(x, y);	
-	}
-	
-	
-	if(scene === "coal"){
-		coal.mousePressed(x, y);	
-	}
-	
-	 if(scene === "damInside"){
-     damInside.mousePressed(x, y);
-	 }
 }
 
 function varersect(x1, y1, width, height, x2, y2){
@@ -462,16 +382,15 @@ function drawEllipse(ctx, x, y, w, h) {
 
 
 		</script> 
-    
-		<canvas onmousedown="return mouseDown(event);" onmouseup="return mouseUp(event);" id="2d" width="1018" height="763"></canvas> 
-		 <?php 
-		 
+     <?php 
+      $width = 1018;
+      $height = 763;
 		  //used for the house
-		  $crankPos = array("x" => -50, "y" => 50);
+		  $crankPos = array("x" => 0, "y" => 0);
         
       
-      $cCrankX = $crankPos.x+200+((370*.7)/2);
-      $cCrankY = $crankPos.y+420;
+      $cCrankX = $crankPos['x']+200+((370*.7)/2);
+      $cCrankY = $crankPos['y']+420;
       $crankWidth = 171*.7; 
       $crankHeight = 506*.7;
       
@@ -481,10 +400,14 @@ function drawEllipse(ctx, x, y, w, h) {
       $tGearHeight =263*.6;
       
       $cBGearX = $cCrankX-50;
-      $cBGearY = $crankPos.y+600;
+      $cBGearY = $crankPos['y']+600;
       $bGearWidth =180;
       $bGearHeight = 180;
       
+     ?>
+      <canvas onmousedown="return mouseDown(event);" onmouseup="return mouseUp(event);" id="2d" width="<?= $width ?>" height="<?= $height ?>"></canvas> 
+    
+     <?php
 		 $titleImageLoc = "title/images/";
 		 $houseImageLoc = "house/images/";
 		 $mapImageLoc = "map/images/";
@@ -531,26 +454,46 @@ function drawEllipse(ctx, x, y, w, h) {
 							   "bgWind" => array("src" => $windImageLoc."bgWind.png"),
 							    "windPost" => array("src" => $windImageLoc."wind.png", "x" => 3, "y" => 270),
 							    "windMagnet" => array("src" => $windImageLoc."windMagnet.png", "x"=>690, "y"=>498),
+							       
+                    "windPhotosBackView" => array("src" => $windImageLoc."photos/backView.JPG", "x"=>0, "y"=>0),
+                    "windPhotosFarmhouse" => array("src" => $windImageLoc."photos/farmhouse.JPG", "x"=>0, "y"=>0),
+                    "windPhotosLandscape1" => array("src" => $windImageLoc."photos/landscape1.JPG", "x"=>0, "y"=>0),
+                    "windPhotosLandscape2" => array("src" => $windImageLoc."photos/landscape2.JPG", "x"=>0, "y"=>0),
+                    
 							    "backToMap" => array("src" => "images/mapIcon.png"),
 							    "help"     => array("src" => "images/helpIcon.png", "x"=>5),
-								"damTop" =>  array("src" => $damTopImageLoc."dam.png"),
-								"damTopText" =>  array("src" => $damTopImageLoc."damText.png", "x" => 110, "y" => 24),
-								"damInsideBg" =>  array("src" => $damInsideImageLoc."bgDam.png", "y" => 100),
-								"damInside" =>  array("src" => $damInsideImageLoc."dam.png", "x" => 0, "y"=>146),
-								"damInsideGate" =>  array("src" => $damInsideImageLoc."gate.png", "x"=>60, "y"=>408, "width"=>35, "height"=>94, "scale"=>1.6),
-								"damInsideWater" =>  array("src" => $damInsideImageLoc."watertop.png", "width"=>71, "height"=>33, "scale"=>1.8),
-								"damSprite" =>  array("src" => $damInsideImageLoc."damSprite.png", "x"=> 494, "y" => 435, "scale" => 1.85),
-								"damInsideText" =>  array("src" => $damInsideImageLoc."dam2Text.png", "x"=>200, "y"=>5),
-								"generator" => array("src" => $coalImageLoc."generator.png", "x"=>520, "y"=>453),
-								"coalTapHelp" => array("src" => $coalImageLoc."coalHelp.png", "x"=>20, "y"=>393),
-                "coalDragHelp" => array("src" => $coalImageLoc."dragHelp.png", "x"=>305, "y"=>383),
-                "coalBeakHelp" => array("src" => $coalImageLoc."breakHelp.png", "x"=>420, "y"=>383),
-                "coalFireHelp" => array("src" => $coalImageLoc."fireHelp.png", "x"=>300, "y"=>583),
-                "coalWater" => array("src" => $coalImageLoc."water.png"),
-								"bubbles" => array("src" => $coalImageLoc."bubbles.png", "x"=>285, "y"=>279),
-								"coalPlant" => array("src" => $coalImageLoc."building.png"),
-								"nuclearBg" => array("src" => $nuclearImageLoc."bg.png")
-								);
+							    "camera"  => array("src" => "images/cameraIcon.png"),
+  								"damTop" =>  array("src" => $damTopImageLoc."dam.png"),
+  								"damTopText" =>  array("src" => $damTopImageLoc."damText.png", "x" => 110, "y" => 24),
+  								
+  								    "damTopPhotosRoad" => array("src" => $damTopImageLoc."photos/road.jpg", "x"=>0, "y"=>0),
+                    
+  								"damInsideBg" =>  array("src" => $damInsideImageLoc."bgDam.png", "y" => 100),
+  								"damInside" =>  array("src" => $damInsideImageLoc."dam.png", "x" => 0, "y"=>146),
+  								"damInsideGate" =>  array("src" => $damInsideImageLoc."gate.png", "x"=>60, "y"=>408, "width"=>35, "height"=>94, "scale"=>1.6),
+  								"damInsideWater" =>  array("src" => $damInsideImageLoc."watertop.png", "width"=>71, "height"=>33, "scale"=>1.8),
+  								"damSprite" =>  array("src" => $damInsideImageLoc."damSprite.png", "x"=> 494, "y" => 435, "scale" => 1.85),
+  								"damInsideText" =>  array("src" => $damInsideImageLoc."dam2Text.png", "x"=>200, "y"=>5),
+  								"generator" => array("src" => $coalImageLoc."generator.png", "x"=>520, "y"=>453),
+  								"coalTapHelp" => array("src" => $coalImageLoc."coalHelp.png", "x"=>20, "y"=>393),
+                  "coalDragHelp" => array("src" => $coalImageLoc."dragHelp.png", "x"=>305, "y"=>383),
+                  "coalBeakHelp" => array("src" => $coalImageLoc."breakHelp.png", "x"=>420, "y"=>383),
+                  "coalFireHelp" => array("src" => $coalImageLoc."fireHelp.png", "x"=>300, "y"=>583),
+                  "coalWater" => array("src" => $coalImageLoc."water.png"),
+  								"bubbles" => array("src" => $coalImageLoc."bubbles.png", "x"=>285, "y"=>279),
+  								"coalPlant" => array("src" => $coalImageLoc."building.png"),
+  								
+  								    "coalPhotosBuildings" => array("src" => $coalImageLoc."photos/building.jpg", "x"=>0, "y"=>0),
+                      "coalPhotosNight" => array("src" => $coalImageLoc."photos/night.jpg", "x"=>0, "y"=>0),
+                      "coalPhotosSmokeStacks" => array("src" => $coalImageLoc."photos/smokestacks.jpg", "x"=>0, "y"=>0),
+                      "coalPhotosSunset" => array("src" => $coalImageLoc."photos/sunset.jpg", "x"=>0, "y"=>0),
+  								
+  								"nuclearBg" => array("src" => $nuclearImageLoc."bg.png"),
+    								"nuclearPhotosBuildings" => array("src" => $nuclearImageLoc."photos/buildings.jpg", "x"=>0, "y"=>0),
+    								"nuclearPhotosFull" => array("src" => $nuclearImageLoc."photos/full.jpg", "x"=>0, "y"=>0),
+    								"nuclearPhotosTowers" => array("src" => $nuclearImageLoc."photos/towers.jpg", "x"=>0, "y"=>0)
+                  
+  								);
 							   
 			foreach($images as $id => $image){
 		?>

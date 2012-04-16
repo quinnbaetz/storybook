@@ -1,28 +1,45 @@
-define("damTop", function(Sprite) {
+define("damTop", ["extern/canvas.DrawSprites/canvas.DrawSprites", "extern/underscore/underscore.js"], function(DrawSprite) {
     return function(ctx){
-        var totalPoints = 7; //Total # of Peaks & Valleys. Should be an odd number to account for the middle point.
-        var ampMultiplier = .8; //Amplitude of the waves. Further multipled by totalPoints.
-        var framerate = 30; //framerate in ms (1000/30 = 33.33 fps)
-        var cWidth = 900; //Canvas Width will be changed to the width of the viewport
-        var cHeight = 20; //Canvas Height
-        var waterLevel = 360; //The y value of the surface of the water
-        var spreadAccelleration = 1.01; //Acceleration for point spread
-        var spreadSpeed = 15; //Fixed speed for point spread
+        var reset = _.bind(function(){
+            this.photoShow = false;
         
-        //Global Static Variables
-        var dur = (totalPoints-3)*9; //Duration. Calculation is Total points, minus mid and end points
-        var midPointIndex = Math.floor(totalPoints/2); //The index of the midpoint within the Points array
-        var midPointX; //X position of cursor
-        var canvas; //The canvas element
-        var ctx; //The Canvas Context
-        var animation; //Interval that runs drawing script
-        var animationActive = false; //true when an animation is occuring, used to control the frequency of the animation
-        var C = Math.PI/180; //Constant used in the sine function
-        var points; //An array container that holds each point
-        var point; //Holds the current point
-        var counter; //The counter that we'll increment to control each frame of the animation
-        var first = true;
+            this.totalPoints = 7; //Total # of Peaks & Valleys. Should be an odd number to account for the middle point.
+            this.ampMultiplier = .8; //Amplitude of the waves. Further multipled by totalPoints.
+            this.framerate = 30; //framerate in ms (1000/30 = 33.33 fps)
+            this.cWidth = 900; //Canvas Width will be changed to the width of the viewport
+            this.cHeight = 20; //Canvas Height
+            this.waterLevel = 360; //The y value of the surface of the water
+            this.spreadAccelleration = 1.01; //Acceleration for point spread
+            this.spreadSpeed = 15; //Fixed speed for point spread
+            
+            //Global Static Variables
+            this.dur = (totalPoints-3)*9; //Duration. Calculation is Total points, minus mid and end points
+            this.midPointIndex = Math.floor(totalPoints/2); //The index of the midpoint within the Points array
+            this.midPointX; //X position of cursor
+            this.canvas; //The canvas element
+            this.ctx; //The Canvas Context
+            this.animation; //Interval that runs drawing script
+            this.animationActive = false; //true when an animation is occuring, used to control the frequency of the animation
+            this.C = Math.PI/180; //Constant used in the sine function
+            this.points; //An array container that holds each point
+            this.point; //Holds the current point
+            this.counter; //The counter that we'll increment to control each frame of the animation
+            this.first = true;
+        
+        },this);
+        
+        reset();
+        
+        var photoSprites = new DrawSprite([_.bind(imgs["damTopPhotosRoad"].draw, imgs["damTopPhotosRoad"])], {ctx: ctx, x: 0, y:0, callback: function(fun){fun();}});
+      
+        //damTopPhotosRoad
+        
         var drawDamTop = function(){
+                if(photoShow){
+                    slideShow();
+                    return;
+                }
+                
         		this.ctx = ctx;
                 ctx.save();
         		ctx.fillStyle = "#00A651";
@@ -45,8 +62,12 @@ define("damTop", function(Sprite) {
         }
         
         var damTopMousePressed = function(x, y){
+            if(photoShow){
+                photoSprites.advance();
+                return;
+            }
            if(varersect(970, 159, 50, 50, x, y) || varersect(270, 621, 160, 120, x, y)){
-        		scene = "damInside";
+        		switchScene("damInside");
         		return;   
            }
           if (!animationActive){
@@ -123,9 +144,22 @@ define("damTop", function(Sprite) {
         		animationActive = false;    
         	}
           }
+        
+        var slideShow = function(){
+            photoSprites.draw();
+        }
+        var cameraMsg = function(){
+            photoShow = !photoShow;
+            if(photoShow){
+                reset();
+            }
+        }
           return {
               draw: drawDamTop,
-              mousePressed: damTopMousePressed
+              mousePressed: damTopMousePressed,
+              cameraMsg: cameraMsg,
+              reset: reset
+              
           };
     }
 });

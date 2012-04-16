@@ -1,26 +1,47 @@
 define("coal", ["coal/drawing", "extern/canvas.Sprites/canvas.Sprites", "extern/canvas.DrawSprites/canvas.DrawSprites"], 
 function(draw, Sprite, DrawSprite) {
     return function(ctx){
-        var spinning = false;
-        var part = 0;
-        var heat = 0;
-        var bubbleCount=0;
-        var generatorCount=0;
-        var bubbleSpeed=0;
-        var generatorSpeed=0;
+        
+        var reset = _.bind(function(){
+            this.photoShow = false;
+            
+            this.spinning = false;
+            this.part = 0;
+            this.heat = 0;
+            this.bubbleCount=0;
+            this.generatorCount=0;
+            this.bubbleSpeed=0;
+            this.generatorSpeed=0;
+            
+            this.needHelp = false;
+            this.helpPart = 0;
+            this.coalPart = 0;
+            this.dragging = false;
+            this.dragStart = {x: 0, y:0};
+            this.showFire = false;
+            this.coalSprite = new DrawSprite(draw.coal, {ctx: ctx, x: -132, y:-146, minX: -132, maxX: 250, maxY: -146, minY: -160 });
+        },this);
+        
+        reset();
+        
         
         var bubbleSprite = new Sprite(imgs["bubbles"].img, 60, {x: imgs['bubbles'].x, y: imgs['bubbles'].y, scale: 1, ctx: ctx});
         var magentSprite = new Sprite(imgs["generator"].img, 10, {x : imgs['generator'].x, y: imgs['generator'].y, ctx: ctx});
-        var coal = new DrawSprite(draw.coal, {ctx: ctx, x: -132, y:-146, minX: -132, maxX: 250, maxY: -146, minY: -160 });
         var fire = new DrawSprite(draw.fire, {ctx: ctx, x: 327, y:515, scale: .5});
+        var photoSprites = new DrawSprite([_.bind(imgs["coalPhotosBuildings"].draw, imgs["coalPhotosBuildings"]),
+                                           _.bind(imgs["coalPhotosNight"].draw, imgs["coalPhotosNight"]),
+                                           _.bind(imgs["coalPhotosSmokeStacks"].draw, imgs["coalPhotosSmokeStacks"]),
+                                           _.bind(imgs["coalPhotosSunset"].draw, imgs["coalPhotosSunset"]) ], {ctx: ctx, x: 0, y:0, callback: function(fun){fun();}});
         
-        var needHelp = false;
-        var helpPart = 0;
-        var coalPart = 0;
-        var dragging = false;
-        var dragStart = {x: 0, y:0};
-        var showFire = false;
+    
         var drawCoal = function(){
+            if(photoShow){
+
+                console.log("photosho");
+                slideShow();
+                return;
+            }
+            
             draw.pipe(ctx, 0, -276, heat);
         	
             imgs["coalPlant"].draw();
@@ -31,15 +52,15 @@ function(draw, Sprite, DrawSprite) {
                 func(ctx, this.origX, this.origY, heat);
             }};
             if(dragging){
-                coalOpts.x = Math.min(coal.maxX,(Math.max(coal.minX, coal.origX + (dragX - dragStart.x))));
-                coalOpts.y = Math.min(coal.maxY,(Math.max(coal.minY, coal.origY + (dragY - dragStart.y))));
+                coalOpts.x = Math.min(coalSprite.maxX,(Math.max(coalSprite.minX, coalSprite.origX + (dragX - dragStart.x))));
+                coalOpts.y = Math.min(coalSprite.maxY,(Math.max(coalSprite.minY, coalSprite.origY + (dragY - dragStart.y))));
                 if(coalOpts.x > 190){
                     dragging = false;
                     helpPart = 2;
                 }
             
             }
-            coal.draw(coalOpts);
+            coalSprite.draw(coalOpts);
 
             if(showFire){
                 fire.advance();
@@ -114,8 +135,13 @@ function(draw, Sprite, DrawSprite) {
         
         
         var coalMousePressed = function(x, y){
+            if(photoShow){
+                photoSprites.advance();
+                return;
+            }
+            
             var coalTouch = function(){
-                return (varersect(0+(coal.x-coal.origX), 460+(coal.y-coal.origY), 72, 46, x, y));
+                return (varersect(0+(coalSprite.x-coalSprite.origX), 460+(coalSprite.y-coalSprite.origY), 72, 46, x, y));
             };
             var fireTouch = function(){
                 return (varersect(295, 506, 145, 76, x, y));
@@ -125,14 +151,14 @@ function(draw, Sprite, DrawSprite) {
                 case 1:
                     if(coalTouch()){
                         helpPart = 1;
-                        dragStart = {x: x-(coal.x-coal.origX), y:y-(coal.y-coal.origY)}
+                        dragStart = {x: x-(coalSprite.x-coalSprite.origX), y:y-(coalSprite.y-coalSprite.origY)}
                         dragging = true;
                     }
                 break;
                 case 2:
                     if(coalTouch()){
-                        coal.advance();
-                        if(coal.getPos() == 2){
+                        coalSprite.advance();
+                        if(coalSprite.getPos() == 2){
                             helpPart = 3;
                         }
                     }
@@ -163,11 +189,27 @@ function(draw, Sprite, DrawSprite) {
         var helpMsg = function(){
             needHelp = true;
         };
+        
+        var slideShow = function(){
+            console.log("drawing photospritses");
+            photoSprites.draw();
+        }
+        var cameraMsg = function(){
+            photoShow = !photoShow;
+            if(photoShow){
+                reset();
+                photoShow = true;
+            }
+        }
+        
+        
         return {
             mousePressed: coalMousePressed,
             mouseReleased: coalMouseReleased,
             draw: drawCoal,
-            helpMsg: helpMsg
+            helpMsg: helpMsg,
+            cameraMsg: cameraMsg,
+            reset: reset
         }
     }
 });

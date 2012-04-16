@@ -1,9 +1,26 @@
-define("nuclear", ["extern/canvas.Sprites/canvas.Sprites"], function(Sprite) {
+define("nuclear", ["extern/canvas.Sprites/canvas.Sprites", "extern/canvas.DrawSprites/canvas.DrawSprites"], function(Sprite, DrawSprite) {
     return function(){
+       
         var magentSprite = new Sprite(imgs["generator"].img, 10, {x: 400, y: 480, scale: .47, ctx: ctx});
         
+        var photoSprites = new DrawSprite([_.bind(imgs["nuclearPhotosBuildings"].draw, imgs["nuclearPhotosBuildings"]),
+                                           _.bind(imgs["nuclearPhotosFull"].draw, imgs["nuclearPhotosFull"]),
+                                           _.bind(imgs["nuclearPhotosTowers"].draw, imgs["nuclearPhotosTowers"])], {ctx: ctx, x: 0, y:0, callback: function(fun){fun();}});
+      
+        
+        var reset = _.bind(function(){
+            this.photoShow = false;
+        }, this);
+        
+        reset();
+        
         var drawNuclear = function(){
-        	imgs["nuclearBg"].draw();
+        	if(photoShow){
+                slideShow();
+                return;
+            }
+            
+            imgs["nuclearBg"].draw();
         	magentSprite.advance();
         	magentSprite.draw();
         	
@@ -21,8 +38,23 @@ define("nuclear", ["extern/canvas.Sprites/canvas.Sprites"], function(Sprite) {
         	
         }
         
+        var slideShow = function(){
+            photoSprites.draw();
+        }
+        var cameraMsg = function(){
+            photoShow = !photoShow;
+        }
+        var mousePressed = function(){
+            if(photoShow){
+                photoSprites.advance();
+            }
+        }
+        
         return {
-            draw: drawNuclear
+            draw: drawNuclear,
+            cameraMsg: cameraMsg,
+            mousePressed: mousePressed,
+            reset: reset
         }
     };
 });
