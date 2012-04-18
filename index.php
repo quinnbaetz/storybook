@@ -23,10 +23,10 @@
             ?>
             function <?= $i ?>(e){
               offsetY = document.body.scrollTop + document.documentElement.scrollTop;
-            <?php if($i[0] == 't'){ //if we are a touch event?>
-              e = evt.touches.item(0);
-              
-            <?php }//perhaps should be preventing default here ?>
+              if(e.touches){ //if we are a touch event?>
+                e.preventDefault();
+                e = e.touches.item(0);
+              }
             <?php if($i == 'mouseDown'){ //if we are a touch event?>
               applet.onmousemove = mouseMove;
             <?php } ?>
@@ -46,18 +46,12 @@
 		</script>
 	</head> 
 	<body style="padding: 0px; margin: 0px;" ontouchstart="return touchStart(event);" ontouchend="return touchEnd(event);" ontouchmove="return touchMove(event);"> 
-		 <audio id="audio_1" preload loop>
-          <source src="audio/dam.ogg">
-          <source src="audio/dam.wav">
-          <source src="audio/dam.mp3">
-      </audio>
-
 		<script type="text/javascript">
 			//for now this is better if it's set to false :(
 			var BUFFERING = false;
 			//refreshes every 50 milliseconds
 			var FRAMERATE = 50;
-			var DEBUG = true;
+			var DEBUG = false;
 			
 			var ctx;
 			var WIDTH = 1024;
@@ -65,6 +59,7 @@
 			var VOLUME = 0;
 			var acceleration = {};
 			var imgs = [];
+			var audio = [];
 			var scene;
 			var DRAGGING = false;
 										
@@ -156,6 +151,12 @@ function init() {
   imgs['camera'].x = WIDTH-imgs['camera'].img.naturalWidth-15;
   imgs['camera'].y = HEIGHT-imgs['camera'].img.naturalHeight-15;
   
+   var audios = document.getElementsByTagName('audio');
+   for(var i in audios){
+    audio[audios[i].id.substring(1)] = audios[i]; 
+    console.log(audios[i].id.substring(1))
+   }
+   
     var buffer;
 	if(BUFFERING){
 		buffer = document.createElement('canvas');
@@ -184,8 +185,8 @@ function init() {
 	coal = require('coal')(ctx);
 	house = require('house')();
 	if(DEBUG){
-      scene = "map";
-      current = map;
+      scene = "nuclear";
+      current = nuclear;
     }else{
       scene = "title";
       current = title;  
@@ -302,7 +303,7 @@ function mousePressed(touchX, touchY) {
 	}
 	if(x<100&&y<100){
 	  switchScene("map");
-		document.getElementById('audio_1').pause()
+		audio["damBG"].pause();
 		resetCrank();
 		return;	
 	}
@@ -405,7 +406,7 @@ function drawEllipse(ctx, x, y, w, h) {
       $bGearHeight = 180;
       
      ?>
-      <canvas onmousedown="return mouseDown(event);" onmouseup="return mouseUp(event);" id="2d" width="<?= $width ?>" height="<?= $height ?>"></canvas> 
+      <canvas onmousedown="return mouseDown(event);" onmouseup="return mouseUp(event);" id="2d" width="<?= $width ?>" height="<?= $height ?>" style='positiion: absolute; top: 0px; left:0px;'></canvas> 
     
      <?php
 		 $titleImageLoc = "title/images/";
@@ -502,8 +503,24 @@ function drawEllipse(ctx, x, y, w, h) {
                 <?=$prop?>='<?=$val?>' 
             <?php } ?>
           />
-        <?php } ?>
-    </body> 
+        <?php } 
+        $audios = array(
+          "SdamBG" => array("src" => "audio/dam", "attr" => 'loop'),
+          "SwindBG" => array("src" => "audio/windturbine", "attr" => 'loop'),
+          "Sclicks" => array("src" => "audio/clicks", "attr" => 'loop'),
+          "SclipAttach" => array("src" => "audio/click", "attr" => ''),
+          "SclipRelease" => array("src" => "audio/click2", "attr" => ''),
+          "Sding" => array("src" => "audio/ding", "attr" => '')
+        );
+        foreach($audios as $id => $audio){
+        ?>
+         <audio id="<?=$id?>" preload <?=$audio['attr']?>>
+          <source src="<?=$audio['src']?>.ogg">
+          <source src="<?=$audio['src']?>.wav">
+          <source src="<?=$audio['src']?>.mp3">
+      </audio>
+      <?php } ?>
+   </body> 
 </html>
 
 

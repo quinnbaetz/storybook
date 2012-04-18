@@ -133,8 +133,7 @@ define("map", function() {
             		return "wind";	
             	}
             	if(varersect(0, 0, 375, 280, x, y)){
-
-                    document.getElementById('audio_1').play()
+                    audio['damBG'].play()
             		return "damTop";	
             	}
             	

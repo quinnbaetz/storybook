@@ -257,7 +257,7 @@ define('house', ['house/drawing'], function(draw){
             }
 
         	if(x>=730 && y>=590){
-        		scene="crank";	
+        	    switchScene("crank");	
         		return;
         	}
         	if(x>=730 && y<=200){
@@ -273,6 +273,8 @@ define('house', ['house/drawing'], function(draw){
         		
         		
         	if(redMove){
+                audio['clipRelease'].play()
+
         		if(varersect(temp.x-redPos.width, temp.y-redPos.height, 
         					temp.width+redPos.width, temp.height+redPos.height, 
         					redPos.x, redPos.y)){
@@ -292,6 +294,8 @@ define('house', ['house/drawing'], function(draw){
         		}
         	}
         	if(blackMove){
+        	    audio['clipRelease'].play()
+
         		if(varersect(temp.x-blackPos.width, temp.y-blackPos.height, 
         					temp.width+blackPos.width, temp.height+blackPos.height, 
         					blackPos.x, blackPos.y)){
@@ -329,9 +333,11 @@ define('house', ['house/drawing'], function(draw){
         	
         	if(!redDone && varersect(redPos.x, redPos.y, redPos.width, redPos.height, x, y)){
         	    redMove = true;	
+                audio['clipAttach'].play()
         	}else{
         		if(!blackDone && varersect(blackPos.x, blackPos.y, blackPos.width, blackPos.height, x, y)){
         		    blackMove = true;	
+        		    audio['clipAttach'].play()
         		}else{
         			if(dist(cCrankX, cCrankY, x, y)<(812*.7)/2){
         				lightPos = 0;

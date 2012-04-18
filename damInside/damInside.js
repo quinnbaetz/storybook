@@ -1,20 +1,23 @@
 define("damInside", ["extern/canvas.Sprites/canvas.Sprites", "extern/canvas.DrawSprites/canvas.DrawSprites", "damInside/drawing"], function(Sprite, DrawSprite, draw) {
     return function(){
-        var reset = _.bind(function(){
-            this.photoShow = false;
+        var ret = {};
+        ret.retFuns = {};
+        var reset = function(){
+            console.log(this);
+            ret.photoShow = false;
             
-            this.part = 0;
-            this.rot = 0;
-            this.gateDrag = false;
-            this.gateStartY = 0;
-            this.waterlevel = 185; //400
-            this.minWater = 185;
-            this.maxWater = 400;
-            this.expectedWaterLevel = 185;
-            this.frame = 0;
-            this.alpha = 0;
+            ret.part = 0;
+            ret.rot = 0;
+            ret.gateDrag = false;
+            ret.gateStartY = 0;
+            ret.waterlevel = 185; //400
+            ret.minWater = 185;
+            ret.maxWater = 400;
+            ret.expectedWaterLevel = 185;
+            ret.frame = 0;
+            ret.alpha = 0;
         
-        },this);
+        };
         
         reset();
         
@@ -118,6 +121,7 @@ define("damInside", ["extern/canvas.Sprites/canvas.Sprites", "extern/canvas.Draw
             photoShow = !photoShow;
             if(photoShow){
                 reset();
+                photoSow = true;
             }
         }
         
@@ -126,6 +130,8 @@ define("damInside", ["extern/canvas.Sprites/canvas.Sprites", "extern/canvas.Draw
         }
         
         function damInsidePressed(x, y){
+
+            console.log("HERE", this);
             if(photoShow){
                 photoSprites.advance();
                 return;
@@ -136,12 +142,12 @@ define("damInside", ["extern/canvas.Sprites/canvas.Sprites", "extern/canvas.Draw
         		
         	}
         }
-        return {
-            draw: drawDamInside,
-            mousePressed: damInsidePressed,
-            mouseReleased: damInsideReleased,
-            cameraMsg: cameraMsg,
-            reset: reset
-        }
+        
+        ret.retFuns.draw = drawDamInside;
+        ret.retFuns.mousePressed = damInsidePressed;
+        ret.retFuns.mouseReleased = damInsideReleased;
+        ret.retFuns.cameraMsg = cameraMsg;
+        ret.retFuns.reset = reset;
+        return ret.retFuns;
     }
 });

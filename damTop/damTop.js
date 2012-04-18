@@ -152,6 +152,7 @@ define("damTop", ["extern/canvas.DrawSprites/canvas.DrawSprites", "extern/unders
             photoShow = !photoShow;
             if(photoShow){
                 reset();
+                photoShow = true;
             }
         }
           return {

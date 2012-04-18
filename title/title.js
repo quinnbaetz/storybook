@@ -25,7 +25,7 @@ define("title", ["title/drawing"], function(draw) {
 			ctx.save();	
 			ctx.translate(0, transPos-=16);
 			if(transPos < -HEIGHT){
-				scene = "map";	
+			    switchScene("map");	
 			}
 		}
 		frame++;
@@ -97,6 +97,7 @@ define("title", ["title/drawing"], function(draw) {
 		var delta = .2;
 		var cw = false;
 		var ccw = false;
+		var turning = false;
 		if(first){
 			dragX = WIDTH/2;
 			dragY = 0;
@@ -104,6 +105,7 @@ define("title", ["title/drawing"], function(draw) {
 		}
 	   var angle = 0;
 	   if(DRAGGING){
+	       turning = true;
 		   var x = dragX;
 		   var y = dragY;
 		   if(typeof(x) !== "undefined" || typeof(y) !== "undefined"){
@@ -117,6 +119,7 @@ define("title", ["title/drawing"], function(draw) {
 		   }
 	   }else{
 		   if(typeof(acceleration.y)==="undefined"){
+		       audio['clicks'].pause();
 			   return currentA;
 		   }
 		   angle = currentA;
@@ -132,6 +135,7 @@ define("title", ["title/drawing"], function(draw) {
 	   }
 	   if(Math.abs(currentA-angle) < Math.PI){
 		   if(Math.abs(currentA-angle) > delta || cw || ccw){
+		       turning = true;
 			   if(currentA<angle || cw){
 					currentA += delta;
 			   }else if(currentA>angle || ccw){
@@ -146,7 +150,16 @@ define("title", ["title/drawing"], function(draw) {
 		   }
 	   }
 	   if(currentA > 31*(Math.PI*2/32)){
+            audio['ding'].play();
+            audio['clicks'].pause();
+            turning = false;
 			float = true;   
+	   }
+	   console.log(turning);
+	   if(turning){
+	       audio['clicks'].play();
+	   }else{
+           audio['clicks'].pause();
 	   }
 	   return currentA;
 	}
