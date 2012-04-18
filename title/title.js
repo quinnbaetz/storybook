@@ -155,7 +155,6 @@ define("title", ["title/drawing"], function(draw) {
             turning = false;
 			float = true;   
 	   }
-	   console.log(turning);
 	   if(turning){
 	       audio['clicks'].play();
 	   }else{

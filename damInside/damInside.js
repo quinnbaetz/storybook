@@ -1,21 +1,30 @@
 define("damInside", ["extern/canvas.Sprites/canvas.Sprites", "extern/canvas.DrawSprites/canvas.DrawSprites", "damInside/drawing"], function(Sprite, DrawSprite, draw) {
     return function(){
-        var ret = {};
-        ret.retFuns = {};
+        
+        var photoShow = false;
+        var part = 0;
+        var rot = 0;
+        var gateDrag = false;
+        var gateStartY = 0;
+        var waterlevel = 185; //400
+        var minWater = 185;
+        var maxWater = 400;
+        var expectedWaterLevel = 185;
+        var frame = 0;
+        var alpha = 0;
+        
         var reset = function(){
-            console.log(this);
-            ret.photoShow = false;
-            
-            ret.part = 0;
-            ret.rot = 0;
-            ret.gateDrag = false;
-            ret.gateStartY = 0;
-            ret.waterlevel = 185; //400
-            ret.minWater = 185;
-            ret.maxWater = 400;
-            ret.expectedWaterLevel = 185;
-            ret.frame = 0;
-            ret.alpha = 0;
+            photoShow = false;
+            part = 0;
+            rot = 0;
+            gateDrag = false;
+            gateStartY = 0;
+            waterlevel = 185; //400
+            minWater = 185;
+            maxWater = 400;
+            expectedWaterLevel = 185;
+            frame = 0;
+            alpha = 0;
         
         };
         
@@ -143,11 +152,12 @@ define("damInside", ["extern/canvas.Sprites/canvas.Sprites", "extern/canvas.Draw
         	}
         }
         
-        ret.retFuns.draw = drawDamInside;
-        ret.retFuns.mousePressed = damInsidePressed;
-        ret.retFuns.mouseReleased = damInsideReleased;
-        ret.retFuns.cameraMsg = cameraMsg;
-        ret.retFuns.reset = reset;
-        return ret.retFuns;
+        return {
+            draw : drawDamInside,
+            mousePressed : damInsidePressed,
+            mouseReleased : damInsideReleased,
+            cameraMsg   : cameraMsg,
+            reset   : reset
+        };
     }
 });

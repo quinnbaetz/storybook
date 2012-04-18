@@ -2,7 +2,7 @@
 <html> 
 	<head> 
 		<meta charset="utf-8"> 
-        <meta name="viewport" content="user-scalable=no;" /> 
+        <meta name="viewport" content="user-scalable=no" /> 
 		<script type='text/javascript'>
 			var applet = false;
 			var appletX;
@@ -105,8 +105,24 @@ function setAcceleration(x, y, z){
 	//alert(v*100);
 	acceleration = {x:x,y:y,z:z};	
 }
+
+window.drawTitleBG=function(width, height){
+  ctx.beginPath();
+  ctx.moveTo(width, height);
+  ctx.lineTo(0.0, height);
+  ctx.lineTo(0.0, 0.0);
+  ctx.lineTo(width, 0.0);
+  ctx.lineTo(width, height);
+  ctx.closePath();
+  ctx.fillStyle = "rgb(121, 237, 255)";
+  ctx.fill(); 
+  
+}
+
 function init() {
   CImage = require('canvas.Image');
+  CAudio = require('canvas.Audio');
+  console.log(CAudio)
   console.log("init");
   applet = document.getElementById('2d');
   appletX = parseInt(applet.offsetLeft);
@@ -152,9 +168,11 @@ function init() {
   imgs['camera'].y = HEIGHT-imgs['camera'].img.naturalHeight-15;
   
    var audios = document.getElementsByTagName('audio');
+   console.log(audios);
    for(var i in audios){
-    audio[audios[i].id.substring(1)] = audios[i]; 
-    console.log(audios[i].id.substring(1))
+      if(typeof(audios[i].id) !== "undefined"){
+        audio[audios[i].id.substring(1)] = new CAudio(audios[i]);
+      }
    }
    
     var buffer;
@@ -191,21 +209,10 @@ function init() {
       scene = "title";
       current = title;  
     }
+    
+  console.log("end init about to draw");
 	
 	draw(BUFFERING);
-	
-}
-
-function drawTitleBG(width, height){
-  ctx.beginPath();
-  ctx.moveTo(width, height);
-  ctx.lineTo(0.0, height);
-  ctx.lineTo(0.0, 0.0);
-  ctx.lineTo(width, 0.0);
-  ctx.lineTo(width, height);
-  ctx.closePath();
-  ctx.fillStyle = "rgb(121, 237, 255)";
-  ctx.fill();	
 	
 }
 
@@ -406,7 +413,7 @@ function drawEllipse(ctx, x, y, w, h) {
       $bGearHeight = 180;
       
      ?>
-      <canvas onmousedown="return mouseDown(event);" onmouseup="return mouseUp(event);" id="2d" width="<?= $width ?>" height="<?= $height ?>" style='positiion: absolute; top: 0px; left:0px;'></canvas> 
+      <canvas onmousedown="return mouseDown(event);" onmouseup="return mouseUp(event);" id="2d" width="<?= $width ?>" height="<?= $height ?>"></canvas> 
     
      <?php
 		 $titleImageLoc = "title/images/";
