@@ -32,6 +32,12 @@ define('house', ['house/drawing'], function(draw){
         var redPos;
         var blackPos;
         
+        var voltDir = 1;
+        var voltBuildup = 0;
+        var voltsStart = 1.5;
+        var voltsEnd = 6.3;
+        var volts = [];
+        
         var sensorPos;
         var voltMeterPos;
         
@@ -173,8 +179,34 @@ define('house', ['house/drawing'], function(draw){
         	  
         	  
         	  
-        	  if(sensorType !== "sensor"){
-        	      draw.volt({x: 783, y: 325, angle: angle })
+        	  if(sensorType === "voltMeter"){
+        	      var poppable = false;
+        	      var shiftable = false;
+        	      for(var i=0; i < volts.length; i++) {
+        	          console.log(voltDir);
+        	          if(voltDir === -1 && volts[i] === voltsStart){
+                          volts[i] = voltsEnd;
+                      }
+        	          
+        	          volts[i]+=(.1*voltDir);
+        	          
+        	          
+        	          if(volts[i]>voltsEnd){
+        	              shiftable = true;
+        	          }
+        	          if(volts[i]<voltsStart){
+        	              poppable = true;
+                      }
+        	          
+        	          draw.volt({x: 783, y: 325, angle: volts[i] })
+        	       }
+        	      if(shiftable){
+        	          volts.shift();
+        	      }
+        	      if(poppable){
+        	          volts.pop();
+        	      }
+        	      
         	  }
         	  if(DRAGGING){
         	  	voltMeterPos.perc=Math.max(0, voltMeterPos.perc-1);
@@ -376,8 +408,8 @@ define('house', ['house/drawing'], function(draw){
         		var delta = (oldAngle-angle);
         		if(Math.abs(delta)<=1){
         			if(blackDone && redDone){
-        				if(sensorType === "sensor"){
-        					lightPos += (angle-oldAngle);
+        			    if(sensorType === "sensor"){
+        					lightPos -= delta;
         					
         					if(lightPos>1){
         						lightPos-=1;
@@ -392,6 +424,20 @@ define('house', ['house/drawing'], function(draw){
         					}
         				}else{
         					voltMeterPos.perc=Math.min(100, voltMeterPos.perc+Math.abs(delta)*6);
+        					voltBuildup -= delta;
+        					if(voltBuildup > 5){
+        					    voltDir = 1
+        					    volts.push(voltsStart);
+        					    voltBuildup = 0;
+        					}
+        					
+        					if(voltBuildup < -5){
+        					    voltDir = -1
+                                volts.unshift(voltsStart);
+                                voltBuildup = 0;
+        					}
+        					
+        					
         				}
         			}
         		}
