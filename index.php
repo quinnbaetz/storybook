@@ -515,6 +515,7 @@ function drawEllipse(ctx, x, y, w, h) {
           "SdamBG" => array("src" => "audio/dam", "attr" => 'loop'),
           "SwindBG" => array("src" => "audio/windturbine", "attr" => 'loop'),
           "Sclicks" => array("src" => "audio/clicks", "attr" => 'loop'),
+          "Sgenerator" => array("src" => "audio/generator", "attr" => 'loop'),
           "SclipAttach" => array("src" => "audio/click", "attr" => ''),
           "SclipRelease" => array("src" => "audio/click2", "attr" => ''),
           "Sding" => array("src" => "audio/ding", "attr" => '')

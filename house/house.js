@@ -288,6 +288,8 @@ define('house', ['house/drawing'], function(draw){
                 return;
             }
 
+            audio['generator'].pause()
+
         	if(x>=730 && y>=590){
         	    switchScene("crank");	
         		return;
@@ -356,6 +358,9 @@ define('house', ['house/drawing'], function(draw){
         	    //incremeted on release
         	    return;
         	}
+        	audio['generator'].play()
+        	audio['generator'].volue = .5;
+        	
         	startX = x;
         	startY = y;
         	
@@ -406,6 +411,11 @@ define('house', ['house/drawing'], function(draw){
         		}
         		
         		var delta = (oldAngle-angle);
+        		
+        		console.log(Math.abs(delta)/5);
+        		
+        		audio['generator'].playbackRate = Math.abs(delta)/5;
+        		
         		if(Math.abs(delta)<=1){
         			if(blackDone && redDone){
         			    if(sensorType === "sensor"){
