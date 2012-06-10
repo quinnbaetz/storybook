@@ -50,7 +50,6 @@ define("nuclear", ["extern/canvas.Sprites/canvas.Sprites", "extern/canvas.DrawSp
         
         var smokeDraw = function(){
             var deletes = 0;
-            console.log(smokePos);
             var maxDist = 180;
             for(var i = 0; i<smokePos.length; i++){
                 var dist = ++smokePos[i].dist;
