@@ -93,7 +93,7 @@ define("map", function() {
             }
             
             function drawSmoke(imgName, x, y, dist){
-                imgs["smokeCoal"].draw({x: x, y: y-dist, alpha: 1-dist/100});
+                imgs[imgName].draw({x: x, y: y-dist, alpha: 1-dist/100});
             }
             
             function drawCoalSmoke(x, y, dist){

@@ -203,8 +203,8 @@ function init() {
 	coal = require('coal')(ctx);
 	house = require('house')();
 	if(DEBUG){
-      scene = "house";
-      current = house;
+      scene = "map";
+      current = map;
     }else{
       scene = "title";
       current = title;  

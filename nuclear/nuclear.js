@@ -7,7 +7,7 @@ define("nuclear", ["extern/canvas.Sprites/canvas.Sprites", "extern/canvas.DrawSp
                                            _.bind(imgs["nuclearPhotosFull"].draw, imgs["nuclearPhotosFull"]),
                                            _.bind(imgs["nuclearPhotosTowers"].draw, imgs["nuclearPhotosTowers"])], {ctx: ctx, x: 0, y:0, callback: function(fun){fun();}});
       
-        
+        var smokePos = [];
         var reset = _.bind(function(){
             this.photoShow = false;
         }, this);
@@ -19,7 +19,7 @@ define("nuclear", ["extern/canvas.Sprites/canvas.Sprites", "extern/canvas.DrawSp
                 slideShow();
                 return;
             }
-            
+        	
             imgs["nuclearBg"].draw();
         	magentSprite.advance();
         	magentSprite.draw();
@@ -36,17 +36,44 @@ define("nuclear", ["extern/canvas.Sprites/canvas.Sprites", "extern/canvas.DrawSp
               ctx.fillText("but there are other concerns about the safe use of nuclear fuel. ", textX-110, 179.2);
               ctx.restore();
         	
-        }
+            smokeDraw();
+            
+        };
         
         var slideShow = function(){
             photoSprites.draw();
-        }
+        };
+        
         var cameraMsg = function(){
             photoShow = !photoShow;
+        };
+        
+        var smokeDraw = function(){
+            var deletes = 0;
+            console.log(smokePos);
+            var maxDist = 180;
+            for(var i = 0; i<smokePos.length; i++){
+                var dist = ++smokePos[i].dist;
+                imgs["smokeNuclear"].draw({x: 750+dist, y: -dist, alpha: 1-dist/maxDist, scale: 2.5});
+                if(smokePos[i].dist>=maxDist){
+                    deletes++;
+                }
+            }
+            //delete clouds that are invisible
+            for(var i = 0; i<deletes; i++){
+                smokePos.shift();
+            }
         }
-        var mousePressed = function(){
+        var addCloud = function(){
+            smokePos.push({dist: 0});
+        }
+        var mousePressed = function(x, y){
             if(photoShow){
                 photoSprites.advance();
+            }else{
+                if(varersect(652, 103, 350, 400, x, y) /*|| varersect(0, 250, 250, 200, x, y)*/){
+                    addCloud();
+                }
             }
         }
         
