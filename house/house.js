@@ -358,8 +358,6 @@ define('house', ['house/drawing'], function(draw){
         	    //incremeted on release
         	    return;
         	}
-        	audio['generator'].play()
-        	audio['generator'].volue = .5;
         	
         	startX = x;
         	startY = y;
@@ -379,6 +377,8 @@ define('house', ['house/drawing'], function(draw){
         			if(dist(cCrankX, cCrankY, x, y)<(812*.7)/2){
         				lightPos = 0;
         				cranking = true;
+        	            audio['generator'].play()
+        	            audio['generator'].volue = .5;
         			}
         		}
         	}
