@@ -203,8 +203,8 @@ function init() {
 	coal = require('coal')(ctx);
 	house = require('house')();
 	if(DEBUG){
-      scene = "map";
-      current = map;
+      scene = "damInside";
+      current = damInside;
     }else{
       scene = "title";
       current = title;  
@@ -239,19 +239,19 @@ function endDraw(){
 	}
 }
 function draw(buffer) {
-  if(typeof(current.draw) === "function"){
+  
     if(scene === "crank"){
        drawCrank();
     }else{
-      current.draw(ctx);
+      if(typeof(current.draw) === "function"){
+        current.draw(ctx);
+      } 
     }
     setTimeout(draw, FRAMERATE); 
      //ctx.restore();
      endDraw();
 
      return;    
-    
-  } 
 }
 
 
@@ -264,7 +264,6 @@ function mouseReleased(touchX, touchY) {
 	}
 	
 	DRAGGING = false;
-	
 	if(typeof(current) !== "undefined" && typeof(current.mouseReleased) === "function"){
 	  current.mouseReleased(x, y);
 	  return;
@@ -480,7 +479,8 @@ function drawEllipse(ctx, x, y, w, h) {
   								"damInside" =>  array("src" => $damInsideImageLoc."dam.png", "x" => 0, "y"=>146),
   								"damInsideGate" =>  array("src" => $damInsideImageLoc."gate.png", "x"=>60, "y"=>408, "width"=>35, "height"=>94, "scale"=>1.6),
   								"damInsideWater" =>  array("src" => $damInsideImageLoc."watertop.png", "width"=>71, "height"=>33, "scale"=>1.8),
-  								"damSprite" =>  array("src" => $damInsideImageLoc."damSprite.png", "x"=> 494, "y" => 435, "scale" => 1.85),
+  								"damInsideArrows" =>  array("src" => $damInsideImageLoc."damArrows.png", "x"=>32, "y"=> 400, "scale" => 1.85),
+                  "damSprite" =>  array("src" => $damInsideImageLoc."damSprite.png", "x"=> 494, "y" => 435, "scale" => 1.85),
   								"damInsideText" =>  array("src" => $damInsideImageLoc."dam2Text.png", "x"=>200, "y"=>5),
   								"generator" => array("src" => $coalImageLoc."generator.png", "x"=>520, "y"=>453),
   								"coalTapHelp" => array("src" => $coalImageLoc."coalHelp.png", "x"=>20, "y"=>393),

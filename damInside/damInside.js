@@ -30,6 +30,10 @@ define("damInside", ["extern/canvas.Sprites/canvas.Sprites", "extern/canvas.Draw
         
         reset();
         
+        var arrowsSprite = new Sprite(imgs["damInsideArrows"].img, 13, {scale: imgs["damInsideArrows"].scale, x: imgs["damInsideArrows"].x, y: imgs["damInsideArrows"].y, ctx: ctx});
+        var arrowsSprite2 = new Sprite(imgs["damInsideArrows"].img, 13, {scale: imgs["damInsideArrows"].scale, x: imgs["damInsideArrows"].x, y: imgs["damInsideArrows"].y, ctx: ctx});
+        arrowsSprite2.setPos(7);
+        
         var propellorSprite = new Sprite(imgs["damSprite"].img, 6, {x: imgs["damSprite"].x, y: imgs["damSprite"].y, scale: imgs["damSprite"].scale, ctx: ctx});
         //fix for bad sprite sheet
         propellorSprite.addOption("segHeightToDraw", propellorSprite.getSegHeight()-2);
@@ -54,13 +58,6 @@ define("damInside", ["extern/canvas.Sprites/canvas.Sprites", "extern/canvas.Draw
         			imgs["damInsideGate"].y = Math.max(imgs["damInsideGate"].origY-imgs["damInsideGate"].getScaledHeight(), Math.min(imgs["damInsideGate"].y, imgs["damInsideGate"].origY));
         			expectedWaterLevel = (((imgs["damInsideGate"].origY-imgs["damInsideGate"].y)/imgs["damInsideGate"].getScaledHeight())*(maxWater - minWater))+minWater;
         		  }
-        		  if(waterlevel<expectedWaterLevel){
-        			waterlevel++;  
-        		  }
-        		  if(waterlevel>expectedWaterLevel){
-        			waterlevel--;  
-        		  }
-        		  
         		  
         		  
         		  
@@ -95,14 +92,28 @@ define("damInside", ["extern/canvas.Sprites/canvas.Sprites", "extern/canvas.Draw
         	  var rotSpeed = (imgs["damInsideGate"].origY-imgs["damInsideGate"].y)/imgs["damInsideGate"].getScaledHeight();
         	  rot=(rot+(rotSpeed*Math.PI/(32)))%(Math.PI*2);
         	  
-        	 
+        	  waterlevel += (expectedWaterLevel-waterlevel)/100;/*
+        	  if(waterlevel<expectedWaterLevel){
+                  waterlevel+= rotSpeed;  
+                }
+                if(waterlevel>expectedWaterLevel){
+                  waterlevel-= 1-rotSpeed;  
+                }*/
         	  
         	  
         	  //draw motor
         	  if(frame%Math.ceil(2/(2*rotSpeed))===0){
+        	      arrowsSprite.advance();
+        	      arrowsSprite2.advance();
+        	      
         	      propellorSprite.advance();
         	      waterFallSprite.advance();
         	  }
+        	  if(rotSpeed > 0){
+                  arrowsSprite.draw();
+                  arrowsSprite2.draw();
+        	  }
+        	  
         	  propellorSprite.draw();
         	  
         	  if(rotSpeed < .01){
@@ -110,8 +121,9 @@ define("damInside", ["extern/canvas.Sprites/canvas.Sprites", "extern/canvas.Draw
                }else{
                     alpha = Math.min(alpha+.03, 1);  
                }
-        	  waterFallSprite.draw({alpha: alpha});
-              
+        	  if(alpha > 0){
+        	      waterFallSprite.draw({alpha: alpha});
+        	  }
         	  
         	  
         	  imgs["damInsideGate"].draw();

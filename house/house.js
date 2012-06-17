@@ -282,7 +282,7 @@ define('house', ['house/drawing'], function(draw){
         }
         
         function houseMouseRelease(x, y){
-            cranking = false; 
+            cranking = false;
             if(helpPos<5){
                 helpPos++;
                 return;
@@ -290,6 +290,7 @@ define('house', ['house/drawing'], function(draw){
 
             audio['generator'].pause()
 
+            console.log(x, y);
         	if(x>=730 && y>=590){
         	    switchScene("crank");	
         		return;
