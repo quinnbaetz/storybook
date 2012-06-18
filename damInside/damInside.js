@@ -30,9 +30,9 @@ define("damInside", ["extern/canvas.Sprites/canvas.Sprites", "extern/canvas.Draw
         
         reset();
         
-        var arrowsSprite = new Sprite(imgs["damInsideArrows"].img, 13, {scale: imgs["damInsideArrows"].scale, x: imgs["damInsideArrows"].x, y: imgs["damInsideArrows"].y, ctx: ctx});
-        var arrowsSprite2 = new Sprite(imgs["damInsideArrows"].img, 13, {scale: imgs["damInsideArrows"].scale, x: imgs["damInsideArrows"].x, y: imgs["damInsideArrows"].y, ctx: ctx});
-        arrowsSprite2.setPos(7);
+        var arrowsSprite = new Sprite(imgs["damInsideArrows"].img, 7, {scale: imgs["damInsideArrows"].scale, x: imgs["damInsideArrows"].x, y: imgs["damInsideArrows"].y, ctx: ctx});
+        //var arrowsSprite2 = new Sprite(imgs["damInsideArrows"].img, 13, {scale: imgs["damInsideArrows"].scale, x: imgs["damInsideArrows"].x, y: imgs["damInsideArrows"].y, ctx: ctx});
+        //arrowsSprite2.setPos(7);
         
         var propellorSprite = new Sprite(imgs["damSprite"].img, 6, {x: imgs["damSprite"].x, y: imgs["damSprite"].y, scale: imgs["damSprite"].scale, ctx: ctx});
         //fix for bad sprite sheet
@@ -104,17 +104,17 @@ define("damInside", ["extern/canvas.Sprites/canvas.Sprites", "extern/canvas.Draw
         	  //draw motor
         	  if(frame%Math.ceil(2/(2*rotSpeed))===0){
         	      arrowsSprite.advance();
-        	      arrowsSprite2.advance();
-        	      
+        	      //arrowsSprite2.advance();
         	      propellorSprite.advance();
         	      waterFallSprite.advance();
         	  }
         	  if(rotSpeed > 0){
                   arrowsSprite.draw();
-                  arrowsSprite2.draw();
-        	  }
+              }else{
+                  propellorSprite.draw();
+              }
         	  
-        	  propellorSprite.draw();
+        	  
         	  
         	  if(rotSpeed < .01){
                   alpha = Math.max(alpha-.03, 0);  
