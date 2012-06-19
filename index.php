@@ -51,7 +51,7 @@
 			var BUFFERING = false;
 			//refreshes every 50 milliseconds
 			var FRAMERATE = 50;
-			var DEBUG = true;
+			var DEBUG = false;
 			
 			var ctx;
 			var WIDTH = 1024;
@@ -203,8 +203,8 @@ function init() {
 	coal = require('coal')(ctx);
 	house = require('house')();
 	if(DEBUG){
-      scene = "damInside";
-      current = damInside;
+      scene = "map";
+      current = map;
     }else{
       scene = "title";
       current = title;  
@@ -444,6 +444,7 @@ function drawEllipse(ctx, x, y, w, h) {
       				   "voltMeter" => array("src" => $houseImageLoc."voltMeter.png"),
 							   "map" => array("src" => $mapImageLoc."map-horizontal_construction.png"),
 		 					   "introMsg" => array("src" => $mapImageLoc."helpMsg.png"),
+                 "waterSprite" => array("src" => $mapImageLoc."water_sprite.png", "x"=>266, "y"=>66, "scale" => 1),
                  "house" => array("src" => $mapImageLoc."house.png"),
 							   "nuclear" => array("src" => $mapImageLoc."nuclear.png"),
 							   "dam" => array("src" => $mapImageLoc."dam.png"),

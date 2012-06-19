@@ -1,4 +1,4 @@
-define("map", function() {
+define("map", ["extern/canvas.Sprites/canvas.Sprites"], function(Sprite) {
     return function(){
         
             var introRead = false;
@@ -13,6 +13,7 @@ define("map", function() {
             var transMap = true && !DEBUG; //if we want to do a transformation
             var firstMap = true && !DEBUG; //if first time viewing the map
             var transPos;
+            var waterSprite = new Sprite(imgs["waterSprite"].img, 4, {scale: imgs["waterSprite"].scale, x: imgs["waterSprite"].x, y: imgs["waterSprite"].y, ctx: ctx});
             
             
             var drawMap = function(){
@@ -55,7 +56,13 @@ define("map", function() {
             	 
             	 
             	  imgs["map"].draw();
-            	
+            	  
+            	  if(time%2==0){
+            	      waterSprite.advance();
+            	  }
+                  waterSprite.draw();
+                 
+            	  
             	  var smokeY = 440;
             	  drawCoalSmoke(findCoalSmokeX(830, time%101), smokeY, time%101);
             	  drawCoalSmoke(findCoalSmokeX(872.5, (time+33)%101), smokeY, (time+33)%101);
@@ -83,8 +90,7 @@ define("map", function() {
             			  blades(windmills[i].x, windmills[i].y, windmills[i].scale);
             		  //ctx.restore();
             	  }
-            	    
-            	 
+            	  
             	  if(!introRead){
             	      imgs['introMsg'].draw();
             	  }
