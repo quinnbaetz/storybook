@@ -1,51 +1,52 @@
-	function wires(ctx, x, y, glowing, alpha){
-	    ctx.save();
-	     ctx.translate(x, y);
+    function wires(ctx, x, y, glowing, alpha){
+        ctx.save();
+         ctx.translate(x, y);
          ctx.beginPath();
-	      ctx.moveTo(539.9, 468.0);
-	      ctx.bezierCurveTo(539.9, 468.0, 601.1, 363.7, 630.6, 429.7);
-	      ctx.bezierCurveTo(660.1, 495.7, 626.9, 533.8, 600.4, 504.0);
-	      ctx.bezierCurveTo(574.0, 474.3, 602.4, 338.0, 602.4, 338.0);
-	      ctx.lineTo(606.1, 338.0);
-	      /*ctx.bezierCurveTo(606.1, 338.0, 575.5, 462.6, 607.1, 503.7);
-	      ctx.bezierCurveTo(653.5, 550.2, 647.4, 309.6, 545.1, 471.9);
-	      ctx.bezierCurveTo(537.9, 463.0, 539.9, 468.0, 539.9, 468.0);*/
-	      if(glowing){
-	          ctx.lineWidth = 10;
-	          ctx.strokeStyle = "rgba(255, 2550, 200, "+alpha+")";
-	      }else{
-	        ctx.lineWidth = 3.8;
-	        ctx.strokeStyle = "rgb(0, 0, 0)";
-	      }
-	      ctx.stroke();
+          ctx.moveTo(539.9, 460.0);
+          ctx.bezierCurveTo(539.9, 468.0, 601.1, 363.7, 630.6, 429.7);
+          ctx.bezierCurveTo(660.1, 495.7, 626.9, 533.8, 600.4, 504.0);
+          ctx.bezierCurveTo(574.0, 474.3, 602.4, 338.0, 602.4, 338.0);
+          ctx.lineTo(606.1, 338.0);
+          /*ctx.bezierCurveTo(606.1, 338.0, 575.5, 462.6, 607.1, 503.7);
+          ctx.bezierCurveTo(653.5, 550.2, 647.4, 309.6, 545.1, 471.9);
+          ctx.bezierCurveTo(537.9, 463.0, 539.9, 468.0, 539.9, 468.0);*/
+          if(glowing){
+              ctx.lineWidth = 10;
+              ctx.strokeStyle = "rgba(255, 2550, 200, "+alpha+")";
+          }else{
+            ctx.lineWidth = 3.8;
+            ctx.strokeStyle = "rgb(0, 0, 0)";
+          }
+          ctx.stroke();
 
-	      // layer1/Layer 2/redWire
-	      ctx.beginPath();
-	      ctx.moveTo(555.9, 493.4);
-	      ctx.bezierCurveTo(555.9, 493.4, 630.0, 349.5, 553.3, 354.1);
-	      ctx.bezierCurveTo(476.6, 358.8, 620.4, 532.9, 670.0, 492.3);
-	      ctx.bezierCurveTo(696.2, 452.9, 653.1, 348.0, 653.1, 348.0);
-	      ctx.lineTo(649.1, 348.0);
-	      ctx.bezierCurveTo(649.1, 348.0, 709.1, 489.6, 651.4, 493.7);
-	      ctx.bezierCurveTo(593.7, 497.7, 507.7, 371.1, 548.4, 360.7);
-	      ctx.bezierCurveTo(594.3, 349.0, 581.7, 414.3, 581.7, 414.3);
-	      ctx.lineTo(554.4, 492.4);
-	      ctx.lineTo(555.9, 493.4);
-	      ctx.closePath();
-	      if(!glowing){
-	          ctx.strokeStyle = "rgb(255, 0, 0)";
-	        }
-	        ctx.stroke();
-	        ctx.restore();
-	}
-	
-	function gears3(x, y, angle){
-	    // layer1/Layer 2/gear3
-	    ctx.save();
-	    tx = 378.9+x;
-	    ty = 570.1+y;
+          // layer1/Layer 2/redWire
+          var startX = 560;
+          var startY = 479;
+          ctx.beginPath();
+          ctx.moveTo(startX, startY);
+          ctx.bezierCurveTo(555.9, 493.4, 630.0, 349.5, 553.3, 354.1);
+          ctx.bezierCurveTo(476.6, 358.8, 620.4, 532.9, 670.0, 492.3);
+          ctx.bezierCurveTo(696.2, 452.9, 653.1, 348.0, 653.1, 348.0);
+          ctx.lineTo(649.1, 348.0);
+          ctx.bezierCurveTo(649.1, 348.0, 709.1, 489.6, 651.4, 493.7);
+          ctx.bezierCurveTo(593.7, 497.7, 507.7, 371.1, 548.4, 360.7);
+          ctx.bezierCurveTo(594.3, 349.0, 581.7, 414.3, 581.7, 414.3);
+          ctx.lineTo(startX, startY);
+          ctx.closePath();
+          if(!glowing){
+              ctx.strokeStyle = "rgb(255, 0, 0)";
+            }
+            ctx.stroke();
+            ctx.restore();
+    }
+
+    function gears3(x, y, angle){
+        // layer1/Layer 2/gear3
+        ctx.save();
+        tx = 378.9+x;
+        ty = 570.1+y;
         ctx.translate(tx, ty);
-	    ctx.rotate(angle);
+        ctx.rotate(angle);
         ctx.translate(-tx, -ty);
 
         ctx.translate(x, y);
@@ -81,13 +82,13 @@
         ctx.lineJoin = "miter";
         ctx.miterLimit = 4.0;
         ctx.stroke();
-        
-        ctx.restore();
-	}
 
-	function gears2(x, y, angle){
-	    ctx.save();
-	    
+        ctx.restore();
+    }
+
+    function gears2(x, y, angle){
+        ctx.save();
+
         tx = 358.9+x;
         ty = 480.1+y;
         ctx.translate(tx, ty);
@@ -155,11 +156,10 @@
         ctx.lineWidth = 1.6;
         ctx.stroke();
 
-	    ctx.restore();
-	}
-	
-	
-	function gears1(x, y, angle){
+        ctx.restore();
+    }
+
+    function gears1(x, y, angle){
         ctx.save();
         tx = 348.9+x;
         ty = 360.1+y;
@@ -168,7 +168,7 @@
         ctx.translate(-tx, -ty);
 
         ctx.translate(x, y);
-        
+
         ctx.beginPath();
         ctx.moveTo(445.1, 440.0);
         ctx.lineTo(421.5, 438.4);
@@ -230,7 +230,3 @@
 
         ctx.restore();
     }
-	
-  
-	
-	

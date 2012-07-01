@@ -51,7 +51,7 @@
             var BUFFERING = false;
             //refreshes every 50 milliseconds
             var FRAMERATE = 50;
-            var DEBUG = false;
+            var DEBUG = true;
             
             var ctx;
             var WIDTH = 1024;
@@ -220,7 +220,7 @@ function init() {
 function endDraw(){
     if(scene !== "map" && scene !== "title"){
         imgs["backToMap"].draw();
-        
+
     }
     if(typeof(current.helpMsg) === "function"){
       imgs['help'].draw();
