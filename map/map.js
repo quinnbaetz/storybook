@@ -1,9 +1,9 @@
 define("map", ["extern/canvas.Sprites/canvas.Sprites"], function(Sprite) {
     return function(){
             var introRead = false;
-            var windmills = new Array({"x":820,"y":70, "scale":.12, "rot": 0, "speed": .1},
-                                        {"x":760,"y":110, "scale":.18, "rot": .3, "speed": .05},
-                                        {"x":850,"y":50, "scale":.3, "rot": .5, "speed": .07}
+            var windmills = new Array({"x":920,"y":415, "scale":.23, "rot": 0, "speed": .1},
+                                        {"x":745,"y":415, "scale":.23, "rot": .3, "speed": .05},
+                                        {"x":808,"y":488, "scale":.3, "rot": .5, "speed": .07}
                                           );
 
             var clouds = [{x:-120, y:Math.random()*70, scale:Math.random()+.5}];
@@ -24,7 +24,7 @@ define("map", ["extern/canvas.Sprites/canvas.Sprites"], function(Sprite) {
                 }
                  ctx.save();
                  if(transMap){
-                    ctx.translate(0, transPos-=8); 
+                    ctx.translate(0, transPos-=14); 
                     if(transPos<=0){
                         transMap = false;
                     }
@@ -57,14 +57,17 @@ define("map", ["extern/canvas.Sprites/canvas.Sprites"], function(Sprite) {
                   }
                   waterSprite.draw();
 
-                  var smokeY = 440;
-                  drawCoalSmoke(findCoalSmokeX(830, time%101), smokeY, time%101);
-                  drawCoalSmoke(findCoalSmokeX(872.5, (time+33)%101), smokeY, (time+33)%101);
-                  drawCoalSmoke(findCoalSmokeX(915, (time+66)%101), smokeY, (time+66)%101);
+                  //coal smoke
+                  var smokeX = 75;
+                  var smokeY = 495;
+                  drawCoalSmoke(findCoalSmokeX(smokeX, time%101), smokeY, time%101);
+                  drawCoalSmoke(findCoalSmokeX(smokeX+42.5, (time+33)%101), smokeY, (time+33)%101);
+                  drawCoalSmoke(findCoalSmokeX(smokeX+42.5*2, (time+66)%101), smokeY, (time+66)%101);
 
-                  smokeY = 440;
-                  drawNuclearSmoke(findCoalSmokeX(80, time%101), smokeY, time%101);
-                  drawNuclearSmoke(findCoalSmokeX(225, (time+50)%101), smokeY, (time+50)%101);
+                  smokeX = 730;
+                  smokeY = 80;
+                  drawNuclearSmoke(findCoalSmokeX(smokeX, time%101), smokeY, time%101);
+                  drawNuclearSmoke(findCoalSmokeX(smokeX+145, (time+50)%101), smokeY, (time+50)%101);
 
                   //ctx.drawImage(imgs["smokeNuclear"], 70, 478);
 
@@ -126,21 +129,25 @@ define("map", ["extern/canvas.Sprites/canvas.Sprites"], function(Sprite) {
                     introRead = true;
                     return "map";
                 }
-                if(varersect(375, 285, 375, 275, x, y) /*|| varersect(0, 250, 250, 200, x, y)*/){
+                //house
+                if(varersect(90, 255, 210, 175, x, y) /*|| varersect(0, 250, 250, 200, x, y)*/){
                     return "house";    
                 }
-                if(varersect(700, 50, 300, 300, x, y)){
+                //school
+                if(varersect(386, 286, 340, 250, x, y) /*|| varersect(0, 250, 250, 200, x, y)*/){
+                    return "house";    
+                }
+                if(varersect(734, 388, 400, 400, x, y)){
                     return "wind";    
                 }
                 if(varersect(0, 0, 375, 280, x, y)){
                     audio['damBG'].play()
                     return "damTop";    
                 }
-
-                if(varersect(770, 465, 350, 320, x, y)){
+                if(varersect(0, 465, 300, 300, x, y)){
                     return "coal";    
                 }
-                if(varersect(0, 478, 450, 352, x, y)){
+                if(varersect(658, 70, 400, 262, x, y)){
                     return "nuclear";    
                 }
 

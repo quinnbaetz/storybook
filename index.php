@@ -442,7 +442,7 @@ function drawEllipse(ctx, x, y, w, h) {
                  "houseHelp3" => array("src" => $houseImageLoc."helpMsg3.png", "x"=>705.6, "y"=>300.8),
                  "houseHelp4" => array("src" => $houseImageLoc."helpMsg4.png", "x"=>428.6, "y"=>44.8),
                          "voltMeter" => array("src" => $houseImageLoc."voltMeter.png"),
-                               "map" => array("src" => $mapImageLoc."map-horizontal_construction.png"),
+                               "map" => array("src" => $mapImageLoc."map-horizontal-roads.png"),
                                 "introMsg" => array("src" => $mapImageLoc."helpMsg.png"),
                  "waterSprite" => array("src" => $mapImageLoc."water_sprite.png", "x"=>266, "y"=>66, "scale" => 1),
                  "house" => array("src" => $mapImageLoc."house.png"),

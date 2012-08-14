@@ -1,7 +1,7 @@
 define("nuclear", ["extern/canvas.Sprites/canvas.Sprites", "extern/canvas.DrawSprites/canvas.DrawSprites"], function(Sprite, DrawSprite) {
     return function(){
        
-        var magentSprite = new Sprite(imgs["generator"].img, 10, {x: 400, y: 480, scale: .47, ctx: ctx});
+        var magentSprite = new Sprite(imgs["generator"].img, 11, {x: 400, y: 480, scale: .47, ctx: ctx});
         
         var photoSprites = new DrawSprite([_.bind(imgs["nuclearPhotosBuildings"].draw, imgs["nuclearPhotosBuildings"]),
                                            _.bind(imgs["nuclearPhotosFull"].draw, imgs["nuclearPhotosFull"]),

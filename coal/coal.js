@@ -26,7 +26,7 @@ function(draw, Sprite, DrawSprite) {
         
         
         var bubbleSprite = new Sprite(imgs["bubbles"].img, 60, {x: imgs['bubbles'].x, y: imgs['bubbles'].y, scale: 1, ctx: ctx});
-        var magentSprite = new Sprite(imgs["generator"].img, 10, {x : imgs['generator'].x, y: imgs['generator'].y, ctx: ctx});
+        var magentSprite = new Sprite(imgs["generator"].img, 11, {x : imgs['generator'].x, y: imgs['generator'].y, ctx: ctx});
         var fire = new DrawSprite(draw.fire, {ctx: ctx, x: 327, y:515, scale: .5});
         var photoSprites = new DrawSprite([_.bind(imgs["coalPhotosBuildings"].draw, imgs["coalPhotosBuildings"]),
                                            _.bind(imgs["coalPhotosNight"].draw, imgs["coalPhotosNight"]),
@@ -36,8 +36,6 @@ function(draw, Sprite, DrawSprite) {
     
         var drawCoal = function(){
             if(photoShow){
-
-                console.log("photosho");
                 slideShow();
                 return;
             }
