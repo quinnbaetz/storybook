@@ -46,7 +46,7 @@ define("damInside", ["extern/canvas.Sprites/canvas.Sprites", "extern/canvas.Draw
         function drawDamInside(){
             if(photoShow){
                 slideShow();
-                return;
+                return {showHelp: false};
             }
             
          	frame++;

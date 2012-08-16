@@ -17,7 +17,7 @@ define("nuclear", ["extern/canvas.Sprites/canvas.Sprites", "extern/canvas.DrawSp
         var drawNuclear = function(){
         	if(photoShow){
                 slideShow();
-                return;
+                return {showHelp: false};
             }
         	
             imgs["nuclearBg"].draw();

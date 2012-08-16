@@ -37,7 +37,7 @@ define("damTop", ["extern/canvas.DrawSprites/canvas.DrawSprites", "extern/unders
         var drawDamTop = function(){
                 if(photoShow){
                     slideShow();
-                    return;
+                    return {showHelp: false};
                 }
                 
         		this.ctx = ctx;

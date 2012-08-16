@@ -37,7 +37,7 @@ function(draw, Sprite, DrawSprite) {
         var drawCoal = function(){
             if(photoShow){
                 slideShow();
-                return;
+                return {showHelp: false};
             }
             
             draw.pipe(ctx, 0, -276, heat);

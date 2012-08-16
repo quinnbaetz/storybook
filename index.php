@@ -66,7 +66,7 @@
             var redBuffer;
             var blackBuffer;
             var bigBuffer;
-            var title,wind,damInside, nuclear, map, damTop, coal, house;  //used to store amd modulees
+            var title,wind,damInside, nuclear, map, damTop, coal, house, solar;  //used to store amd modulees
             var CImage;
           var current;
         </script>
@@ -202,6 +202,7 @@ function init() {
     damTop = require('damTop')(ctx);
     coal = require('coal')(ctx);
     house = require('house')();
+    solar = require('solar')();
     if(DEBUG){
       scene = "map";
       current = map;
@@ -217,13 +218,20 @@ function init() {
 }
 
 
-function endDraw(){
+function endDraw(res){
     if(scene !== "map" && scene !== "title"){
         imgs["backToMap"].draw();
 
     }
     if(typeof(current.helpMsg) === "function"){
-      imgs['help'].draw();
+      var skip = false;
+      if (typeof(res) === "object" && res.showHelp === false){
+         console.log("HERE HERE ----", res);
+          skip = true;
+      }
+      if(skip !== true){
+        imgs['help'].draw();
+      }
     }
     if(typeof(current.cameraMsg) === "function"){
     imgs['camera'].draw();
@@ -239,17 +247,17 @@ function endDraw(){
     }
 }
 function draw(buffer) {
-  
+    var res;
     if(scene === "crank"){
        drawCrank();
     }else{
       if(typeof(current.draw) === "function"){
-        current.draw(ctx);
+        res = current.draw(ctx);
       } 
     }
     setTimeout(draw, FRAMERATE); 
      //ctx.restore();
-     endDraw();
+     endDraw(res);
 
      return;    
 }
@@ -311,6 +319,7 @@ function mousePressed(touchX, touchY) {
       switchScene("map");
         audio["damBG"].pause();
         audio["windBG"].pause();
+        audio['boiling'].pause();
         resetCrank();
         return;    
     }
@@ -417,6 +426,7 @@ function drawEllipse(ctx, x, y, w, h) {
     
      <?php
          $titleImageLoc = "title/images/";
+         $solarImageLoc = "solar/images/";
          $houseImageLoc = "house/images/";
          $mapImageLoc = "map/images/";
          $crankImageLoc = "crank/images/";
@@ -428,6 +438,7 @@ function drawEllipse(ctx, x, y, w, h) {
          $images = array("title" => array("src" => $titleImageLoc."title.png", "x" => 200, "y"=>50), 
                                 "craft" => array("src" => $titleImageLoc."craft.png", "x" => 372, "y"=>137),
                                "prop" => array("src" => $titleImageLoc."propellor.png"),
+                               "solarBG" => array("src" => $solarImageLoc."house.jpg"),
                                 "container" => array("src" => $houseImageLoc."case.png"),
                                 "crank"=> array("src" => $houseImageLoc."crank.png", "x" => $cCrankX, "y" => $cCrankY, "width"=>$crankWidth, "height"=>$crankHeight),
                                "crankCrank"=> array("src" => $houseImageLoc."crank.png", "x" => 352, "y" => 0),

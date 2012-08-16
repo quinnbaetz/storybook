@@ -131,25 +131,25 @@ define("map", ["extern/canvas.Sprites/canvas.Sprites"], function(Sprite) {
                 }
                 //house
                 if(varersect(90, 255, 210, 175, x, y) /*|| varersect(0, 250, 250, 200, x, y)*/){
-                    return "house";    
+                    return "solar";
                 }
                 //school
                 if(varersect(386, 286, 340, 250, x, y) /*|| varersect(0, 250, 250, 200, x, y)*/){
-                    return "house";    
+                    return "house";
                 }
                 if(varersect(734, 388, 400, 400, x, y)){
                     audio['windBG'].play();
-                    return "wind";    
+                    return "wind";
                 }
                 if(varersect(0, 0, 375, 280, x, y)){
                     audio['damBG'].play();
-                    return "damTop";    
+                    return "damTop";
                 }
                 if(varersect(0, 465, 300, 300, x, y)){
-                    return "coal";    
+                    return "coal";
                 }
                 if(varersect(658, 70, 400, 262, x, y)){
-                    return "nuclear";    
+                    return "nuclear";
                 }
 
                 return "map";

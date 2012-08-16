@@ -25,7 +25,7 @@ define("wind", ["wind/drawing",  "extern/canvas.Sprites/canvas.Sprites", "extern
     	    
             if(photoShow){
                 slideShow();
-                return;
+                return {showHelp: false};
             }
             
     		frame++;
