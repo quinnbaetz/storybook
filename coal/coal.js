@@ -30,8 +30,8 @@ function(draw, Sprite, DrawSprite) {
         var fire = new DrawSprite(draw.fire, {ctx: ctx, x: 327, y:515, scale: .5});
         var photoSprites = new DrawSprite([_.bind(imgs["coalPhotosBuildings"].draw, imgs["coalPhotosBuildings"]),
                                            _.bind(imgs["coalPhotosNight"].draw, imgs["coalPhotosNight"]),
-                                           _.bind(imgs["coalPhotosSmokeStacks"].draw, imgs["coalPhotosSmokeStacks"]),
-                                           _.bind(imgs["coalPhotosSunset"].draw, imgs["coalPhotosSunset"]) ], {ctx: ctx, x: 0, y:0, callback: function(fun){fun();}});
+                                           _.bind(imgs["coalPhotosSmokeStacks"].draw, imgs["coalPhotosSmokeStacks"])
+                                           ], {ctx: ctx, x: 0, y:0, callback: function(fun){fun();}});
         
     
         var drawCoal = function(){
@@ -76,6 +76,7 @@ function(draw, Sprite, DrawSprite) {
         	
         	
         	if(spinning||heat>0){
+        	    audio['boiling'].play();
         		bubbleCount++;
         		generatorCount++;
         		bubbleSpeed=(1/heat)*400;
@@ -93,6 +94,7 @@ function(draw, Sprite, DrawSprite) {
         		}
         		
         	}else{
+        	    audio['boiling'].pause();
         	    bubbleSprite.setPos(0);
         	}
         	//ctx.drawImage(imgs["coalWater"], 286, 279);
@@ -156,7 +158,14 @@ function(draw, Sprite, DrawSprite) {
                 case 2:
                     if(coalTouch()){
                         coalSprite.advance();
+                        if(coalSprite.getPos() == 0){
+                            audio['crunch1'].play();
+                        }
+                        if(coalSprite.getPos() == 1){
+                            audio['crunch2'].play();
+                        }
                         if(coalSprite.getPos() == 2){
+                            audio['crunch1'].play();
                             helpPart = 3;
                         }
                     }

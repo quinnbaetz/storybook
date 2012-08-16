@@ -138,10 +138,11 @@ define("map", ["extern/canvas.Sprites/canvas.Sprites"], function(Sprite) {
                     return "house";    
                 }
                 if(varersect(734, 388, 400, 400, x, y)){
+                    audio['windBG'].play();
                     return "wind";    
                 }
                 if(varersect(0, 0, 375, 280, x, y)){
-                    audio['damBG'].play()
+                    audio['damBG'].play();
                     return "damTop";    
                 }
                 if(varersect(0, 465, 300, 300, x, y)){

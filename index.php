@@ -51,7 +51,7 @@
             var BUFFERING = false;
             //refreshes every 50 milliseconds
             var FRAMERATE = 50;
-            var DEBUG = true;
+            var DEBUG = false;
             
             var ctx;
             var WIDTH = 1024;
@@ -310,6 +310,7 @@ function mousePressed(touchX, touchY) {
     if(x<100&&y<100){
       switchScene("map");
         audio["damBG"].pause();
+        audio["windBG"].pause();
         resetCrank();
         return;    
     }
@@ -463,10 +464,10 @@ function drawEllipse(ctx, x, y, w, h) {
                                 "windPost" => array("src" => $windImageLoc."wind.png", "x" => 3, "y" => 270),
                                 "windMagnet" => array("src" => $windImageLoc."windMagnet.png", "x"=>690, "y"=>498),
                                    
-                    "windPhotosBackView" => array("src" => $windImageLoc."photos/backView.JPG", "x"=>0, "y"=>0),
-                    "windPhotosFarmhouse" => array("src" => $windImageLoc."photos/farmhouse.JPG", "x"=>0, "y"=>0),
-                    "windPhotosLandscape1" => array("src" => $windImageLoc."photos/landscape1.JPG", "x"=>0, "y"=>0),
-                    "windPhotosLandscape2" => array("src" => $windImageLoc."photos/landscape2.JPG", "x"=>0, "y"=>0),
+                    "windPhotosBackView" => array("src" => $windImageLoc."photos/backView.jpg", "x"=>0, "y"=>0),
+                    "windPhotosFarmhouse" => array("src" => $windImageLoc."photos/farmhouse.jpg", "x"=>0, "y"=>0),
+                    "windPhotosLandscape1" => array("src" => $windImageLoc."photos/landscape1.jpg", "x"=>0, "y"=>0),
+                    "windPhotosLandscape2" => array("src" => $windImageLoc."photos/landscape2.jpg", "x"=>0, "y"=>0),
                     
                                 "backToMap" => array("src" => "images/mapIcon.png"),
                                 "help"     => array("src" => "images/helpIcon.png", "x"=>5),
@@ -492,10 +493,10 @@ function drawEllipse(ctx, x, y, w, h) {
                                   "bubbles" => array("src" => $coalImageLoc."bubbles.png", "x"=>285, "y"=>279),
                                   "coalPlant" => array("src" => $coalImageLoc."building.png"),
                                   
-                                      "coalPhotosBuildings" => array("src" => $coalImageLoc."photos/building.jpg", "x"=>0, "y"=>0),
+                      "coalPhotosBuildings" => array("src" => $coalImageLoc."photos/building.jpg", "x"=>0, "y"=>0),
                       "coalPhotosNight" => array("src" => $coalImageLoc."photos/night.jpg", "x"=>0, "y"=>0),
                       "coalPhotosSmokeStacks" => array("src" => $coalImageLoc."photos/smokestacks.jpg", "x"=>0, "y"=>0),
-                      "coalPhotosSunset" => array("src" => $coalImageLoc."photos/sunset.jpg", "x"=>0, "y"=>0),
+                      //"coalPhotosSunset" => array("src" => $coalImageLoc."photos/sunset.jpg", "x"=>0, "y"=>0),
                                   
                                   "nuclearBg" => array("src" => $nuclearImageLoc."bg.png"),
                                     "nuclearPhotosBuildings" => array("src" => $nuclearImageLoc."photos/buildings.jpg", "x"=>0, "y"=>0),
@@ -514,9 +515,12 @@ function drawEllipse(ctx, x, y, w, h) {
         <?php } 
         $audios = array(
           "SdamBG" => array("src" => "audio/dam", "attr" => 'loop'),
-          "SwindBG" => array("src" => "audio/windturbine", "attr" => 'loop'),
+          "SwindBG" => array("src" => "audio/windmill", "attr" => 'loop'),
           "Sclicks" => array("src" => "audio/clicks", "attr" => 'loop'),
           "Sgenerator" => array("src" => "audio/generator", "attr" => 'loop'),
+          "Sboiling" => array("src" => "audio/boiling", "attr" => 'loop'),
+          "Scrunch1" => array("src" => "audio/crunch1", "attr" => ''),
+          "Scrunch2" => array("src" => "audio/crunch2", "attr" => ''),
           "SclipAttach" => array("src" => "audio/click", "attr" => ''),
           "SclipRelease" => array("src" => "audio/click2", "attr" => ''),
           "Sding" => array("src" => "audio/ding", "attr" => '')
