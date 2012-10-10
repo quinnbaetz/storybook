@@ -183,7 +183,6 @@ define('house', ['house/drawing'], function(draw){
                   var poppable = false;
                   var shiftable = false;
                   for(var i=0; i < volts.length; i++) {
-                      console.log(voltDir);
                       if(voltDir === -1 && volts[i] === voltsStart){
                           volts[i] = voltsEnd;
                       }
@@ -286,7 +285,6 @@ define('house', ['house/drawing'], function(draw){
 
             audio['generator'].pause()
 
-            console.log(x, y);
             if(x>=730 && y>=590){
                 switchScene("crank");    
                 return;

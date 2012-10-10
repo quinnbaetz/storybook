@@ -209,7 +209,6 @@ function(draw, Sprite, DrawSprite) {
         };
         
         var slideShow = function(){
-            console.log("drawing photospritses");
             photoSprites.draw();
         }
         var cameraMsg = function(){

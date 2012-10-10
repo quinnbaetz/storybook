@@ -122,8 +122,6 @@ window.drawTitleBG=function(width, height){
 function init() {
   CImage = require('canvas.Image');
   CAudio = require('canvas.Audio');
-  console.log(CAudio)
-  console.log("init");
   applet = document.getElementById('2d');
   appletX = parseInt(applet.offsetLeft);
   appletY = parseInt(applet.offsetTop);    
@@ -170,7 +168,6 @@ function init() {
   imgs['cameraClose'].y = HEIGHT-imgs['camera'].img.naturalHeight-15;
   
    var audios = document.getElementsByTagName('audio');
-   console.log(audios);
    for(var i in audios){
       if(typeof(audios[i].id) !== "undefined"){
         audio[audios[i].id.substring(1)] = new CAudio(audios[i]);
@@ -213,7 +210,6 @@ function init() {
       current = title;  
     }
     
-  console.log("end init about to draw");
     
     draw(BUFFERING);
     
@@ -231,7 +227,6 @@ function endDraw(res){
     if(typeof(current.helpMsg) === "function"){
       var skip = false;
       if (typeof(res) === "object" && res.showHelp === false){
-         console.log("HERE HERE ----", res);
           skip = true;
       }
       if(skip !== true){
@@ -316,7 +311,6 @@ function mousePressed(touchX, touchY) {
     DRAGGING = true;
     if(DEBUG){
       
-      console.log(touchX, touchY);
     }
     if(touchX){
         x = touchX;

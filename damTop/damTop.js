@@ -65,7 +65,6 @@ define("damTop", ["extern/canvas.DrawSprites/canvas.DrawSprites", "extern/unders
         }
         
         var damTopMousePressed = function(x, y){
-            console.log("here");
             if(photoShow){
                 photoSprites.advance();
                 return;
