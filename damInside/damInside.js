@@ -30,6 +30,8 @@ define("damInside", ["extern/canvas.Sprites/canvas.Sprites", "extern/canvas.Draw
         
         reset();
         
+       
+        
         var arrowsSprite = new Sprite(imgs["damInsideArrows"].img, 7, {scale: imgs["damInsideArrows"].scale, x: imgs["damInsideArrows"].x, y: imgs["damInsideArrows"].y, ctx: ctx});
         //var arrowsSprite2 = new Sprite(imgs["damInsideArrows"].img, 13, {scale: imgs["damInsideArrows"].scale, x: imgs["damInsideArrows"].x, y: imgs["damInsideArrows"].y, ctx: ctx});
         //arrowsSprite2.setPos(7);
@@ -40,8 +42,8 @@ define("damInside", ["extern/canvas.Sprites/canvas.Sprites", "extern/canvas.Draw
         
         var waterFallSprite = new DrawSprite(draw.waterFallSprites, {x: 729, y: 405, ctx: ctx, scale: 1.85});
         
-        var photoSprites = new DrawSprite([_.bind(imgs["damTopPhotosRoad"].draw, imgs["damTopPhotosRoad"])], {ctx: ctx, x: 0, y:0, callback: function(fun){fun();}});
-        
+        var photoSprites = new DrawSprite([_.bind(imgs["damTopPhotosRoad"].draw, imgs["damTopPhotosRoad"]),
+                                           _.bind(imgs["damTopPhotosHoover"].draw, imgs["damTopPhotosHoover"])], {ctx: ctx, x: 0, y:0, callback: function(fun){fun();}});
         
         function drawDamInside(){
             if(photoShow){
@@ -142,7 +144,7 @@ define("damInside", ["extern/canvas.Sprites/canvas.Sprites", "extern/canvas.Draw
             photoShow = !photoShow;
             if(photoShow){
                 reset();
-                photoSow = true;
+                photoShow = true;
             }
         }
         
@@ -152,7 +154,6 @@ define("damInside", ["extern/canvas.Sprites/canvas.Sprites", "extern/canvas.Draw
         
         function damInsidePressed(x, y){
 
-            console.log("HERE", this);
             if(photoShow){
                 photoSprites.advance();
                 return;
@@ -164,12 +165,18 @@ define("damInside", ["extern/canvas.Sprites/canvas.Sprites", "extern/canvas.Draw
         	}
         }
         
+        var isPhotoshow = function(){
+            return photoShow;
+        }
+        
+        
         return {
             draw : drawDamInside,
             mousePressed : damInsidePressed,
             mouseReleased : damInsideReleased,
             cameraMsg   : cameraMsg,
-            reset   : reset
+            reset   : reset,
+            isPhotoshow: isPhotoshow
         };
     }
 });

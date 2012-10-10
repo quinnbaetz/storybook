@@ -49,7 +49,7 @@ define('house', ['house/drawing'], function(draw){
         var startX = 0;
         var startY = 0;
         
-        var helpPos = 0;
+        var needHelp = false;
         
         if(sensorType === "sensor"){
             setSensorTypePos();
@@ -128,7 +128,7 @@ define('house', ['house/drawing'], function(draw){
         }
         
         function drawText(){
-            ctx.font = "23.0px 'Myriad Pro'";
+            /*ctx.font = "23.0px 'Myriad Pro'";
             ctx.fillStyle = "rgb(0, 0, 0)";
             var textX = 110;
             var textY = -5;
@@ -141,7 +141,7 @@ define('house', ['house/drawing'], function(draw){
             ctx.fillText("to the light stick and turn the", textX, 147.2+textY);
             ctx.fillText("crank to see the lights move.  Look", textX, 167.2+textY);
             ctx.fillText("inside to see the magnets and wire", textX, 187.2+textY);
-            ctx.fillText("coils.", textX, 207.2+textY);    
+            ctx.fillText("coils.", textX, 207.2+textY);    */
         }
         function drawBlackWire(){
             drawWire(blackPos.x + (90*blackPos.scale), blackPos.y + (90*blackPos.scale), x2, y2);    
@@ -260,9 +260,9 @@ define('house', ['house/drawing'], function(draw){
         
               drawText();
               
-              if(helpPos<5 && typeof(imgs['houseHelp'+helpPos]) === "object" && typeof(imgs['houseHelp'+helpPos].draw) === "function"){
+              if(needHelp){
                   //evenutally we'll want to make this guy dance
-                  imgs['houseHelp'+helpPos].draw();
+                  imgs['houseHelp'].draw();
               }
               
               
@@ -283,10 +283,6 @@ define('house', ['house/drawing'], function(draw){
         
         function houseMouseRelease(x, y){
             cranking = false;
-            if(helpPos<5){
-                helpPos++;
-                return;
-            }
 
             audio['generator'].pause()
 
@@ -354,11 +350,7 @@ define('house', ['house/drawing'], function(draw){
         }
 
         function houseMousePressed(x, y){
-            if(helpPos<5){
-                //incremeted on release
-                return;
-            }
-
+            needHelp = false;
             startX = x;
             startY = y;
 
@@ -442,7 +434,12 @@ define('house', ['house/drawing'], function(draw){
                 }
             }
         }
+        
+        var helpMsg = function(){
+            needHelp = true;
+        };
         return {
+         helpMsg: helpMsg,
          draw: drawHouse,
          mousePressed: houseMousePressed,
          mouseReleased: houseMouseRelease,

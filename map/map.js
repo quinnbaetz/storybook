@@ -14,10 +14,16 @@ define("map", ["extern/canvas.Sprites/canvas.Sprites"], function(Sprite) {
             var firstMap = true && !DEBUG; //if first time viewing the map
             var transPos;
             var waterSprite = new Sprite(imgs["waterSprite"].img, 4, {scale: imgs["waterSprite"].scale, x: imgs["waterSprite"].x, y: imgs["waterSprite"].y, ctx: ctx});
-
+            var showReactorMsg = false;
+            var showReactor = false;
             var drawMap = function(){
                 drawTitleBG(WIDTH, HEIGHT);
-
+                
+                if(showReactor){
+                    imgs['substation'].draw();
+                    imgs['cameraClose'].draw();
+                    return;
+                }
                 if(firstMap){
                     transPos = HEIGHT;
                     firstMap = false;    
@@ -94,6 +100,10 @@ define("map", ["extern/canvas.Sprites/canvas.Sprites"], function(Sprite) {
                       }
                   }
                   ctx.restore();
+                  
+                  if(showReactorMsg){
+                      imgs['substationText'].draw();
+                  }
             }
 
             function drawSmoke(imgName, x, y, dist){
@@ -129,6 +139,37 @@ define("map", ["extern/canvas.Sprites/canvas.Sprites"], function(Sprite) {
                     introRead = true;
                     return "map";
                 }
+
+                if(showReactor && x>imgs['cameraClose'].x&&y>imgs['cameraClose'].y){
+                    showReactor = false;
+                }
+
+                if(showReactor){
+                    return "map";
+                }
+
+                if(showReactorMsg && varersect(875, 485, 40, 40, x, y)){
+                    showReactor = true;
+                    return "map";
+                }
+
+                if(showReactorMsg){
+                    showReactorMsg = false;
+                    return "map";
+                }
+                //when user clicks on the reset button
+                if(varersect(965, 0, 200, 50, x, y) /*|| varersect(0, 250, 250, 200, x, y)*/){
+                    //BRI: possible problem, should test once app is created and use the one that works
+                    window.location.reload();
+                    history.go(0);
+                    window.location.href=window.location.href;
+                }
+
+                if(varersect(370, 180, 50, 50, x, y) || varersect(665, 230, 50, 50, x, y) || varersect(325, 300, 50, 50, x, y) || varersect(850, 400, 75, 75, x, y) || varersect(10, 410, 100, 100, x, y)){
+                    showReactorMsg = !showReactorMsg;
+                    return "map";
+                }
+                showReactorMsg = false;
                 //house
                 if(varersect(90, 255, 210, 175, x, y) /*|| varersect(0, 250, 250, 200, x, y)*/){
                     return "solar";

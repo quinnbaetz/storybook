@@ -166,6 +166,8 @@ function init() {
   
   imgs['camera'].x = WIDTH-imgs['camera'].img.naturalWidth-15;
   imgs['camera'].y = HEIGHT-imgs['camera'].img.naturalHeight-15;
+  imgs['cameraClose'].x = WIDTH-imgs['camera'].img.naturalWidth-15;
+  imgs['cameraClose'].y = HEIGHT-imgs['camera'].img.naturalHeight-15;
   
    var audios = document.getElementsByTagName('audio');
    console.log(audios);
@@ -220,8 +222,11 @@ function init() {
 
 function endDraw(res){
     if(scene !== "map" && scene !== "title"){
+      if(typeof(current.isPhotoshow) === "function" && current.isPhotoshow() === true){
+        //skip drawing bakc to map  
+      }else{
         imgs["backToMap"].draw();
-
+      }
     }
     if(typeof(current.helpMsg) === "function"){
       var skip = false;
@@ -234,7 +239,11 @@ function endDraw(res){
       }
     }
     if(typeof(current.cameraMsg) === "function"){
-    imgs['camera'].draw();
+      if(typeof(current.isPhotoshow) === "function" && current.isPhotoshow() === true){
+        imgs['cameraClose'].draw();
+      }else{
+        imgs['camera'].draw();
+      }
   }
     if(DEBUG){
         /*ctx.fillStyle = "#000000";
@@ -316,12 +325,16 @@ function mousePressed(touchX, touchY) {
         dragY = touchY;     
     }
     if(x<100&&y<100){
-      switchScene("map");
-        audio["damBG"].pause();
-        audio["windBG"].pause();
-        audio['boiling'].pause();
-        resetCrank();
-        return;    
+      if(typeof(current.isPhotoshow) === "function" && current.isPhotoshow() === true){
+        
+      }else{
+        switchScene("map");
+          audio["damBG"].pause();
+          audio["windBG"].pause();
+          audio['boiling'].pause();
+          resetCrank();
+          return;    
+      }
     }
     if(x<imgs['help'].width&&y>imgs['help'].y){
        if(typeof(current.helpMsg) === "function"){
@@ -438,7 +451,17 @@ function drawEllipse(ctx, x, y, w, h) {
          $images = array("title" => array("src" => $titleImageLoc."title.png", "x" => 200, "y"=>50), 
                                 "craft" => array("src" => $titleImageLoc."craft.png", "x" => 372, "y"=>137),
                                "prop" => array("src" => $titleImageLoc."propellor.png"),
-                               "solarBG" => array("src" => $solarImageLoc."house.jpg"),
+                               "credits" => array("src" => $titleImageLoc."credits.png", "x" => 50, "y"=>700),
+                               "creditsScreen" => array("src" => $titleImageLoc."credits.jpg", "x" => 0, "y"=>0),
+                  "solarBG" => array("src" => $solarImageLoc."house.jpg"),
+                               "panels" => array("src" => $solarImageLoc."photos/panels.jpg"),
+                               "stacks" => array("src" => $solarImageLoc."photos/stacks.jpg"),
+                               "page1" => array("src" => $solarImageLoc."book/page1.jpg"),
+                               "page2" => array("src" => $solarImageLoc."book/page2.jpg"),
+                               "page3" => array("src" => $solarImageLoc."book/page3.jpg"),
+                               "page4" => array("src" => $solarImageLoc."book/page4.jpg"),
+                               "page5" => array("src" => $solarImageLoc."book/page5.jpg"),
+                               "lampOn" => array("src" => $solarImageLoc."lamp_on.png", "x" => 384, "y" => -33),
                                 "container" => array("src" => $houseImageLoc."case.png"),
                                 "crank"=> array("src" => $houseImageLoc."crank.png", "x" => $cCrankX, "y" => $cCrankY, "width"=>$crankWidth, "height"=>$crankHeight),
                                "crankCrank"=> array("src" => $houseImageLoc."crank.png", "x" => 352, "y" => 0),
@@ -449,12 +472,14 @@ function drawEllipse(ctx, x, y, w, h) {
                                "sensor"=> array("src" => $houseImageLoc."sensor.png"), 
                                "glowDot"=> array("src" => $houseImageLoc."glowDot.png"),
                                "bg" => array("src" => $houseImageLoc."table.png"),
-                               "houseHelp1" => array("src" => $houseImageLoc."helpMsg1.png", "x"=>380, "y"=>600),
-                 "houseHelp2" => array("src" => $houseImageLoc."helpMsg2.png", "x"=>395.6, "y"=>176),
-                 "houseHelp3" => array("src" => $houseImageLoc."helpMsg3.png", "x"=>705.6, "y"=>300.8),
-                 "houseHelp4" => array("src" => $houseImageLoc."helpMsg4.png", "x"=>428.6, "y"=>44.8),
+                               "houseHelp" => array("src" => $houseImageLoc."helpMsgs.png", "x"=>0, "y"=>0),
+                 //"houseHelp2" => array("src" => $houseImageLoc."helpMsg2.png", "x"=>395.6, "y"=>176),
+                 //"houseHelp3" => array("src" => $houseImageLoc."helpMsg3.png", "x"=>705.6, "y"=>300.8),
+                 //"houseHelp4" => array("src" => $houseImageLoc."helpMsg4.png", "x"=>428.6, "y"=>44.8),
                          "voltMeter" => array("src" => $houseImageLoc."voltMeter.png"),
                                "map" => array("src" => $mapImageLoc."map-horizontal-roads.png"),
+                               "substationText" => array("src" => $mapImageLoc."substation-text.png", "x"=>555.6, "y"=>276),
+                               "substation" => array("src" => $mapImageLoc."substation.jpg"),
                                 "introMsg" => array("src" => $mapImageLoc."helpMsg.png"),
                  "waterSprite" => array("src" => $mapImageLoc."water_sprite.png", "x"=>266, "y"=>66, "scale" => 1),
                  "house" => array("src" => $mapImageLoc."house.png"),
@@ -483,10 +508,12 @@ function drawEllipse(ctx, x, y, w, h) {
                                 "backToMap" => array("src" => "images/mapIcon.png"),
                                 "help"     => array("src" => "images/helpIcon.png", "x"=>5),
                                 "camera"  => array("src" => "images/cameraIcon.png"),
+                                "cameraClose"  => array("src" => "images/closeCameraIcon.png"),
                                   "damTop" =>  array("src" => $damTopImageLoc."dam.png"),
                                   "damTopText" =>  array("src" => $damTopImageLoc."damText.png", "x" => 110, "y" => 24),
                                   
                                       "damTopPhotosRoad" => array("src" => $damTopImageLoc."photos/road.jpg", "x"=>0, "y"=>0),
+                                      "damTopPhotosHoover" => array("src" => $damTopImageLoc."photos/hoover.jpg", "x"=>0, "y"=>0),
                     
                                   "damInsideBg" =>  array("src" => $damInsideImageLoc."bgDam.png", "y" => 100),
                                   "damInside" =>  array("src" => $damInsideImageLoc."dam.png", "x" => 0, "y"=>146),
@@ -494,8 +521,8 @@ function drawEllipse(ctx, x, y, w, h) {
                                   "damInsideWater" =>  array("src" => $damInsideImageLoc."watertop.png", "width"=>71, "height"=>33, "scale"=>1.8),
                                   "damInsideArrows" =>  array("src" => $damInsideImageLoc."damArrows.png", "x"=>69, "y"=> 406, "scale" => 1.85),
                   "damSprite" =>  array("src" => $damInsideImageLoc."damSprite.png", "x"=> 494, "y" => 435, "scale" => 1.85),
-                                  "damInsideText" =>  array("src" => $damInsideImageLoc."dam2Text.png", "x"=>200, "y"=>5),
-                                  "generator" => array("src" => $coalImageLoc."generator.png", "x"=>520, "y"=>453),
+                                  "damInsideText" =>  array("src" => $damInsideImageLoc."dam2Text.png", "x"=>220, "y"=>5, "scale"=> 1.15),
+                                  "generator" => array("src" => $coalImageLoc."generator2.png", "x"=>520, "y"=>453),
                                   "coalTapHelp" => array("src" => $coalImageLoc."coalHelp.png", "x"=>20, "y"=>393),
                   "coalDragHelp" => array("src" => $coalImageLoc."dragHelp.png", "x"=>305, "y"=>383),
                   "coalBeakHelp" => array("src" => $coalImageLoc."breakHelp.png", "x"=>420, "y"=>383),
@@ -505,7 +532,6 @@ function drawEllipse(ctx, x, y, w, h) {
                                   "coalPlant" => array("src" => $coalImageLoc."building.png"),
                                   
                       "coalPhotosBuildings" => array("src" => $coalImageLoc."photos/building.jpg", "x"=>0, "y"=>0),
-                      "coalPhotosNight" => array("src" => $coalImageLoc."photos/night.jpg", "x"=>0, "y"=>0),
                       "coalPhotosSmokeStacks" => array("src" => $coalImageLoc."photos/smokestacks.jpg", "x"=>0, "y"=>0),
                       //"coalPhotosSunset" => array("src" => $coalImageLoc."photos/sunset.jpg", "x"=>0, "y"=>0),
                                   

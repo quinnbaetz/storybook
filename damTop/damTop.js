@@ -30,7 +30,10 @@ define("damTop", ["extern/canvas.DrawSprites/canvas.DrawSprites", "extern/unders
         
         reset();
         
-        var photoSprites = new DrawSprite([_.bind(imgs["damTopPhotosRoad"].draw, imgs["damTopPhotosRoad"])], {ctx: ctx, x: 0, y:0, callback: function(fun){fun();}});
+        var photoSprites = new DrawSprite([_.bind(imgs["damTopPhotosRoad"].draw, imgs["damTopPhotosRoad"]),
+                                           _.bind(imgs["damTopPhotosHoover"].draw, imgs["damTopPhotosHoover"])], {ctx: ctx, x: 0, y:0, callback: function(fun){fun();}});
+        
+        //var photoSprites = new DrawSprite([_.bind(imgs["damTopPhotosRoad"].draw, imgs["damTopPhotosHoover"])], {ctx: ctx, x: 0, y:0, callback: function(fun){fun();}});
       
         //damTopPhotosRoad
         
@@ -55,13 +58,14 @@ define("damTop", ["extern/canvas.DrawSprites/canvas.DrawSprites", "extern/unders
         	   }
         			
         	   imgs["damTop"].draw();
-        	   imgs["damTopText"].draw();
+        	   //imgs["damTopText"].draw();
         	  
         	  ctx.restore();
         			
         }
         
         var damTopMousePressed = function(x, y){
+            console.log("here");
             if(photoShow){
                 photoSprites.advance();
                 return;
@@ -155,11 +159,17 @@ define("damTop", ["extern/canvas.DrawSprites/canvas.DrawSprites", "extern/unders
                 photoShow = true;
             }
         }
+        
+        var isPhotoshow = function(){
+            return photoShow;
+        }
+        
           return {
               draw: drawDamTop,
               mousePressed: damTopMousePressed,
               cameraMsg: cameraMsg,
-              reset: reset
+              reset: reset,
+              isPhotoshow:isPhotoshow
               
           };
     }
